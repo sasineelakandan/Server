@@ -20,6 +20,6 @@ export const FRONTEND_URL = () => {
 };
 
 export const JWT_SECRET = () => {
-  if (!process.env.JWT_SECRET) throw new Error("JWT secret not found in env");
-  return String(process.env.JWT_SECRET);
+  if (!process.env.JWT_KEY) throw new Error("JWT secret not found in env");
+  return String(process.env.JWT_KEY);
 };
