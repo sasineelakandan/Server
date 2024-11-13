@@ -2,6 +2,6 @@ import { UserSignupInput, UserSignupOutput,OtpInput,OtpOutput } from "./userServ
 
 export interface IUserService {
   userSignup(userData: UserSignupInput): Promise<UserSignupOutput>;
- 
+
 
 }
