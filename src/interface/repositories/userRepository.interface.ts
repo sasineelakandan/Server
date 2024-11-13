@@ -3,5 +3,5 @@ import { AddUserInput, AddUserOuput,AddOtpInput,AddOtpOutput } from '../reposito
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
-    saveOtp(Otp:AddOtpInput):Promise<AddOtpOutput>
+   
 }

@@ -3,12 +3,14 @@ import { IUserConroller } from '../interface/conrollers/userController.interface
 import { IUserService } from "../interface/services/userService.interface";
 import { ControllerResponse } from '../interface/conrollers/userController.types';
 import { sendOtpEmail } from '../midlewere/otpservice/otpService';
+import OtpService from "../midlewere/otpservice/saveOtp";
 
 export class UserController implements IUserConroller {
   private userService: IUserService;
-
+  private otpService: OtpService;
   constructor(userService: IUserService) {
       this.userService = userService;
+      this.otpService = new OtpService();
   }
 
   userSignup = async (httpRequest: Request): Promise<ControllerResponse> => {
@@ -32,7 +34,7 @@ export class UserController implements IUserConroller {
           const { accessToken, refreshToken } = user;
           const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
           const userId=user._id.toString()
-          await  this.userService.saveOtp({userId,generatedOtp})
+          await this.otpService.saveOtp({userId,generatedOtp});
 
        
           await sendOtpEmail({

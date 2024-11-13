@@ -16,7 +16,7 @@ const transpoter=  nodemailer.createTransport({
 
 export const sendOtpEmail = async (options: SendOtpEmailOptions): Promise<boolean> => {
     const { email,otp,text,html,subject } = options;
-     console.log(otp)
+     
     const mailOptions = {
         from: `"Docreserva" <${process.env.USER_EMAIL}>`,
         to: email,
