@@ -24,9 +24,12 @@ export type UserSignupInput = {
 
   export type OtpInput = {
     userId: string;         
-    generatedOtp :string         
+    generatedOtp:string         
      
-};
+}
+
+
+
 export type OtpOutput = {
   readonly _id: string;           
   readonly userId: string;        
@@ -34,3 +37,9 @@ export type OtpOutput = {
   readonly expiryDate: Date;     
         
 };
+
+export type findOtp={
+  userId: string;
+  otp:string 
+}
+

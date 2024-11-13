@@ -30,6 +30,7 @@ class OtpService {
     throw new Error(error.message);
   }
 }
+ 
 }
 
 export default OtpService;

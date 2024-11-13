@@ -1,12 +1,13 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { OtpInput, OtpOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { findOtp, OtpOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
 import { encryptPassword } from "../utils/encription";
 
 import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateJWT";
+import { AddOtpInput } from "../interface/repositories/userRepository.types";
 export class UserService implements IUserService{
     private userRepository:IuserRepository
 
@@ -31,6 +32,19 @@ export class UserService implements IUserService{
           return { ...user, accessToken, refreshToken };
         } catch (error: any) {
           console.log("Error in user service", error.message);
+          throw new Error(error.message);
+        }
+      }
+      verifyOtp=async(otpData:findOtp): Promise<OtpOutput> => {
+        try{
+          const {userId,otp}=otpData
+          const userotp=await this.userRepository.verifyOtp({userId})
+         if(userotp.otp!==otp){
+          throw new Error("Invalid OTP.");
+         }
+        return {...userotp };
+        } catch (error: any) {
+          console.log("Error in verifyOtp", error.message);
           throw new Error(error.message);
         }
       }

@@ -35,7 +35,7 @@ export type AddUserInput = {
   };
   export type AddOtpInput = {
     userId: string;         
-    generatedOtp :string          
+    generatedOtp:string          
        
 };
 
@@ -57,5 +57,10 @@ export type GetOtpOutput = {
     readonly createdAt: Date;       
     readonly updatedAt: Date;     
 };
+
+export type findOtp={
+  userId: string;
+
+}
 
   

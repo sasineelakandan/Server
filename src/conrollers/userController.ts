@@ -66,7 +66,31 @@ export class UserController implements IUserConroller {
           };
       }
   };
-  
+  verifyOtp=async(httpRequest: Request): Promise<ControllerResponse> =>{
+      try{
+         const{userId,otp}= httpRequest.body
+         const savedOtp = await this.userService.verifyOtp({userId,otp});
+         return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 201,
+            body: {...savedOtp},
+        };
+      } catch (e: any) {
+          console.error("Error in userSignup:", e);
+          
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: e.statusCode || 500,
+              body: {
+                  error: e.message || "An unexpected error occurred",
+              },
+          };
+      }
+  }
   }
  
 

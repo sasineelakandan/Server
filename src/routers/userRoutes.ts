@@ -17,7 +17,9 @@ const controller = new UserController(service);
 router
   .route("/signup")
   .post(signupValidator, expressCallback(controller.userSignup));
-  
-
+ 
+router
+ .route('/verifyotp')
+ .post(expressCallback(controller.verifyOtp))
 
 export default router;
