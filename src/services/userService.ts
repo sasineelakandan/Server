@@ -34,4 +34,4 @@ export class UserService implements IUserService{
           throw new Error(error.message);
         }
       }
-}
+    }
