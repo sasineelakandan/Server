@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { OtpInput, OtpOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
 import { encryptPassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 import {
@@ -33,5 +33,18 @@ export class UserService implements IUserService{
           console.log("Error in user service", error.message);
           throw new Error(error.message);
         }
+      }
+      saveOtp=async(otpData: OtpInput): Promise<OtpOutput>=> {
+          try{
+            const {userId,generatedOtp}=otpData
+           const user = await this.userRepository.saveOtp({userId,generatedOtp});
+           return { _id:user._id.toString(),
+            userId:user.userId.toString(),
+            otp:user.otp,
+            expiryDate:user.expiryDate};
+          }catch (error: any) {
+            console.log("Error in user service", error.message);
+            throw new Error(error.message);
+          }
       }
     }

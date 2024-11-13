@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
-import { userValidators } from "../models/User.validator"; // Adjust the import path as necessary
+import { userValidators } from "../models/User.validator";
+
+
 
 const UserSchema = new Schema(
   {
@@ -65,6 +67,10 @@ const UserSchema = new Schema(
         validator: userValidators.gender.validator,
         message: userValidators.gender.message,
       },
+    },
+    otpVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -21,3 +21,16 @@ export type UserSignupInput = {
     readonly accessToken: string;
     readonly refreshToken: string;
   };
+
+  export type OtpInput = {
+    userId: string;         
+    generatedOtp :string         
+     
+};
+export type OtpOutput = {
+  readonly _id: string;           
+  readonly userId: string;        
+  readonly otp: string;            
+  readonly expiryDate: Date;     
+        
+};

@@ -33,4 +33,29 @@ export type AddUserInput = {
     readonly createdAt: Date;
     readonly updatedAt: Date;
   };
+  export type AddOtpInput = {
+    userId: string;         
+    generatedOtp :string          
+       
+};
+
+export type AddOtpOutput = {
+    readonly _id: string;           
+    readonly userId: string;        
+    readonly otp: string;           
+    readonly expiryDate: Date;      
+       
+         
+};
+
+export type GetOtpOutput = {
+    readonly _id: string;          
+    readonly userId: string;       
+    readonly otp: string;           
+    readonly expiryDate: Date;      
+    readonly generatedDate: Date;   
+    readonly createdAt: Date;       
+    readonly updatedAt: Date;     
+};
+
   

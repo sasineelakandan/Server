@@ -15,10 +15,10 @@ export class UserController implements IUserConroller {
       try {
           const { username, email, phone, password, age, address, gender } = httpRequest.body;
           
-         
-          const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        
           
-          
+        
           const user = await this.userService.userSignup({
               username,
               email,
@@ -30,25 +30,25 @@ export class UserController implements IUserConroller {
           });
 
           const { accessToken, refreshToken } = user;
-          
+          const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+          const userId=user._id.toString()
+          await  this.userService.saveOtp({userId,generatedOtp})
+
+       
           await sendOtpEmail({
             email: user.email,
             otp: generatedOtp,
             subject: "Your OTP Code",
             text: `Your OTP code is: ${generatedOtp}`,
             html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
-        });
-        
+          });
           
-         
           return {
               headers: {
                   "Content-Type": "application/json",
               },
               statusCode: 201,
-              body: user,
-              accessToken,
-              refreshToken,
+              body: { ...user, accessToken, refreshToken },
           };
       } catch (e: any) {
           console.error("Error in userSignup:", e);
@@ -64,4 +64,6 @@ export class UserController implements IUserConroller {
           };
       }
   };
+ 
+
 }
