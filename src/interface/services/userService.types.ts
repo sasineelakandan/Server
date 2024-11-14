@@ -43,3 +43,7 @@ export type findOtp={
   otp:string 
 }
 
+
+export type resendOtp={
+  message:string
+}

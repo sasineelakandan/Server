@@ -1,5 +1,5 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 
@@ -44,7 +44,7 @@ export class UserRepository implements IuserRepository {
       if (otp.expiresAt < new Date()) {
         throw new Error("OTP has expired.");
       }
-      const user=await User.updateOne({_id:userId},{$set:{otpVerified:true}})
+      
         return {
           _id:otp._id.toString(),
           userId:otp.userId.toString(),
@@ -62,7 +62,48 @@ export class UserRepository implements IuserRepository {
     }
    }
    
-     
+    getUserByEmail=async(email: string): Promise<GetUserOutput> => {
+      try{
+            const user=await User.findOne({email})
+            if (!user) {
+              throw new Error("User not found or expired.");
+          }
+          return {
+            _id: user._id.toString(),
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            age: user.age.toString(),
+            password:user.password,
+            address: user.address,
+            gender: user.gender,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          };
+      } catch (error: any) {
+        console.error("Error find loginUser:", error);
+        if (error.code === 11000) {
+          const field = Object.keys(error.keyValue)[0]; 
+          const value = error.keyValue[field]; 
+          error.message = `${field} '${value}' already exists.`;
+        }
+        throw new Error(error.message);
+      }
+    }
+    updateUserOtp=async(userId: string): Promise<updateUser>=> {
+      try{
+        const user=await User.updateOne({_id:userId},{$set:{otpVerified:true}})
+        return{message:'userOtp updated'}
+      } catch (error: any) {
+        console.error("Error find loginUser:", error);
+        if (error.code === 11000) {
+          const field = Object.keys(error.keyValue)[0]; 
+          const value = error.keyValue[field]; 
+          error.message = `${field} '${value}' already exists.`;
+        }
+        throw new Error(error.message);
+      }
+    } 
      
    } 
     

@@ -91,6 +91,41 @@ export class UserController implements IUserConroller {
           };
       }
   }
+  resendOtp =async(httpRequest: Request): Promise<ControllerResponse> => {
+    try{
+        const {userId}=httpRequest.body
+      await this.otpService.resendOtp(userId)
+      return {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        statusCode: 201,
+        body: {message:'resendOtp successfull'},
+    };
+    }catch (error: any) {
+     console.log("Error in resend otp", error.message);
+     throw new Error(error.message);
+   }
   }
- 
+
+  userLogin=async(httpRequest: Request): Promise<ControllerResponse>=> {
+      try{
+        const {email,password}=httpRequest.body
+        const user=await this.userService.userLogin(email,password)
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 201,
+            body: {...user},
+        };
+      }
+    catch (error: any) {
+     console.log("Error in userLogin", error.message);
+     throw new Error(error.message);
+   }
+  }
+  
+  
+}
 

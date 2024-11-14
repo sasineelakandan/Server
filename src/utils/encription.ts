@@ -7,3 +7,14 @@ export function encryptPassword(password: string): string {
       throw new Error(error.message);
     }
   }
+
+  export function comparePassword(
+    inputPassword: string,
+    passwordFromDb: string
+  ): boolean {
+    try {
+      return bcrypt.compareSync(inputPassword, passwordFromDb);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }

@@ -63,4 +63,8 @@ export type findOtp={
 
 }
 
+export type updateUser={
+  message:string
+}
+
   

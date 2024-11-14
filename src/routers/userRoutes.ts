@@ -21,5 +21,9 @@ router
 router
  .route('/verifyotp')
  .post(expressCallback(controller.verifyOtp))
+router
+  .route('/resendotp')
+  .post(expressCallback(controller.resendOtp))
+
 
 export default router;
