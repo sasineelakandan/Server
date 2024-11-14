@@ -7,7 +7,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateJWT";
-import { AddOtpInput } from "../interface/repositories/userRepository.types";
+
 export class UserService implements IUserService{
     private userRepository:IuserRepository
 

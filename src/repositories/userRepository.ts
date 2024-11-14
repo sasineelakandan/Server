@@ -35,11 +35,16 @@ export class UserRepository implements IuserRepository {
    verifyOtp=async(otpData:findOtp ): Promise<AddOtpOutput>=> {
      try{
         const{userId}=otpData
-        console.log(userId)
+      
         const otp=await Otp.findOne({userId:userId})
+         
         if (!otp) {
           throw new Error("OTP not found or expired.");
       }
+      if (otp.expiresAt < new Date()) {
+        throw new Error("OTP has expired.");
+      }
+      const user=await User.updateOne({_id:userId},{$set:{otpVerified:true}})
         return {
           _id:otp._id.toString(),
           userId:otp.userId.toString(),
