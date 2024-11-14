@@ -15,15 +15,17 @@ const service = new UserService(repository);
 const controller = new UserController(service);
 
 router
-  .route("/signup")
+  .route("/api/user/signup")
   .post(signupValidator, expressCallback(controller.userSignup));
  
 router
- .route('/verifyotp')
+ .route('/api/user/verifyotp')
  .post(expressCallback(controller.verifyOtp))
 router
-  .route('/resendotp')
+  .route('/api/user/resendotp')
   .post(expressCallback(controller.resendOtp))
-
+  router
+  .route('/api/user/login')
+  .post(expressCallback(controller.userLogin))
 
 export default router;
