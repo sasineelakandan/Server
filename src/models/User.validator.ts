@@ -7,9 +7,7 @@ const validationMessages = {
   email: "Invalid email format",
   phone: "Invalid phone number format",
   password: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-  age: "Age must be between 1 and 100",
-  address: "Address must be less than 50 characters",
-  gender: "Gender must be 'male', 'female', or 'other'",
+  
 };
 
 const usernameValidator = (value: string) => {
@@ -28,17 +26,11 @@ const passwordValidator = (value: string) => {
   return passwordRegex.test(value);
 };
 
-const ageValidator = (value: number) => {
-  return value >= 1 && value <= 100;
-};
 
-const addressValidator = (value: string) => {
-  return validator.isLength(value, { max: 50 });
-};
 
-const genderValidator = (value: string) => {
-  return ["male", "female", "other"].includes(value);
-};
+
+
+
 
 export const userValidators = {
   username: {
@@ -56,17 +48,6 @@ export const userValidators = {
   password: {
     validator: passwordValidator,
     message: validationMessages.password,
-  },
-  age: {
-    validator: ageValidator,
-    message: validationMessages.age,
-  },
-  address: {
-    validator: addressValidator,
-    message: validationMessages.address,
-  },
-  gender: {
-    validator: genderValidator,
-    message: validationMessages.gender,
-  },
+  }
+ 
 };

@@ -1,30 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import validator from "validator";
 
-export function signupValidator(
+export function loginValidator(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const { username, email, phone, password} = req.body;
-     console.log(email)
-    if (!username) throw new Error("Username is required");
-    if (
-      !validator.isAlphanumeric(username) ||
-      !validator.isLength(username, { min: 3, max: 50 })
-    ) {
-      throw new Error(
-        "Username should be alphanumeric and between 3 and 50 characters long"
-      );
-    }
+    const { email, password } = req.body;
 
     if (!email) throw new Error("Email is required");
     if (!validator.isEmail(email)) throw new Error("Invalid email format");
-
-    if (!phone) throw new Error("Phone number is required");
-    if (!validator.isMobilePhone(phone))
-      throw new Error("Invalid phone number format");
 
     if (!password) throw new Error("Password is required");
     const passwordRegex =
@@ -34,7 +20,6 @@ export function signupValidator(
         "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
       );
     }
-
 
     next();
   } catch (e: any) {

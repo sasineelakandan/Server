@@ -15,7 +15,7 @@ export class UserController implements IUserConroller {
 
   userSignup = async (httpRequest: Request): Promise<ControllerResponse> => {
       try {
-          const { username, email, phone, password, age, address, gender } = httpRequest.body;
+          const { username, email, phone, password } = httpRequest.body;
           
         
         
@@ -26,9 +26,7 @@ export class UserController implements IUserConroller {
               email,
               phone,
               password,
-              age,
-              address,
-              gender,
+              
           });
 
           const { accessToken, refreshToken } = user;
@@ -68,7 +66,9 @@ export class UserController implements IUserConroller {
   };
   verifyOtp=async(httpRequest: Request): Promise<ControllerResponse> =>{
       try{
+         console.log(httpRequest)
          const{userId,otp}= httpRequest.body
+         console.log(userId)
          const savedOtp = await this.userService.verifyOtp({userId,otp});
          return {
             headers: {
@@ -93,6 +93,7 @@ export class UserController implements IUserConroller {
   }
   resendOtp =async(httpRequest: Request): Promise<ControllerResponse> => {
     try{
+        console.log(httpRequest)
         const {userId}=httpRequest.body
       await this.otpService.resendOtp(userId)
       return {

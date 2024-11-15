@@ -8,7 +8,7 @@ export class UserRepository implements IuserRepository {
       try {
         const user = await User.create({
           ...userData,
-          age: Number(userData.age),
+         
         });
   
         return {
@@ -16,9 +16,7 @@ export class UserRepository implements IuserRepository {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          age: user.age.toString(),
-          address: user.address,
-          gender: user.gender,
+         
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -73,10 +71,9 @@ export class UserRepository implements IuserRepository {
             username: user.username,
             email: user.email,
             phone: user.phone,
-            age: user.age.toString(),
+           
             password:user.password,
-            address: user.address,
-            gender: user.gender,
+         
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
           };

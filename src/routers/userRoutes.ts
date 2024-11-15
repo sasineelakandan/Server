@@ -4,7 +4,7 @@ import { UserController } from "../conrollers/userController";
 import { UserRepository } from "../repositories/userRepository";
 import { UserService } from "../services/userService";
 import { signupValidator } from "../midlewere/validator/signupValidators";
-
+import { loginValidator } from "../midlewere/validator/loginValidators";
 
 const router = Router();
 
@@ -26,6 +26,6 @@ router
   .post(expressCallback(controller.resendOtp))
   router
   .route('/api/user/login')
-  .post(expressCallback(controller.userLogin))
+  .post(loginValidator,expressCallback(controller.userLogin))
 
 export default router;

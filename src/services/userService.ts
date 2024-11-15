@@ -71,9 +71,7 @@ export class UserService implements IUserService{
           username: user.username,
           email: user.email,
           phone: user.phone,
-          age: user.age,
-          address: user.address,
-          gender: user.gender,
+         
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           accessToken,

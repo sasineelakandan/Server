@@ -10,7 +10,7 @@ const app = express();
 connectDb();
 
 const corsOptions = {
-  origin: FRONTEND_URL() || "*",
+  origin: FRONTEND_URL() ||"*",
   credentials: true,
 };
 
