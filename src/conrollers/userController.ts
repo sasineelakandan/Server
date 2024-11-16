@@ -3,7 +3,7 @@ import { IUserConroller } from '../interface/conrollers/userController.interface
 import { IUserService } from "../interface/services/userService.interface";
 import { ControllerResponse } from '../interface/conrollers/userController.types';
 import { sendOtpEmail } from '../midlewere/otpservice/otpService';
-import OtpService from "../midlewere/otpservice/saveOtp";
+import OtpService from "../midlewere/otpservice/user/saveOtp";
 
 export class UserController implements IUserConroller {
   private userService: IUserService;

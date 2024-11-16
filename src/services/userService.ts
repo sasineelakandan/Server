@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { findOtp, OtpOutput, resendOtp, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { findOtp, OtpOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 

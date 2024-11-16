@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { validateOtpCode } from "../models/otpValidator";  
+import { validateOtpCode } from "../models/Otp.validator";  
 
 const OtpSchema = new Schema(
   {

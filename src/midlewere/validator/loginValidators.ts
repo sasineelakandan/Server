@@ -7,6 +7,7 @@ export function loginValidator(
   next: NextFunction
 ) {
   try {
+    
     const { email, password } = req.body;
 
     if (!email) throw new Error("Email is required");

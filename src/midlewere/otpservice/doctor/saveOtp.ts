@@ -1,7 +1,8 @@
-import Otp from "../../models/otpModel";
-import User from "../../models/userModel";
-import { OtpInput,OtpOutput } from "../../interface/services/userService.types";
-import { sendOtpEmail } from '../otpservice/otpService'
+import Otp from "../../../models/otpModel";
+import Doctor from "../../../models/doctorModel";
+
+import { OtpInput,OtpOutput } from "../../../interface/services/userService.types";
+import { sendOtpEmail } from '../otpService'
 class OtpService {
   saveOtp = async (otpData: OtpInput): Promise<OtpOutput> => {
     try{
@@ -13,7 +14,7 @@ class OtpService {
         expiresAt: new Date(Date.now() + otpExpirationTime)
      
     });
-    console.log(otp)
+    
 
     return {
       _id:otp._id.toString(),
@@ -32,19 +33,19 @@ class OtpService {
     throw new Error(error.message);
   }
 }
-resendOtp = async (userId: string): Promise<OtpOutput> => {
+resendOtp = async (doctorId: string): Promise<OtpOutput> => {
   try {
   
     
 
-    const user=await User.findOne({_id:userId})
-    if(!user){
-      throw new Error("User not found.")
+    const doctor=await Doctor.findOne({_id:doctorId})
+    if(!doctor){
+      throw new Error("Doctor not found.")
     }
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpirationTime = 1 * 60 * 1000;
     await sendOtpEmail({
-      email: user.email,
+      email: doctor.email,
       otp: generatedOtp,
       subject: "Your OTP Code",
       text: `Your OTP code is: ${generatedOtp}`,
@@ -52,7 +53,7 @@ resendOtp = async (userId: string): Promise<OtpOutput> => {
     });
    
     const newOtp = await Otp.create({
-      userId,
+      userId:doctorId,
       otpCode: generatedOtp,
       expiresAt: new Date(Date.now() + otpExpirationTime),
     });
@@ -61,15 +62,16 @@ resendOtp = async (userId: string): Promise<OtpOutput> => {
 
     return {
       _id: newOtp._id.toString(),
-      userId: userId.toString(),
+      userId: doctorId.toString(),
       otp: generatedOtp,
       expiryDate: newOtp.expiresAt,
     };
   } catch (error: any) {
-    console.error("Error resending OTP:", error);
+    console.error("Error resending doctor OTP:", error);
     throw new Error(error.message);
   }
 };
+
  
 }
 
