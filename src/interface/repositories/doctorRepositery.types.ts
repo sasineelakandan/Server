@@ -60,7 +60,7 @@ export type AddDoctorInput = {
   };
   
   export type FindDoctorOtp = {
-    doctorId: string;
+    userId: string;
   };
   
   export type UpdateDoctor = {

@@ -1,12 +1,19 @@
 import Otp from "../../../models/otpModel";
 import User from "../../../models/userModel";
-
+import Doctor from "../../../models/doctorModel";
 import { OtpInput,OtpOutput } from "../../../interface/services/userService.types";
 import { sendOtpEmail } from '../otpService'
 class OtpService {
-  saveOtp = async (otpData: OtpInput): Promise<OtpOutput> => {
+  saveOtp = async (otpData: OtpInput,email:string): Promise<OtpOutput> => {
     try{
     const {userId,generatedOtp}=otpData
+    await sendOtpEmail({
+      email: email,
+      otp: generatedOtp,
+      subject: "Your OTP Code",
+      text: `Your OTP code is: ${generatedOtp}`,
+      html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
+    });
     const otpExpirationTime = 1 * 60 * 1000;
     const otp = await Otp.create({
         userId,
@@ -42,6 +49,7 @@ resendOtp = async (userId: string): Promise<OtpOutput> => {
     if(!user){
       throw new Error("User not found.")
     }
+   
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpirationTime = 1 * 60 * 1000;
     await sendOtpEmail({

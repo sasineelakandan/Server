@@ -4,9 +4,16 @@ import Doctor from "../../../models/doctorModel";
 import { OtpInput,OtpOutput } from "../../../interface/services/userService.types";
 import { sendOtpEmail } from '../otpService'
 class OtpService {
-  saveOtp = async (otpData: OtpInput): Promise<OtpOutput> => {
+  saveOtp = async (otpData: OtpInput,email:string): Promise<OtpOutput> => {
     try{
     const {userId,generatedOtp}=otpData
+    await sendOtpEmail({
+      email:email,
+      otp: generatedOtp,
+      subject: "Your OTP Code",
+      text: `Your OTP code is: ${generatedOtp}`,
+      html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
+    });
     const otpExpirationTime = 1 * 60 * 1000;
     const otp = await Otp.create({
         userId,
@@ -33,12 +40,12 @@ class OtpService {
     throw new Error(error.message);
   }
 }
-resendOtp = async (doctorId: string): Promise<OtpOutput> => {
+resendOtp = async (userId: string): Promise<OtpOutput> => {
   try {
   
     
 
-    const doctor=await Doctor.findOne({_id:doctorId})
+    const doctor=await Doctor.findOne({_id:userId})
     if(!doctor){
       throw new Error("Doctor not found.")
     }
@@ -53,7 +60,7 @@ resendOtp = async (doctorId: string): Promise<OtpOutput> => {
     });
    
     const newOtp = await Otp.create({
-      userId:doctorId,
+      userId:userId,
       otpCode: generatedOtp,
       expiresAt: new Date(Date.now() + otpExpirationTime),
     });
@@ -62,7 +69,7 @@ resendOtp = async (doctorId: string): Promise<OtpOutput> => {
 
     return {
       _id: newOtp._id.toString(),
-      userId: doctorId.toString(),
+      userId: userId.toString(),
       otp: generatedOtp,
       expiryDate: newOtp.expiresAt,
     };

@@ -28,15 +28,9 @@ export class DoctorController implements IDoctorConroller {
         const { accessToken, refreshToken } = doctor;
         const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
         const userId=doctor._id.toString()
-        await this.otpService.saveOtp({userId,generatedOtp});
+        await this.otpService.saveOtp({userId,generatedOtp},email);
 
-        await sendOtpEmail({
-            email: doctor.email,
-            otp: generatedOtp,
-            subject: "Your OTP Code",
-            text: `Your OTP code is: ${generatedOtp}`,
-            html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
-          });
+      
           
           return {
               headers: {
@@ -63,9 +57,9 @@ export class DoctorController implements IDoctorConroller {
     verifyOtp=async(httpRequest: Request): Promise<ControllerResponse> =>{
         try{
            console.log(httpRequest)
-           const{doctorId,otp}= httpRequest.body
-           console.log(doctorId)
-           const savedOtp = await this.doctorService.verifyOtp({doctorId,otp});
+           const{userId,otp}= httpRequest.body
+           console.log(userId)
+           const savedOtp = await this.doctorService.verifyOtp({userId,otp});
            return {
               headers: {
                   "Content-Type": "application/json",
@@ -90,8 +84,8 @@ export class DoctorController implements IDoctorConroller {
     resendOtp =async(httpRequest: Request): Promise<ControllerResponse> => {
         try{
             console.log(httpRequest)
-            const {doctorId}=httpRequest.body
-          await this.otpService.resendOtp(doctorId)
+            const {userId}=httpRequest.body
+          await this.otpService.resendOtp(userId)
           return {
             headers: {
                 "Content-Type": "application/json",

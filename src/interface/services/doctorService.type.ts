@@ -37,7 +37,7 @@ export type DoctorSignupInput = {
   };
   
   export type FindDoctorOtp = {
-    doctorId: string;
+    userId: string;
     otp: string;
   };
   

@@ -22,16 +22,16 @@ export function expressCallback(controller: any) {
       if (httpResponse.headers) {
         res.set(httpResponse.headers);
       }
-
+     
     
-      if (httpResponse.accessToken) {
-        res.cookie("accessToken", httpResponse.accessToken, {
+      if (httpResponse.body.accessToken) {
+        res.cookie("accessToken", httpResponse.body.accessToken, {
           httpOnly: false,
         });
       }
 
-      if (httpResponse.refreshToken) {
-        res.cookie("refreshToken", httpResponse.refreshToken, {
+      if (httpResponse.body.refreshToken) {
+        res.cookie("refreshToken", httpResponse.body.refreshToken, {
           httpOnly: true,
         });
       }

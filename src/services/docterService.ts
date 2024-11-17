@@ -43,14 +43,14 @@ export class DoctorService implements IDoctorService{
       verifyOtp=async(otpData: FindDoctorOtp): Promise<DoctorOtpOutput>=> {
         
           try{
-            const {doctorId,otp}=otpData
-            const userotp=await this.doctorRepository.verifyOtp({doctorId})
+            const {userId,otp}=otpData
+            const userotp=await this.doctorRepository.verifyOtp({userId})
            if(userotp.otp!==otp){
             throw new Error("Invalid OTP.");
            }
            if(userotp.otp==otp){
             
-            await this.doctorRepository.updateDoctorOtp(doctorId)
+            await this.doctorRepository.updateDoctorOtp(userId)
            }
           
           return {...userotp };

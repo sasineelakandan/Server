@@ -4,5 +4,5 @@ export interface IDoctorRepository{
     addDoctor(doctorData:AddDoctorInput):Promise<AddDoctorOutput>
     verifyOtp(doctorOtpData:FindDoctorOtp):Promise<AddDoctorOtpOutput>
     getDoctorByEmail(email: string) : Promise<AddDoctorOutput>;
-    updateDoctorOtp(doctorId:string):Promise<UpdateDoctor>
+    updateDoctorOtp(userId:string):Promise<UpdateDoctor>
 }

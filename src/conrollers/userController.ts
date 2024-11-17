@@ -32,16 +32,11 @@ export class UserController implements IUserConroller {
           const { accessToken, refreshToken } = user;
           const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
           const userId=user._id.toString()
-          await this.otpService.saveOtp({userId,generatedOtp});
+          const useremail=email
+          await this.otpService.saveOtp({userId,generatedOtp},email);
 
        
-          await sendOtpEmail({
-            email: user.email,
-            otp: generatedOtp,
-            subject: "Your OTP Code",
-            text: `Your OTP code is: ${generatedOtp}`,
-            html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
-          });
+         
           
           return {
               headers: {

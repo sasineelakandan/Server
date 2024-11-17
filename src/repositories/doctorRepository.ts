@@ -36,9 +36,9 @@ export class DoctorRepository implements IDoctorRepository {
    }
    verifyOtp=async(doctorOtpData:FindDoctorOtp): Promise<AddDoctorOtpOutput>=> {
     try{
-       const{doctorId}=doctorOtpData
+       const{userId}=doctorOtpData
      
-       const otp=await Otp.findOne({userId:doctorId})
+       const otp=await Otp.findOne({userId:userId})
         
        if (!otp) {
          throw new Error("OTP not found or expired.");
@@ -63,9 +63,9 @@ export class DoctorRepository implements IDoctorRepository {
      throw new Error(error.message);
    }
   }
-   updateDoctorOtp=async(doctorId: string): Promise<UpdateDoctor> =>{
+   updateDoctorOtp=async(userId: string): Promise<UpdateDoctor> =>{
     try{
-      const user=await Doctor.updateOne({_id:doctorId},{$set:{isOtpVerified:true}})
+      const user=await Doctor.updateOne({_id:userId},{$set:{isOtpVerified:true}})
       return{message:'doctorOtp updated'}
     } catch (error: any) {
       console.error("Error find update Doctor:", error);
