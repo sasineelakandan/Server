@@ -75,24 +75,63 @@ const DoctorSchema = new Schema(
     },
     isVerified: {
       type: Boolean,
-      default: false,
+      default: false, // Default set to false
     },
-    isOtpVerified: { 
+    isOtpVerified: {
       type: Boolean,
-      default: false,
+      default: false, // Default set to false
     },
     isBlocked: {
       type: Boolean,
-      default: false,
+      default: false, // Default set to false
     },
     isDeleted: {
       type: Boolean,
-      default: false,
+      default: false, // Default set to false
+    },
+    fees: {
+      type: Number,
+      required: false,
+      validate: {
+        validator: doctorValidators.fees?.validator,
+        message: doctorValidators.fees.message,
+      },
+    },
+    hospitalName: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
+    },
+    licenseNumber: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
+    },
+    street: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
+    },
+    city: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
+    },
+    state: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
+    },
+    licenseImage: {
+      type: String,
+      required: false, // Optional field
+      default: "", // Default empty string if not provided
     },
   },
   {
     timestamps: true,
   }
 );
+
 
 export default model("Doctor", DoctorSchema);

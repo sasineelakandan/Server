@@ -4,6 +4,7 @@ import { IDoctorService } from "../interface/services/doctorService.interface";
 import{ControllerResponse} from "../interface/conrollers/doctorController.types"
 import { sendOtpEmail } from '../midlewere/otpservice/otpService';
 import OtpService from "../midlewere/otpservice/doctor/saveOtp";
+import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
 export class DoctorController implements IDoctorConroller {
     private doctorService: IDoctorService;
@@ -116,6 +117,47 @@ export class DoctorController implements IDoctorConroller {
       }
       
   }
+  doctorProfile=async(httpRequest:CustomRequest): Promise<ControllerResponse|undefined> =>{
+      try{
+        const userId = httpRequest?.user?.id;
+        if (userId) {
+            const doctor = await this.doctorService.doctorProfile(userId);
+            return {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                statusCode: 201,
+                body: { ...doctor }
+            };
+          } else {
+            console.error('User ID not found');
+            throw new Error('User ID is required to fetch doctor profile.');
+          }
+      }catch(error:any){
+        console.log("Error in profile", error.message)
+      }
+  }
+  verifyProfile=async(httpRequest: CustomRequest): Promise<any>=> {
+      try{
+        const userId = httpRequest?.user?.id
+        if (userId) {
+            const doctor = await this.doctorService.updateProfile(userId);
+            return {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                statusCode: 201,
+                body: { ...doctor }
+            };
+          } else {
+            console.error('User ID not found');
+            throw new Error('User ID is required to fetch doctor profile.');
+          }
+      }catch(error:any){
+        console.log("Error in verify", error.message)
+      }
+  }
+
     
 } 
   

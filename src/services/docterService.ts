@@ -1,6 +1,6 @@
 import { IDoctorService } from "../interface/services/doctorService.interface";
 import { IDoctorRepository } from "../interface/repositories/doctorRepository.interface";
-import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput} from "../interface/services/doctorService.type";
+import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput} from "../interface/services/doctorService.type";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -89,6 +89,30 @@ export class DoctorService implements IDoctorService{
             throw new Error(error.message);
           }
        }
-      
-     
+       doctorProfile=async(userId: string): Promise<DoctorProfileOutput> =>{
+         try{
+               const user=await this.doctorRepository.getDoctorProfile(userId)
+               return{
+                ...user
+               }
+         }catch(error:any){
+          console.log("Error in doctorProfile", error.message);
+          throw new Error(error.message);
+         }
+       }
+
+       updateProfile=async(userId: string): Promise<DoctorProfileOutput> =>{
+        try{
+          const doctor=await this.doctorRepository.updateDoctorProfile(userId)
+          return{
+           ...doctor
+          }
+    }catch(error:any){
+     console.log("Error in doctorProfile", error.message);
+     throw new Error(error.message);
     }
+       }
+      
+      }
+     
+    

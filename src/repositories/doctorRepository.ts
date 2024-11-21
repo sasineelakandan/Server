@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../interface/repositories/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,FindDoctorOtp, GetDoctorProfile, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 
@@ -107,4 +107,85 @@ export class DoctorRepository implements IDoctorRepository {
   throw new Error(error.message);
 }
    }
+   getDoctorProfile = async (userId: string): Promise<GetDoctorProfile> => {
+    try {
+      const doctor = await Doctor.findOne({ _id: userId });
+  
+      
+      
+        if (!doctor) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        
+      
+  
+      
+      return {
+        _id: doctor._id.toString(),
+        name: doctor.name || "", 
+        email: doctor.email || "",
+        phone: doctor.phone || "",
+        specialization: doctor.specialization || "",
+        licenseImage: doctor.licenseImage || "",
+        hospitalName: doctor.hospitalName || "",
+        fees: doctor.fees?.toString() || "",
+        licenseNumber: doctor.licenseNumber?.toString() || "",
+        profilePic: doctor.profilePic || "",
+        experience: doctor.experience.toString() || "",
+        password: doctor.password, 
+        state: doctor.state || "",
+        street: doctor.street || "",
+        city: doctor.city || "",
+        createdAt: doctor.createdAt,
+        updatedAt: doctor.updatedAt,
+      };
+    } catch (error) {
+      
+      console.error("Error finding doctor:", error);
+  
+      
+      throw new Error("Unable to fetch doctor profile. Please try again later.");
+    }
+  };
+  updateDoctorProfile=async(userId: string): Promise<GetDoctorProfile>=> {
+    try {
+      const doctor = await Doctor.findOne({ _id: userId });
+      
+      
+      
+        if (!doctor) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        
+      
+  
+      
+      return {
+        _id: doctor._id.toString(),
+        name: doctor.name || "", 
+        email: doctor.email || "",
+        phone: doctor.phone || "",
+        specialization: doctor.specialization || "",
+        licenseImage: doctor.licenseImage || "",
+        hospitalName: doctor.hospitalName || "",
+        fees: doctor.fees?.toString() || "",
+        licenseNumber: doctor.licenseNumber?.toString() || "",
+        profilePic: doctor.profilePic || "",
+        experience: doctor.experience.toString() || "",
+        password: doctor.password, 
+        state: doctor.state || "",
+        street: doctor.street || "",
+        city: doctor.city || "",
+        createdAt: doctor.createdAt,
+        updatedAt: doctor.updatedAt,
+      };
+    } catch (error) {
+      
+      console.error("Error finding doctor:", error);
+  
+      
+      throw new Error("Unable to fetch doctor profile. Please try again later.");
+    }
+  }
+  
 }

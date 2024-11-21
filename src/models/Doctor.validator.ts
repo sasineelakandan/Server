@@ -13,6 +13,7 @@ const validationMessages = {
   experience: "Experience must be a number between 0 and 50",
   profilePic: "Profile picture must be a valid image URL",
   licensePic: "License picture must be a valid image URL",
+  fees: "Fees must be a positive number",
 };
 
 // Validators
@@ -48,6 +49,10 @@ const licensePicValidator = (value?: string) => {
   return !value || /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(value);
 };
 
+const feesValidator = (value?: number) => {
+  return value === undefined || (typeof value === "number" && value > 0);
+};
+
 // Doctor validators object
 export const doctorValidators = {
   name: {
@@ -81,5 +86,9 @@ export const doctorValidators = {
   licensePic: {
     validator: licensePicValidator,
     message: validationMessages.licensePic,
+  },
+  fees: {
+    validator: feesValidator,
+    message: validationMessages.fees,
   },
 };

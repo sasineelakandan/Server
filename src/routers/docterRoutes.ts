@@ -4,7 +4,7 @@ import { DoctorController } from "../conrollers/doctorController";
 import { DoctorRepository } from "../repositories/doctorRepository";
 import { DoctorService } from "../services/docterService";
 import { loginValidator } from "../midlewere/validator/loginValidators";
-
+import authMiddleware from "../midlewere/jwt/authentiCateToken";
 
 const router = Router();
 
@@ -27,5 +27,8 @@ router
   router
   .route('/api/doctor/login')
   .post(expressCallback(controller.doctorLogin))
+  router
+  .route('/api/doctor/profile')
+  .get(authMiddleware, expressCallback(controller.doctorProfile))
 
 export default router;

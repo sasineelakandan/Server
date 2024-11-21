@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
 export function expressCallback(controller: any) {
-  return async function (req: Request, res: Response, next: NextFunction) {
+  return async function (req:CustomRequest, res: Response, next: NextFunction) {
     const httpRequest = {
+      user: req.user || null,
       body: req.body,
       query: req.query,
       params: req.params,

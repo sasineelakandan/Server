@@ -16,6 +16,7 @@ export type DoctorSignupInput = {
     readonly phone: string;
     readonly specialization: string;
     readonly experience: number;
+    
     readonly profilePic?: string;
     readonly licensePic?: string;
     readonly createdAt: Date;
@@ -45,3 +46,36 @@ export type DoctorSignupInput = {
     message: string;
   };
   
+
+  export type DoctorFormData= {
+    hospitalName: string;
+    licenseNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    licenseImage: string;
+    fees: number;
+    profilePic:string;
+    userId:string
+  }
+
+  export type DoctorProfileOutput = {
+    readonly _id: string;
+    readonly name: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly state:string;
+    readonly street:string;
+    readonly city:string;
+    readonly password: string;
+    readonly specialization: string;
+    readonly licenseNumber:string,
+    readonly hospitalName:string;
+    readonly fees:string;
+    readonly experience: string;
+    readonly profilePic?: string;
+    readonly licenseImage?: string;
+    readonly createdAt: Date;
+    readonly updatedAt: Date;
+   
+  };
