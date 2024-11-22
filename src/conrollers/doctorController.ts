@@ -117,46 +117,72 @@ export class DoctorController implements IDoctorConroller {
       }
       
   }
-  doctorProfile=async(httpRequest:CustomRequest): Promise<ControllerResponse|undefined> =>{
-      try{
-        const userId = httpRequest?.user?.id;
-        if (userId) {
-            const doctor = await this.doctorService.doctorProfile(userId);
+  doctorProfile = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
+    try {
+      
+      const userId = httpRequest?.user?.id;
+  
+      if (!userId) {
+        console.error("User ID not found");
+        throw new Error("User ID is required to fetch the doctor profile.");
+      }
+  
+    
+      const doctor = await this.doctorService.doctorProfile(userId);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 200,
+        body: { ...doctor },
+      };
+    } catch (error: any) {
+      console.error("Error in doctorProfile:", error.message);
+  
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, // Internal Server Error
+        body: { error: error.message || "An unknown error occurred." },
+      };
+    }
+  };
+  
+ 
+    verifyProfile = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
+        try {
+          const userId = httpRequest?.user?.id;
+          const formData = httpRequest?.body;
+      
+          if (userId) {
+            const doctor = await this.doctorService.updateProfile({ ...formData }, userId);
             return {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                statusCode: 201,
-                body: { ...doctor }
+              headers: {
+                "Content-Type": "application/json",
+              },
+              statusCode: 201,
+              body: { ...doctor },
             };
           } else {
-            console.error('User ID not found');
-            throw new Error('User ID is required to fetch doctor profile.');
+            console.error("User ID not found");
+            throw new Error("User ID is required to fetch doctor profile.");
           }
-      }catch(error:any){
-        console.log("Error in profile", error.message)
+        } catch (error: any) {
+          console.log("Error in verify", error.message);
+      
+          
+          return {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            statusCode: 500, 
+            body: { message: "Internal server error", error: error.message },
+          };
+        }
       }
-  }
-  verifyProfile=async(httpRequest: CustomRequest): Promise<any>=> {
-      try{
-        const userId = httpRequest?.user?.id
-        if (userId) {
-            const doctor = await this.doctorService.updateProfile(userId);
-            return {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                statusCode: 201,
-                body: { ...doctor }
-            };
-          } else {
-            console.error('User ID not found');
-            throw new Error('User ID is required to fetch doctor profile.');
-          }
-      }catch(error:any){
-        console.log("Error in verify", error.message)
-      }
-  }
 
     
 } 

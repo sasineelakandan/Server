@@ -1,4 +1,4 @@
-import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, } from '../repositories/doctorRepositery.types'
+import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData, } from '../repositories/doctorRepositery.types'
 
 export interface IDoctorRepository{
     addDoctor(doctorData:AddDoctorInput):Promise<AddDoctorOutput>
@@ -6,5 +6,5 @@ export interface IDoctorRepository{
     getDoctorByEmail(email: string) : Promise<AddDoctorOutput>;
     updateDoctorOtp(userId:string):Promise<UpdateDoctor>
     getDoctorProfile(userId:string):Promise<GetDoctorProfile>
-    updateDoctorProfile(userId:string):Promise<GetDoctorProfile>
+    updateDoctorProfile(formData:HospitalData,userId:string):Promise<GetDoctorProfile>
 }

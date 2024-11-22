@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../interface/repositories/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,FindDoctorOtp, GetDoctorProfile, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,FindDoctorOtp, GetDoctorProfile, HospitalData, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 
@@ -147,12 +147,26 @@ export class DoctorRepository implements IDoctorRepository {
       throw new Error("Unable to fetch doctor profile. Please try again later.");
     }
   };
-  updateDoctorProfile=async(userId: string): Promise<GetDoctorProfile>=> {
+  updateDoctorProfile=async(formData:HospitalData,userId: string): Promise<GetDoctorProfile>=> {
     try {
+
+
+
+      const {licenseImage,licenseImage1,hospitalName,city,state,street,fees,licenseNumber}=formData
+      
+      const updateDoctor=await Doctor.updateOne({_id:userId},{$set:{
+        licenseImage:licenseImage,
+        profilePic:licenseImage1,
+        hospitalName:hospitalName,
+        city:city,
+        state:state,
+        street:street,
+        fees:fees,
+        licenseNumber:licenseNumber
+      }})
+    
       const doctor = await Doctor.findOne({ _id: userId });
-      
-      
-      
+       
         if (!doctor) {
           throw new Error(`Doctor with ID ${userId} not found.`);
         }

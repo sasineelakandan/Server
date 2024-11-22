@@ -7,4 +7,5 @@ export interface IUserConroller{
     verifyOtp(httpRequest:Request): Promise<ControllerResponse>
     resendOtp(httpRequest:Request):Promise<ControllerResponse>
     userLogin(httpRequest:Request): Promise<ControllerResponse>;
+    userProfile(httpRequest:Request):Promise<ControllerResponse>
 }

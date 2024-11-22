@@ -56,14 +56,8 @@ const DoctorSchema = new Schema(
         message: doctorValidators.profilePic.message,
       },
     },
-    licensePic: {
-      type: String,
-      required: false,
-      validate: {
-        validator: doctorValidators.licensePic.validator,
-        message: doctorValidators.licensePic.message,
-      },
-    },
+   
+    
     phone: {
       type: String,
       required: true,

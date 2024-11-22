@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { findOtp, OtpOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { findOtp, OtpOutput, UserProfileOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -84,5 +84,24 @@ export class UserService implements IUserService{
         }
      }
      
+     userProfile=async(profilePic: string, userId: string): Promise<UserProfileOutput> =>{
+       
      
+       try{
+                const user=await this.userRepository.userProfile(profilePic,userId)
+                return {
+                  _id: user._id,
+                  username: user.username,
+                  email: user.email,
+                  phone: user.phone,
+                  profilePic:profilePic,
+                  createdAt: user.createdAt,
+                  updatedAt: user.updatedAt,
+                  
+                };
+       }catch(error:any){
+        console.log("Error in userLogin", error.message);
+          throw new Error(error.message);
+       }
+     }
     }

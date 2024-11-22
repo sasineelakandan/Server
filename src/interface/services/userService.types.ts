@@ -17,6 +17,16 @@ export type UserSignupInput = {
     readonly accessToken: string;
     readonly refreshToken: string;
   };
+  export type UserProfileOutput = {
+    readonly _id: string;
+    readonly username: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly profilePic:string
+    readonly createdAt: Date;
+    readonly updatedAt: Date;
+   
+  };
 
   export type OtpInput = {
     userId: string;         

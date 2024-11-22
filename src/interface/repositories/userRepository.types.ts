@@ -61,4 +61,13 @@ export type updateUser={
   message:string
 }
 
-  
+export type GetuserProfileOutput = {
+  readonly _id: string;
+  readonly username: string;
+  readonly email: string;
+  readonly phone: string;
+  readonly password: string;
+  readonly  profilePic?: string | null;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+};

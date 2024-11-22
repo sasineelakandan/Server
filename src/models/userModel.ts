@@ -44,7 +44,11 @@ const UserSchema = new Schema(
         message: userValidators.password.message,
       },
     },
- 
+    profilePic: {
+      type: String, 
+      required: false, 
+      trim: true,
+    },
     otpVerified: {
       type: Boolean,
       default: false,
@@ -53,6 +57,6 @@ const UserSchema = new Schema(
   {
     timestamps: true,
   }
-);
+) 
 
 export default model("User", UserSchema);

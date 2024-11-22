@@ -97,3 +97,14 @@ export type AddDoctorInput = {
     readonly createdAt: Date;
     readonly updatedAt: Date;
   };
+
+  export type HospitalData ={
+    hospitalName: string;
+    licenseNumber: string;
+    street: string;
+    city: string;
+    state: string;
+    licenseImage: string;
+    licenseImage1: string;
+    fees: number;
+  }

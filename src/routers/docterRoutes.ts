@@ -30,5 +30,11 @@ router
   router
   .route('/api/doctor/profile')
   .get(authMiddleware, expressCallback(controller.doctorProfile))
+  router
+  .route('/api/doctor/verifyprofile')
+  .post(authMiddleware,expressCallback(controller.verifyProfile))
 
+
+
+  
 export default router;

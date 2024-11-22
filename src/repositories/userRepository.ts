@@ -1,5 +1,5 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 
@@ -101,6 +101,32 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     } 
+    userProfile=async(profilePic: string, userId: string): Promise<GetuserProfileOutput>=> {
+      
+    
+      try{
+        const userUpdate=await User.updateOne({_id:userId},{$set:{profilePic}})
+        const user=await User.findOne({_id:userId})
+        if (!user) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        return {
+          _id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profilePic:user.profilePic,
+          password:user.password,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        };
+
+      }catch(error:any){
+        console.error("Error find loginUser:", error);
+        
+        throw new Error(error.message);
+      }
+    }
      
    } 
     

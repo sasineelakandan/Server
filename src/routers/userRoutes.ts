@@ -5,6 +5,7 @@ import { UserRepository } from "../repositories/userRepository";
 import { UserService } from "../services/userService";
 import { signupValidator } from "../midlewere/validator/signupValidators";
 import { loginValidator } from "../midlewere/validator/loginValidators";
+import authMiddleware from "../midlewere/jwt/authentiCateToken";
 
 const router = Router();
 
@@ -27,5 +28,8 @@ router
   router
   .route('/api/user/login')
   .post(loginValidator,expressCallback(controller.userLogin))
+  router
+  .route('/api/user/profile')
+  .post(authMiddleware,expressCallback(controller.userProfile))
 
 export default router;

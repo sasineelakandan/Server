@@ -1,6 +1,6 @@
 import { IDoctorService } from "../interface/services/doctorService.interface";
 import { IDoctorRepository } from "../interface/repositories/doctorRepository.interface";
-import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput} from "../interface/services/doctorService.type";
+import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData} from "../interface/services/doctorService.type";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -101,9 +101,12 @@ export class DoctorService implements IDoctorService{
          }
        }
 
-       updateProfile=async(userId: string): Promise<DoctorProfileOutput> =>{
+       updateProfile=async(formData: FormData, userId: string): Promise<DoctorProfileOutput>=> {
+         
+       
         try{
-          const doctor=await this.doctorRepository.updateDoctorProfile(userId)
+           
+          const doctor=await this.doctorRepository.updateDoctorProfile(formData,userId)
           return{
            ...doctor
           }
@@ -115,4 +118,3 @@ export class DoctorService implements IDoctorService{
       
       }
      
-    
