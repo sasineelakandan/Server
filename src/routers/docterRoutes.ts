@@ -29,7 +29,7 @@ router
   .post(expressCallback(controller.doctorLogin))
   router
   .route('/api/doctor/profile')
-  .get(authMiddleware, expressCallback(controller.doctorProfile))
+  .post(authMiddleware, expressCallback(controller.doctorProfile))
   router
   .route('/api/doctor/verifyprofile')
   .post(authMiddleware,expressCallback(controller.verifyProfile))

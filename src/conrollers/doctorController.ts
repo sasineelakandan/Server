@@ -121,14 +121,14 @@ export class DoctorController implements IDoctorConroller {
     try {
       
       const userId = httpRequest?.user?.id;
-  
+      const {profilePic}=httpRequest?.body
       if (!userId) {
         console.error("User ID not found");
         throw new Error("User ID is required to fetch the doctor profile.");
       }
   
     
-      const doctor = await this.doctorService.doctorProfile(userId);
+      const doctor = await this.doctorService.doctorProfile(userId,profilePic);
   
       return {
         headers: {

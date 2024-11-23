@@ -89,9 +89,9 @@ export class DoctorService implements IDoctorService{
             throw new Error(error.message);
           }
        }
-       doctorProfile=async(userId: string): Promise<DoctorProfileOutput> =>{
+       doctorProfile=async(userId: string,profilePic:string): Promise<DoctorProfileOutput> =>{
          try{
-               const user=await this.doctorRepository.getDoctorProfile(userId)
+               const user=await this.doctorRepository.getDoctorProfile(userId,profilePic)
                return{
                 ...user
                }

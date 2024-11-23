@@ -107,8 +107,10 @@ export class DoctorRepository implements IDoctorRepository {
   throw new Error(error.message);
 }
    }
-   getDoctorProfile = async (userId: string): Promise<GetDoctorProfile> => {
+   getDoctorProfile = async (userId: string,profilePic:string): Promise<GetDoctorProfile> => {
     try {
+
+      const doctor1=await Doctor.updateOne({_id: userId },{$set:{profilePic}})
       const doctor = await Doctor.findOne({ _id: userId });
   
       
