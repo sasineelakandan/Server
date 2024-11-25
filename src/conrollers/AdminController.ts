@@ -95,7 +95,7 @@ export class AdminController implements IAdminController {
         };
     }
    }
-   isBlocked=async(httpRequest: CustomRequest): Promise<any>=> {
+   isBlocked=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
        try{
          const email=httpRequest?.user?.id
          const {userId}=httpRequest?.body
@@ -125,5 +125,36 @@ export class AdminController implements IAdminController {
             },
         };
     }
+   }
+   isDelete=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try{
+        
+        const {userId}=httpRequest?.query
+        console.log(userId)
+        if (!userId || typeof userId !== 'string') {
+            throw new Error("userId is required and must be a string.");
+          }
+       const user=await this.adminService.isDelete(userId)
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: 200,
+           body: user
+       };
+      } catch (e: any) {
+       console.error("Error in adminLogin:", e);
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: e.statusCode || 500,
+           body: {
+               error: e.message || "An unexpected error occurred",
+           },
+       };
+   }
    }
 }

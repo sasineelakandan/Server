@@ -3,7 +3,7 @@ import { SuccessResponse, userData } from "../interface/repositories/adminReposi
 import User from "../models/userModel";
 
 export class AdminRepository implements IAdminRepository{
-  patientDetails = async (admin: string): Promise<userData | null> => {
+   patientDetails = async (admin: string): Promise<userData | null> => {
     try {
       if (!admin) {
         
@@ -11,11 +11,11 @@ export class AdminRepository implements IAdminRepository{
       }
   
       
-      const users = await User.find();
+      const users = await User.find({isDelete:false});
   
       if (!users || users.length === 0) {
+        throw new Error("No users found.");
         
-        return null;
       }
   
       
@@ -25,7 +25,7 @@ export class AdminRepository implements IAdminRepository{
       
       console.error("Error finding users:", error.message);
     
-      return null;
+      return null
     }
   };
       isBlocked = async (email: string, userId: string): Promise<SuccessResponse> => {
@@ -37,7 +37,7 @@ export class AdminRepository implements IAdminRepository{
         const user = await User.findOne({ _id: userId });
     
         if (!user) {
-          return { success: false, message: "User not found" };
+           throw new Error("User not found");
         }
     
         
@@ -56,4 +56,34 @@ export class AdminRepository implements IAdminRepository{
         throw new Error("Unable to fetch users. Please try again later.");
       }
     }
+
+    isDelete=async(userId: string): Promise<SuccessResponse>=> {
+      try {
+        if (!userId) {
+          return { success: false, message: "User ID is required" };
+        }
+    
+        const user = await User.findOne({ _id: userId });
+    
+        if (!user) {
+           throw new Error("User not found");
+        }
+    
+        
+        const updatedStatus = !user.isDelete;
+    
+        const updateResult = await User.updateOne({ _id: userId }, { $set: { isDelete: updatedStatus } });
+    
+        if (updateResult.modifiedCount > 0) {
+          return { success: true };
+        } else {
+          return { success: false, message: "Failed to update block status" };
+        }
+    
+      } catch (error) {
+        console.error("Error finding or updating user:", error);
+        throw new Error("Unable to fetch users. Please try again later.");
+      }
+    }
+    
 }

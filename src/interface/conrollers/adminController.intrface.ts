@@ -3,8 +3,8 @@ import { ControllerResponse } from "./userController.types";
 
 export interface IAdminController{
 
-    adminLogin(httpRequest:Request):Promise<ControllerResponse>
-    patientDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
-    isBlocked(httpRequest:CustomRequest):Promise<ControllerResponse>
-    
+ adminLogin(httpRequest:Request):Promise<ControllerResponse>
+  patientDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
+  isBlocked(httpRequest:CustomRequest):Promise<ControllerResponse>
+  isDelete(httpRequest:CustomRequest):Promise<ControllerResponse>
 }

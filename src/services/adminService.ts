@@ -90,5 +90,27 @@ export class AdminService implements IAdminService{
     return { success: false, message: `Error: ${error.message}` };  // Return error message
   }
 }
+isDelete = async (userId: string): Promise<SuccessResponse> => {
+  try {
+    
+    if (!userId) {
+      return { success: false, message: "userId is required" };
+    }
+
+    
+    const users = await this.adminRepository.isDelete (userId);
+
+    if (!users) {
+      return { success: false, message: "User not found or error fetching data" };
+    }
+
+  
+    return { success: true, message: "User block status fetched successfully" };
+
+  } catch (error: any) {
+    console.log("Error in user service", error.message);
+    return { success: false, message: `Error: ${error.message}` };  // Return error message
+  }
+}
    }
   
