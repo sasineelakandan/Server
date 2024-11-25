@@ -20,12 +20,14 @@ const authMiddleware = (req:CustomRequest, res: Response, next: NextFunction): a
   
   
   if (accessToken) {
+    console.log('hai')
     jwt.verify(accessToken, JWT_SECRET(), (err:any, decoded:any) => {
       if (err) {
         return res.status(401).json({ message: 'Invalid or expired access token.' });
       }
 
       const user = decoded as UserPayload;
+      console.log(user)
       req.user = user;
       
       return next(); 

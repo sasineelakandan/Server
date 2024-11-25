@@ -89,6 +89,7 @@ export class UserService implements IUserService{
      
        try{
                 const user=await this.userRepository.userProfile(profilePic,userId)
+                console.log(user)
                 return {
                   _id: user._id,
                   username: user.username,

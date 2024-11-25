@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 import { userValidators } from "../models/User.validator";
 
-
-
 const UserSchema = new Schema(
   {
     username: {
@@ -45,11 +43,19 @@ const UserSchema = new Schema(
       },
     },
     profilePic: {
-      type: String, 
-      required: false, 
+      type: String,
+      required: false,
       trim: true,
     },
     otpVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isDelete: {
+      type: Boolean,
+      default: false,
+    },
+    isBlock: {
       type: Boolean,
       default: false,
     },
@@ -57,6 +63,6 @@ const UserSchema = new Schema(
   {
     timestamps: true,
   }
-) 
+);
 
 export default model("User", UserSchema);

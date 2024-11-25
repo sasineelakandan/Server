@@ -9,3 +9,10 @@ export type AdminOutputData={
     readonly accessToken?: string;
     readonly refreshToken?: string;
 }
+
+export type userData=Array<{ [key: string]: any }>
+
+export type SuccessResponse = {
+    success: boolean;
+    message?: string; 
+  };

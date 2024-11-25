@@ -7,7 +7,7 @@ import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 export class AdminController implements IAdminController {
     private adminService: IAdminService;
 
-    constructor(adminService: IAdminService) {
+    constructor(adminService:IAdminService ) {
         this.adminService = adminService;
     }
 
@@ -53,4 +53,77 @@ export class AdminController implements IAdminController {
             };
         }
     };
+
+   patientDetails=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+       try{
+           
+          const admin=httpRequest?.user?.id
+          console.log(admin)
+        if (!admin) {
+            return {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                statusCode: 401,
+                body: {
+                    error: "Invalid email or password",
+                },
+            };
+        }
+
+        const users=await this.adminService.patientDetails(admin)
+
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: users
+        };
+       } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+   }
+   isBlocked=async(httpRequest: CustomRequest): Promise<any>=> {
+       try{
+         const email=httpRequest?.user?.id
+         const {userId}=httpRequest?.body
+         console.log(email,userId)
+         if(!email){
+            throw new Error("Email is required but was not provided.");
+         }
+        const user=await this.adminService.isBlocked(email,userId)
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: user
+        };
+       } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+   }
 }
