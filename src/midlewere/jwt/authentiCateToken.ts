@@ -39,7 +39,7 @@ const authMiddleware = (req:CustomRequest, res: Response, next: NextFunction): a
       }
 
       const user = decoded as UserPayload;
-      console.log(user);
+      
 
       
       const newAccessToken = jwt.sign(

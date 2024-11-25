@@ -3,9 +3,9 @@ import { expressCallback } from "../utils/expressCallback";
 import { DoctorController } from "../conrollers/doctorController";
 import { DoctorRepository } from "../repositories/doctorRepository";
 import { DoctorService } from "../services/docterService";
-import { loginValidator } from "../midlewere/validator/loginValidators";
+import {signupValidator } from "../midlewere/validator/doctorsignupValidator";
 import authMiddleware from "../midlewere/jwt/authentiCateToken";
-
+import {loginValidator } from "../midlewere/validator/loginValidators"
 const router = Router();
 
 const repository = new DoctorRepository();
@@ -16,7 +16,7 @@ const controller = new DoctorController(service);
 
 router
   .route("/api/doctor/signup")
-  .post( expressCallback(controller.doctorSignup));
+  .post( signupValidator, expressCallback(controller.doctorSignup));
  
 router
  .route('/api/doctor/verifyotp')
@@ -26,7 +26,7 @@ router
   .post(expressCallback(controller.resendOtp))
   router
   .route('/api/doctor/login')
-  .post(expressCallback(controller.doctorLogin))
+  .post(loginValidator,expressCallback(controller.doctorLogin))
   router
   .route('/api/doctor/profile')
   .post(authMiddleware, expressCallback(controller.doctorProfile))
