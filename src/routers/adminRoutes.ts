@@ -22,4 +22,8 @@ router
 .get(authMiddleware,expressCallback(controller.patientDetails))
 .patch(authMiddleware,expressCallback(controller.isBlocked))
 .delete(authMiddleware,expressCallback(controller.isDelete))
+router
+.route('/api/admin/doctors')
+.get(authMiddleware,expressCallback(controller.doctorDetails))
+.patch(authMiddleware,expressCallback(controller.isVerify))
 export default router;

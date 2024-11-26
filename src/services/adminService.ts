@@ -1,6 +1,6 @@
 import { IAdminRepository } from "../interface/repositories/adminRepository.interface";
 import { IAdminService } from "../interface/services/adminService.interface";
-import { AdminInputData, AdminOutputData, SuccessResponse, userData} from "../interface/services/adminService.type";
+import { AdminInputData, AdminOutputData, doctorData, SuccessResponse, userData} from "../interface/services/adminService.type";
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "../utils/constant";
 import { AppError } from "../utils/errors";
 
@@ -112,5 +112,50 @@ isDelete = async (userId: string): Promise<SuccessResponse> => {
     return { success: false, message: `Error: ${error.message}` };  // Return error message
   }
 }
-   }
+isVerify=async(userId: string): Promise<SuccessResponse> =>{
+  try {
+    
+    if (!userId) {
+      return { success: false, message: "userId is required" };
+    }
+
+    
+    const users = await this.adminRepository.isVerify(userId);
+
+    if (!users) {
+      return { success: false, message: "User not found or error fetching data" }
+    }
+
   
+    return { success: true, message: "User block status fetched successfully" };
+
+  } catch (error: any) {
+    console.log("Error in user service", error.message);
+    return { success: false, message: `Error: ${error.message}` };  // Return error message
+  }
+}
+doctorDetails=async(admin: string): Promise<doctorData | null> =>{
+  try {
+    if (!admin) {
+      
+      return null;
+    }
+
+  
+    const doctors = await this.adminRepository.doctorDetails(admin);
+
+    if (!doctors) {
+    
+      return null;
+    }
+
+    return doctors;
+
+  } catch (error: any) {
+    console.log("Error in user service:", error.message);
+  
+    return null;
+  }
+}
+   
+} 

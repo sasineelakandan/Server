@@ -3,6 +3,7 @@ import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
 export function expressCallback(controller: any) {
   return async function (req:CustomRequest, res: Response, next: NextFunction) {
+    console.log(req)
     const httpRequest = {
       user: req.user || null,
       body: req.body,

@@ -58,7 +58,7 @@ export class AdminController implements IAdminController {
        try{
            
           const admin=httpRequest?.user?.id
-          console.log(admin)
+          
         if (!admin) {
             return {
                 headers: {
@@ -156,5 +156,77 @@ export class AdminController implements IAdminController {
            },
        };
    }
+   }
+   isVerify=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try{
+        
+        const {userId}=httpRequest?.body
+        console.log(userId)
+        if (!userId || typeof userId !== 'string') {
+            throw new Error("userId is required and must be a string.");
+          }
+       const doctor=await this.adminService.isVerify(userId)
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: 200,
+           body: doctor
+       };
+      } catch (e: any) {
+       console.error("Error in adminLogin:", e);
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: e.statusCode || 500,
+           body: {
+               error: e.message || "An unexpected error occurred",
+           },
+       };
+   } 
+   }
+   doctorDetails=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try{
+          
+        const admin=httpRequest?.user?.id
+         
+      if (!admin) {
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 401,
+              body: {
+                  error: "Invalid authentication",
+              },
+          };
+      }
+
+      const doctors=await this.adminService.doctorDetails(admin)
+
+      console.log(doctors)
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: doctors
+      };
+     } catch (e: any) {
+      console.error("Error in adminLogin:", e);
+
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: e.statusCode || 500,
+          body: {
+              error: e.message || "An unexpected error occurred",
+          },
+      };
+  }
    }
 }

@@ -7,4 +7,6 @@ export interface IAdminController{
   patientDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
   isBlocked(httpRequest:CustomRequest):Promise<ControllerResponse>
   isDelete(httpRequest:CustomRequest):Promise<ControllerResponse>
+  isVerify(httpRequest:CustomRequest):Promise<ControllerResponse>
+  doctorDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
 }
