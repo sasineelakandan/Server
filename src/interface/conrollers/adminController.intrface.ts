@@ -9,4 +9,7 @@ export interface IAdminController{
   isDelete(httpRequest:CustomRequest):Promise<ControllerResponse>
   isVerify(httpRequest:CustomRequest):Promise<ControllerResponse>
   doctorDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
+  verifiedDoctors(httpRequest:CustomRequest):Promise<ControllerResponse>
+  blockDoctor(httpRequest:CustomRequest):Promise<ControllerResponse>
+  deleteDoctor(httpRequest:CustomRequest):Promise<ControllerResponse>
 }

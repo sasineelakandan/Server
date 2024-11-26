@@ -157,5 +157,70 @@ doctorDetails=async(admin: string): Promise<doctorData | null> =>{
     return null;
   }
 }
-   
+verifiedDoctors=async(admin: string): Promise<doctorData | null> =>{
+  try {
+    if (!admin) {
+      
+      return null;
+    }
+
+  
+    const doctors = await this.adminRepository.verifiedDoctors(admin);
+
+    if (!doctors) {
+    
+      return null;
+    }
+
+    return doctors;
+
+  } catch (error: any) {
+    console.log("Error in user service:", error.message);
+  
+    return null;
+  }
+}
+   doctorBlock=async(doctorId: string): Promise<SuccessResponse>=> {
+    try {
+    
+     
+  
+      
+      const users = await this.adminRepository.doctorBlock(doctorId);
+  
+      if (!users) {
+        return { success: false, message: "User not found or error fetching data" };
+      }
+  
+    
+      return { success: true, message: "User block status fetched successfully" };
+  
+    } catch (error: any) {
+      console.log("Error in user service", error.message);
+      return { success: false, message: `Error: ${error.message}` };  // Return error message
+    }
+}
+
+deleteDoctor=async(doctorId: string): Promise<SuccessResponse>=> {
+  try {
+    
+    if (!doctorId) {
+      return { success: false, message: "userId is required" };
+    }
+
+    
+    const doctor = await this.adminRepository.deleteDoctor(doctorId);
+
+    if (!doctor) {
+      return { success: false, message: "User not found or error fetching data" };
+    }
+
+  
+    return { success: true, message: "User block status fetched successfully" };
+
+  } catch (error: any) {
+    console.log("Error in user service", error.message);
+    return { success: false, message: `Error: ${error.message}` }; 
+  }
+}
 } 

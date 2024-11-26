@@ -26,4 +26,11 @@ router
 .route('/api/admin/doctors')
 .get(authMiddleware,expressCallback(controller.doctorDetails))
 .patch(authMiddleware,expressCallback(controller.isVerify))
+
+router
+.route('/api/admin/verifieddoctors')
+.get(authMiddleware,expressCallback(controller.verifiedDoctors))
+.patch(authMiddleware,expressCallback(controller.blockDoctor))
+.delete(authMiddleware,expressCallback(controller.deleteDoctor))
+
 export default router;

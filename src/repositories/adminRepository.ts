@@ -142,5 +142,87 @@ export class AdminRepository implements IAdminRepository{
         return null
       }
     }
+    verifiedDoctors=async(admin: string): Promise<doctorData | null> =>{
+      try {
+        if (!admin) {
+          
+          return null;
+        }
     
-}
+        
+        const doctors = await Doctor.find({isDeleted:false,isOtpVerified:true,isVerified:true});
+    
+        if (!doctors || doctors.length === 0) {
+          return null
+          
+        }
+    
+        
+        return doctors;
+    
+      } catch (error: any) {
+        
+        console.error("Error finding users:", error.message);
+      
+        return null
+      }
+    }
+    doctorBlock=async(doctorId: string): Promise<SuccessResponse> =>{
+      try {
+        if (!doctorId) {
+          return { success: false, message: "User ID is required" };
+        }
+    
+        const user = await Doctor.findOne({ _id: doctorId });
+    
+        if (!user) {
+           throw new Error("doctor not found");
+        }
+    
+        
+        const updatedBlockStatus = !user.isBlocked;
+    
+        const updateResult = await Doctor.updateOne({ _id: doctorId }, { $set: { isBlocked: updatedBlockStatus } });
+    
+        if (updateResult.modifiedCount > 0) {
+          return { success: true };
+        } else {
+          return { success: false, message: "Failed to update block status" };
+        }
+    
+      } catch (error) {
+        console.error("Error finding or updating user:", error);
+        throw new Error("Unable to fetch users. Please try again later.");
+      }
+    }
+
+    deleteDoctor=async(doctorId: string): Promise<SuccessResponse>=> {
+      try {
+        if (!doctorId) {
+          return { success: false, message: "User ID is required" };
+        }
+    
+        const user = await Doctor.findOne({ _id: doctorId });
+    
+        if (!user) {
+           throw new Error("User not found");
+        }
+    
+        
+        const updatedStatus = !user.isDeleted;
+    
+        const updateResult = await Doctor.updateOne({ _id: doctorId }, { $set: { isDeleted: updatedStatus } });
+    
+        if (updateResult.modifiedCount > 0) {
+          return { success: true };
+        } else {
+          return { success: false, message: "Failed to update block status" };
+        }
+    
+      } catch (error) {
+        console.error("Error finding or updating user:", error);
+        throw new Error("Unable to fetch users. Please try again later.");
+      }
+    }
+    }
+    

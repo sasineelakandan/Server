@@ -229,4 +229,122 @@ export class AdminController implements IAdminController {
       };
   }
    }
+   verifiedDoctors=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try{
+          
+        const admin=httpRequest?.user?.id
+         
+      if (!admin) {
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 401,
+              body: {
+                  error: "Invalid authentication",
+              },
+          };
+      }
+
+      const doctors=await this.adminService.verifiedDoctors(admin)
+
+      
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: doctors
+      };
+     } catch (e: any) {
+      console.error("Error in adminLogin:", e);
+
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: e.statusCode || 500,
+          body: {
+              error: e.message || "An unexpected error occurred",
+          },
+      };
+  } 
+   }
+
+   blockDoctor=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try{
+          
+    const {doctorId}=httpRequest?.body
+         
+      if (!doctorId) {
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 401,
+              body: {
+                  error: "Doctor Id is missing",
+              },
+          };
+      }
+
+      const doctors=await this.adminService.doctorBlock(doctorId)
+
+      
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: doctors
+      };
+     } catch (e: any) {
+      console.error("Error in adminLogin:", e);
+
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: e.statusCode || 500,
+          body: {
+              error: e.message || "An unexpected error occurred",
+          },
+      };
+  } 
+
+       
+   
 }
+deleteDoctor=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try{
+        
+        const {doctorId}=httpRequest?.query
+        console.log(doctorId)
+        if (!doctorId || typeof doctorId !== 'string') {
+            throw new Error("userId is required and must be a string.");
+          }
+       const user=await this.adminService.deleteDoctor(doctorId)
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: 200,
+           body: user
+       };
+      } catch (e: any) {
+       console.error("Error in adminLogin:", e);
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: e.statusCode || 500,
+           body: {
+               error: e.message || "An unexpected error occurred",
+           },
+       };
+   }
+   }
+}
+

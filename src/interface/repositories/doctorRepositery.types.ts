@@ -91,6 +91,7 @@ export type AddDoctorInput = {
     readonly licenseNumber:string,
     readonly hospitalName:string;
     readonly fees:string;
+    readonly isVerified:boolean
     readonly experience: string;
     readonly profilePic?: string;
     readonly licenseImage?: string;
