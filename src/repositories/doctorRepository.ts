@@ -83,8 +83,11 @@ export class DoctorRepository implements IDoctorRepository {
       const user=await Doctor.findOne({email})
       
       if (!user) {
-        throw new Error("User not found or expired.");
+        throw new Error("User not found .");
     }
+    if (user.isBlocked) {
+      throw new Error("You are blocked.");
+  }
     return {
       _id: user._id.toString(),
       name: user.name,

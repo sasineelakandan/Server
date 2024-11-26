@@ -6,6 +6,7 @@ import { DoctorService } from "../services/docterService";
 import {signupValidator } from "../midlewere/validator/doctorsignupValidator";
 import authMiddleware from "../midlewere/jwt/authentiCateToken";
 import {loginValidator } from "../midlewere/validator/loginValidators"
+import checkIfBlocked from "../midlewere/isBlocked/isblockedDoctor";
 const router = Router();
 
 const repository = new DoctorRepository();
@@ -29,7 +30,7 @@ router
   .post(loginValidator,expressCallback(controller.doctorLogin))
   router
   .route('/api/doctor/profile')
-  .post(authMiddleware, expressCallback(controller.doctorProfile))
+  .post(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
   router
   .route('/api/doctor/verifyprofile')
   .post(authMiddleware,expressCallback(controller.verifyProfile))

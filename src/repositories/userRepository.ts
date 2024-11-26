@@ -51,11 +51,7 @@ export class UserRepository implements IuserRepository {
         }
      } catch (error: any) {
       console.error("Error find Otp:", error);
-      if (error.code === 11000) {
-        const field = Object.keys(error.keyValue)[0]; 
-        const value = error.keyValue[field]; 
-        error.message = `${field} '${value}' already exists.`;
-      }
+      
       throw new Error(error.message);
     }
    }
@@ -65,6 +61,12 @@ export class UserRepository implements IuserRepository {
             const user=await User.findOne({email})
             if (!user) {
               throw new Error("User not found or expired.");
+
+          }
+          if(user.isBlock){
+            console.log('hai')
+            throw new Error("You are Blocked!.");
+            
           }
           return {
             _id: user._id.toString(),
@@ -79,11 +81,7 @@ export class UserRepository implements IuserRepository {
           };
       } catch (error: any) {
         console.error("Error find loginUser:", error);
-        if (error.code === 11000) {
-          const field = Object.keys(error.keyValue)[0]; 
-          const value = error.keyValue[field]; 
-          error.message = `${field} '${value}' already exists.`;
-        }
+        
         throw new Error(error.message);
       }
     }

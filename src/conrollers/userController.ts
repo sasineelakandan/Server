@@ -117,11 +117,21 @@ export class UserController implements IUserConroller {
             body: {...user},
         };
       }
-    catch (error: any) {
-     console.log("Error in userLogin", error.message);
-     throw new Error(error.message);
-   }
-  }
+      catch (e: any) {
+        console.log(e);
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: e.statusCode || 500,
+          body: {
+            error: e.message,
+          },
+        };
+      }
+    };
+  
+  
   userProfile = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
     try {
       

@@ -6,6 +6,7 @@ import { UserService } from "../services/userService";
 import { signupValidator } from "../midlewere/validator/signupValidators";
 import { loginValidator } from "../midlewere/validator/loginValidators";
 import authMiddleware from "../midlewere/jwt/authentiCateToken";
+import checkIfBlocked from "../midlewere/isBlocked/isBlockeduser";
 
 const router = Router();
 
@@ -30,6 +31,6 @@ router
   .post(loginValidator,expressCallback(controller.userLogin))
   router
   .route('/api/user/profile')
-  .post(authMiddleware,expressCallback(controller.userProfile))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
 
 export default router;
