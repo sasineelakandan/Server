@@ -80,7 +80,7 @@ export class DoctorRepository implements IDoctorRepository {
    getDoctorByEmail=async(email: string): Promise<AddDoctorOutput>=> {
     try{
   
-      const user=await Doctor.findOne({email})
+      const user=await Doctor.findOne({email,isOtpVerified:true})
       
       if (!user) {
         throw new Error("User not found .");

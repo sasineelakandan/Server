@@ -58,7 +58,7 @@ export class UserRepository implements IuserRepository {
    
     getUserByEmail=async(email: string): Promise<GetUserOutput> => {
       try{
-            const user=await User.findOne({email})
+            const user=await User.findOne({email,otpVerified:true})
             if (!user) {
               throw new Error("User not found or expired.");
 
