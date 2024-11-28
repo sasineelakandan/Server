@@ -62,7 +62,7 @@ export class UserController implements IUserConroller {
   };
   verifyOtp=async(httpRequest: Request): Promise<ControllerResponse> =>{
       try{
-         console.log(httpRequest)
+         
          const{userId,otp}= httpRequest.body
          console.log(userId)
          const savedOtp = await this.userService.verifyOtp({userId,otp});

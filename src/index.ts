@@ -20,8 +20,8 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(userrouter)
-app.use(doctorrouter)
-app.use(adminRoutes)
+app.use('/api/user',userrouter)
+app.use('/api/doctor',doctorrouter)
+app.use('/api/admin',adminRoutes)
 
 app.listen(PORT, () => console.log(`Server started running on port ${PORT}`));

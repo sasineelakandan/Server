@@ -15,20 +15,20 @@ const controller = new AdminController(service);
 
 
 router
-.route('/api/admin/adminlogin')
+.route('/adminlogin')
 .post(loginValidator,expressCallback(controller.adminLogin))
 router
-.route('/api/admin/patients')
+.route('/patients')
 .get(authMiddleware,expressCallback(controller.patientDetails))
 .patch(authMiddleware,expressCallback(controller.isBlocked))
 .delete(authMiddleware,expressCallback(controller.isDelete))
 router
-.route('/api/admin/doctors')
+.route('/doctors')
 .get(authMiddleware,expressCallback(controller.doctorDetails))
 .patch(authMiddleware,expressCallback(controller.isVerify))
 
 router
-.route('/api/admin/verifieddoctors')
+.route('/verifieddoctors')
 .get(authMiddleware,expressCallback(controller.verifiedDoctors))
 .patch(authMiddleware,expressCallback(controller.blockDoctor))
 .delete(authMiddleware,expressCallback(controller.deleteDoctor))

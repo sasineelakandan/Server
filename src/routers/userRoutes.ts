@@ -17,20 +17,20 @@ const service = new UserService(repository);
 const controller = new UserController(service);
 
 router
-  .route("/api/user/signup")
+  .route("/signup")
   .post(signupValidator, expressCallback(controller.userSignup));
  
 router
- .route('/api/user/verifyotp')
+ .route('/verifyotp')
  .post(expressCallback(controller.verifyOtp))
 router
-  .route('/api/user/resendotp')
+  .route('/resendotp')
   .post(expressCallback(controller.resendOtp))
   router
-  .route('/api/user/login')
+  .route('/login')
   .post(loginValidator,expressCallback(controller.userLogin))
   router
-  .route('/api/user/profile')
+  .route('/profile')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
 
 export default router;

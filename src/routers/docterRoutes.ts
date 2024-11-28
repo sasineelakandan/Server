@@ -16,23 +16,23 @@ const service = new DoctorService(repository);
 const controller = new DoctorController(service);
 
 router
-  .route("/api/doctor/signup")
+  .route("/signup")
   .post( signupValidator, expressCallback(controller.doctorSignup));
  
 router
- .route('/api/doctor/verifyotp')
+ .route('/verifyotp')
  .post(expressCallback(controller.verifyOtp))
 router
-  .route('/api/doctor/resendotp')
+  .route('/resendotp')
   .post(expressCallback(controller.resendOtp))
   router
-  .route('/api/doctor/login')
+  .route('/login')
   .post(loginValidator,expressCallback(controller.doctorLogin))
   router
-  .route('/api/doctor/profile')
+  .route('/profile')
   .post(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
   router
-  .route('/api/doctor/verifyprofile')
+  .route('/verifyprofile')
   .post(authMiddleware,expressCallback(controller.verifyProfile))
 
 
