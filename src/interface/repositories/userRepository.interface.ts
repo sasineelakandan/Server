@@ -7,4 +7,6 @@ export interface IuserRepository{
     getUserByEmail(email: string) : Promise<GetUserOutput>;
     updateUserOtp(userId:string):Promise<updateUser>
     userProfile(profilePic:string,userId:string):Promise<GetuserProfileOutput>
+    changeProfile(userId: string,name:string,phone:number):Promise<GetuserProfileOutput>
+    changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetuserProfileOutput>
 }

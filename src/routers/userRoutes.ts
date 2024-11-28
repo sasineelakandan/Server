@@ -32,5 +32,6 @@ router
   router
   .route('/profile')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
-
+  .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
 export default router;

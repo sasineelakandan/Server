@@ -67,7 +67,7 @@ export type GetuserProfileOutput = {
   readonly email: string;
   readonly phone: string;
   readonly password: string;
-  readonly  profilePic?: string | null;
+  readonly  profilePic?: string|null
   readonly createdAt: Date;
   readonly updatedAt: Date;
 };

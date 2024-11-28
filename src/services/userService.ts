@@ -105,4 +105,51 @@ export class UserService implements IUserService{
           throw new Error(error.message);
        }
      }
+     changeProfile=async(userId: string,name:string,phone:number): Promise<UserProfileOutput>=> {
+      try{
+        const user=await this.userRepository.changeProfile(userId,name,phone)
+        
+        return {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profilePic:user?.profilePic,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          
+        };
+}catch(error:any){
+console.log("Error in userLogin", error.message);
+  throw new Error(error.message);
+}
+     }
+     changePassword=async(userId: string, oldPassword: string, newPassword: string): Promise<UserProfileOutput>=> {
+      try{
+
+        
+        let user=await this.userRepository.changePassword(userId,oldPassword,newPassword)
+        const hashedPassword = await encryptPassword(newPassword);
+        const isValidPassword = comparePassword(oldPassword, user?.password);
+        if(isValidPassword){
+          
+           user=await this.userRepository.changePassword(userId,hashedPassword,oldPassword)
+        }
+        if (!isValidPassword) throw new AppError("Invalid Credentials", 401);
+        
+        return {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profilePic:user?.profilePic,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          
+        };
+}catch(error:any){
+console.log("Error in changepassword", error.message);
+  throw new Error(error.message);
+}
+     }
     }

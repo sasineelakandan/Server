@@ -2,7 +2,6 @@ import { Request } from "express";
 import { IUserConroller } from '../interface/conrollers/userController.interface';
 import { IUserService } from "../interface/services/userService.interface";
 import { ControllerResponse } from '../interface/conrollers/userController.types';
-import { sendOtpEmail } from '../midlewere/otpservice/otpService';
 import OtpService from "../midlewere/otpservice/user/saveOtp";
 import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
@@ -166,6 +165,75 @@ export class UserController implements IUserConroller {
       };
     }
   };
+
+  changeProfile=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    try {
+      
+      const userId = httpRequest?.user?.id;
+      const { name,phone } = httpRequest.body;
+      console.log(name,phone)
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
+  
+      
+      const user = await this.userService.changeProfile( userId,name,phone);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body: { ...user },
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  changePassword=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    try {
+      
+      const userId = httpRequest?.user?.id;
+      const { oldPassword,newPassword } = httpRequest?.body;
+      
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
+  
+      
+      const user = await this.userService.changePassword( userId,oldPassword,newPassword);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body: { ...user },
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
   
   
 }

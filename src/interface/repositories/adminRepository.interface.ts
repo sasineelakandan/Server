@@ -9,5 +9,5 @@ export interface IAdminRepository{
     verifiedDoctors(admin:string):Promise<doctorData|null>
     doctorBlock(doctorId:string):Promise<SuccessResponse>
     deleteDoctor(doctorId:string):Promise<SuccessResponse>
-   
+    
 }

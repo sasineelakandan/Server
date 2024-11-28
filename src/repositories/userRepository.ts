@@ -125,6 +125,55 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     }
+    changeProfile=async(userId: string,name:string,phone:number): Promise<GetuserProfileOutput> =>{
+      try{
+        const userUpdate=await User.updateOne({_id:userId},{$set:{username:name,phone:phone}})
+        const user=await User.findOne({_id:userId})
+        if (!user) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        return {
+          _id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profilePic:user.profilePic,
+          password:user.password,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        };
+
+      }catch(error:any){
+        console.error("Error find loginUser:", error);
+        
+        throw new Error(error.message);
+      }
+    }
+    changePassword=async(userId: string, hashedPassword?: string, oldPassword?: string): Promise<GetuserProfileOutput>=> {
+      try{
+
+        const user=await User.findOne({_id:userId})
+        if (!user) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        const userUpdate=await User.updateOne({_id:userId},{$set:{password:hashedPassword}})
+        return {
+          _id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profilePic:user.profilePic,
+          password:user.password,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        };
+
+      }catch(error:any){
+        console.error("Error find loginUser:", error);
+        
+        throw new Error(error.message);
+      }
+    }
      
    } 
     
