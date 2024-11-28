@@ -41,9 +41,7 @@ const authMiddleware = (req:CustomRequest, res: Response, next: NextFunction): a
       }
 
       const user = decoded as UserPayload;
-      
 
-      
       const newAccessToken = jwt.sign(
         { id: user.id, role: user.role }, 
         JWT_SECRET(),
@@ -53,7 +51,6 @@ const authMiddleware = (req:CustomRequest, res: Response, next: NextFunction): a
     
       res.cookie('accessToken', newAccessToken, {
         httpOnly: true,
-      
       });
 
       req.user= user

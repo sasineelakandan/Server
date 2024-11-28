@@ -2,6 +2,7 @@ import {IDoctorRepository} from "../interface/repositories/doctorRepository.inte
 import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,FindDoctorOtp, GetDoctorProfile, HospitalData, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
+import { ProfileFormData } from "../interface/services/doctorService.type";
 
 export class DoctorRepository implements IDoctorRepository {
    addDoctor=async(doctorData: AddDoctorInput): Promise<AddDoctorOutput>=> {
@@ -208,5 +209,96 @@ export class DoctorRepository implements IDoctorRepository {
       throw new Error("Unable to fetch doctor profile. Please try again later.");
     }
   }
+  changeProfile=async(userId: string, formData: ProfileFormData): Promise<GetDoctorProfile>=> {
+    try {
+
+
+
+      const {phone,name,hospitalName,city,state,street,fees,experience}=formData
+      
+      const updateDoctor=await Doctor.updateOne({_id:userId},{$set:{
+        name:name,
+        phone:phone,
+        hospitalName:hospitalName,
+        city:city,
+        state:state,
+        street:street,
+        fees:fees,
+        experience:experience
+
+       
+      }})
+    
+      const doctor = await Doctor.findOne({ _id: userId });
+       
+        if (!doctor) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        
+      
   
+      
+      return {
+        _id: doctor._id.toString(),
+        name: doctor.name || "", 
+        email: doctor.email || "",
+        phone: doctor.phone || "",
+        specialization: doctor.specialization || "",
+        licenseImage: doctor.licenseImage || "",
+        hospitalName: doctor.hospitalName || "",
+        fees: doctor.fees?.toString() || "",
+        licenseNumber: doctor.licenseNumber?.toString() || "",
+        profilePic: doctor.profilePic || "",
+        experience: doctor.experience.toString() || "",
+        isVerified:doctor.isVerified,
+        password: doctor.password, 
+        state: doctor.state || "",
+        street: doctor.street || "",
+        city: doctor.city || "",
+        createdAt: doctor.createdAt,
+        updatedAt: doctor.updatedAt,
+      };
+    } catch (error) {
+      
+      console.error("Error finding doctor:", error);
+  
+      
+      throw new Error("Unable to fetch doctor profile. Please try again later.");
+    }
+  }
+  changePassword=async(userId: string, hashedPassword: string, oldPassword: string): Promise<GetDoctorProfile>=> {
+    try{
+
+      const doctor=await Doctor.findOne({_id:userId})
+      if (!doctor) {
+        throw new Error(`Doctor with ID ${userId} not found.`);
+      }
+      const userUpdate=await Doctor.updateOne({_id:userId},{$set:{password:hashedPassword}})
+      return {
+        _id: doctor._id.toString(),
+        name: doctor.name || "", 
+        email: doctor.email || "",
+        phone: doctor.phone || "",
+        specialization: doctor.specialization || "",
+        licenseImage: doctor.licenseImage || "",
+        hospitalName: doctor.hospitalName || "",
+        fees: doctor.fees?.toString() || "",
+        licenseNumber: doctor.licenseNumber?.toString() || "",
+        profilePic: doctor.profilePic || "",
+        experience: doctor.experience.toString() || "",
+        isVerified:doctor.isVerified,
+        password: doctor.password, 
+        state: doctor.state || "",
+        street: doctor.street || "",
+        city: doctor.city || "",
+        createdAt: doctor.createdAt,
+        updatedAt: doctor.updatedAt,
+      };
+
+    }catch(error:any){
+      console.error("Error find loginUser:", error);
+      
+      throw new Error(error.message);
+    }
+  }
 }

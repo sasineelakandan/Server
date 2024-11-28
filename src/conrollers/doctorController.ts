@@ -193,6 +193,71 @@ export class DoctorController implements IDoctorConroller {
         }
       }
 
+    changeProfile=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+      try {
+        const userId = httpRequest?.user?.id;
+        const formData = httpRequest?.body;
     
-} 
+        if (userId) {
+          const doctor = await this.doctorService.changeProfile( userId,{ ...formData });
+          return {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            statusCode: 201,
+            body: { ...doctor },
+          };
+        } else {
+          console.error("User ID not found");
+          throw new Error("User ID is required to fetch doctor profile.");
+        }
+      } catch (error: any) {
+        console.log("Error in verify", error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { message: "Internal server error", error: error.message },
+        };
+      }
+    }
+    changePassword=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const userId = httpRequest?.user?.id;
+        const { oldPassword,newPassword } = httpRequest?.body;
+        
+        if (!userId) {
+          console.error('User ID not found');
+          throw new Error('User ID is required to fetch the profile.');
+        }
+    
+        
+        const user = await this.doctorService.changePassword( userId,oldPassword,newPassword);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, 
+          body: { ...user },
+        };
+      } catch (error: any) {
+        console.error('Error in userProfile:', error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
+    }
+ 
   

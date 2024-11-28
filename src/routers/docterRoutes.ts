@@ -31,6 +31,8 @@ router
   router
   .route('/profile')
   .post(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
+  .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
   router
   .route('/verifyprofile')
   .post(authMiddleware,expressCallback(controller.verifyProfile))

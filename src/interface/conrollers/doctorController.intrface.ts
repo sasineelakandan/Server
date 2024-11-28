@@ -10,4 +10,6 @@ export interface IDoctorConroller{
     doctorLogin(httpRequest:Request): Promise<ControllerResponse>;
     doctorProfile(httpRequest:Request):Promise<ControllerResponse|undefined>
     verifyProfile(httpRequest:Request):Promise<ControllerResponse>
+    changeProfile(httpRequest:Request):Promise<ControllerResponse>
+    changePassword(httpRequest:Request):Promise<ControllerResponse>
 }

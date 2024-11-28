@@ -1,6 +1,6 @@
 import { IDoctorService } from "../interface/services/doctorService.interface";
 import { IDoctorRepository } from "../interface/repositories/doctorRepository.interface";
-import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData} from "../interface/services/doctorService.type";
+import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData, ProfileFormData} from "../interface/services/doctorService.type";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -115,6 +115,43 @@ export class DoctorService implements IDoctorService{
      throw new Error(error.message);
     }
        }
+       changeProfile=async(userId: string, formData: ProfileFormData): Promise<DoctorProfileOutput>=> {
+          
+        try{
+           
+          const doctor=await this.doctorRepository.changeProfile(userId,formData)
+          return{
+           ...doctor
+          }
+    }catch(error:any){
+     console.log("Error in doctorProfile", error.message);
+     throw new Error(error.message);
+    }
+       }
+       changePassword=async(userId: string, oldPassword: string, newPassword: string): Promise<DoctorProfileOutput>=> {
+        try{
+
+        
+          let doctor=await this.doctorRepository.changePassword(userId,oldPassword,newPassword)
+          const hashedPassword = await encryptPassword(newPassword);
+          const isValidPassword = comparePassword(oldPassword, doctor?.password);
+          if(isValidPassword){
+            
+            doctor=await this.doctorRepository.changePassword(userId,hashedPassword,oldPassword)
+          }
+          if (!isValidPassword) throw new AppError("Invalid Credentials", 401);
+          
+          return {
+            ...doctor
+            
+          };
+  }catch(error:any){
+  console.log("Error in changepassword", error.message);
+    throw new Error(error.message);
+  }
+       }
       
       }
+
+
      

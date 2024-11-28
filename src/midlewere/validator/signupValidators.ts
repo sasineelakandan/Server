@@ -9,6 +9,7 @@ export function signupValidator(
   try {
     const { username, email, phone, password} = req.body;
      console.log(email)
+     
     if (!username) throw new Error("Username is required");
     if (
       !validator.isAlphanumeric(username) ||

@@ -1,4 +1,4 @@
-import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData} from "./doctorService.type";
+import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData} from "./doctorService.type";
 
 export interface IDoctorService {
   doctorSignup(doctorData:DoctorSignupInput): Promise<DoctorSignupOutput>;
@@ -6,4 +6,6 @@ export interface IDoctorService {
   doctorLogin(email: string, password: string): Promise<DoctorSignupOutput>;
   doctorProfile(userId:string,profilePic:string):Promise<DoctorProfileOutput>
   updateProfile(formData:FormData,userId:string):Promise<DoctorProfileOutput>
+  changeProfile(userId:string,formData:ProfileFormData):Promise<DoctorProfileOutput>
+  changePassword(userId: string,oldPassword:string,newPassword:string):Promise<DoctorProfileOutput>
 }

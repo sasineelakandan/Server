@@ -91,3 +91,14 @@ export type DoctorSignupInput = {
     licenseImage1: string;
     fees: number;
   }
+
+  export type ProfileFormData= {
+    name: string;
+    phone: string;
+    hospitalName: string;
+    fees: number;
+    street: string;
+    city: string;
+    state: string;
+    experience: number;
+  }
