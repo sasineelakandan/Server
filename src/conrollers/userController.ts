@@ -5,6 +5,7 @@ import { ControllerResponse } from '../interface/conrollers/userController.types
 import OtpService from "../midlewere/otpservice/user/saveOtp";
 import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
+
 export class UserController implements IUserConroller {
   private userService: IUserService;
   private otpService: OtpService;
@@ -13,12 +14,13 @@ export class UserController implements IUserConroller {
       this.otpService = new OtpService();
   }
 
+  
   userSignup = async (httpRequest: Request): Promise<ControllerResponse> => {
       try {
           const { username, email, phone, password } = httpRequest.body;
           
         
-        
+         
           
         
           const user = await this.userService.userSignup({
@@ -35,7 +37,7 @@ export class UserController implements IUserConroller {
           const useremail=email
           await this.otpService.saveOtp({userId,generatedOtp},email);
 
-       
+          
          
           
           return {
@@ -144,7 +146,7 @@ export class UserController implements IUserConroller {
   
       
       const user = await this.userService.userProfile(profilePic, userId);
-  
+      
       return {
         headers: {
           "Content-Type": "application/json",
