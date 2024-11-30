@@ -317,7 +317,7 @@ export class DoctorRepository implements IDoctorRepository {
         throw new Error(`Slot already exists for this time range.`);
       }
     
-      // Create the slot if it doesn't exist
+      
       const doctor = await Slot.create({
         doctorId: userId,
         ...slotData,
@@ -333,13 +333,6 @@ export class DoctorRepository implements IDoctorRepository {
       };
     } catch (error: any) {
       console.error("Error in slot creation:", error);
-    
-      if (error.code === 11000) {
-        const field = Object.keys(error.keyValue)[0];
-        const value = error.keyValue[field];
-        error.message = `${field} '${value}' already exists.`;
-      }
-    
       throw new Error(error.message);
     }
 }
