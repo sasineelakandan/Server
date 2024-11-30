@@ -1,6 +1,6 @@
 import { IDoctorService } from "../interface/services/doctorService.interface";
 import { IDoctorRepository } from "../interface/repositories/doctorRepository.interface";
-import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData, ProfileFormData} from "../interface/services/doctorService.type";
+import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData, ProfileFormData, DoctorSlotRequest, SuccessResponse} from "../interface/services/doctorService.type";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -149,6 +149,18 @@ export class DoctorService implements IDoctorService{
   console.log("Error in changepassword", error.message);
     throw new Error(error.message);
   }
+       }
+       slotAsign=async(userId: string, slotData: DoctorSlotRequest): Promise<SuccessResponse> =>{
+        try{
+          const user=await this.doctorRepository.slotAsign(userId,slotData)
+          return{
+           status:'success',
+           message:'slot asign successfully'
+          }
+    }catch(error:any){
+     console.log("Error in doctorProfile", error.message);
+     throw new Error(error.message);
+    }
        }
       
       }

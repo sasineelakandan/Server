@@ -36,7 +36,9 @@ router
   router
   .route('/verifyprofile')
   .post(authMiddleware,expressCallback(controller.verifyProfile))
-
+  router
+  .route('/createslots')
+  .post(authMiddleware,expressCallback(controller.slotAssign))
 
 
   

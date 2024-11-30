@@ -1,7 +1,8 @@
 import {IDoctorRepository} from "../interface/repositories/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,FindDoctorOtp, GetDoctorProfile, HospitalData, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, SuccessResponse, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
+import Slot from "../models/slotsModel";
 import { ProfileFormData } from "../interface/services/doctorService.type";
 
 export class DoctorRepository implements IDoctorRepository {
@@ -301,4 +302,45 @@ export class DoctorRepository implements IDoctorRepository {
       throw new Error(error.message);
     }
   }
+  slotAsign=async(userId: string, slotData: DoctorSlotRequest): Promise<SuccessResponse>=> {
+
+    try {
+      
+      const existingSlot = await Slot.findOne({
+        doctorId: userId,
+        date: slotData.date, 
+        startTime: slotData.startTime, 
+        endTime: slotData.endTime, 
+      });
+    
+      if (existingSlot) {
+        throw new Error(`Slot already exists for this time range.`);
+      }
+    
+      // Create the slot if it doesn't exist
+      const doctor = await Slot.create({
+        doctorId: userId,
+        ...slotData,
+      });
+    
+      if (!doctor) {
+        throw new Error(`Doctor with ID ${userId} not found.`);
+      }
+    
+      return {
+        status: 'success',
+        message: 'Slot assigned successfully',
+      };
+    } catch (error: any) {
+      console.error("Error in slot creation:", error);
+    
+      if (error.code === 11000) {
+        const field = Object.keys(error.keyValue)[0];
+        const value = error.keyValue[field];
+        error.message = `${field} '${value}' already exists.`;
+      }
+    
+      throw new Error(error.message);
+    }
+}
 }

@@ -1,4 +1,4 @@
-import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData, } from '../repositories/doctorRepositery.types'
+import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse } from '../repositories/doctorRepositery.types'
 import { ProfileFormData } from '../services/doctorService.type';
 
 export interface IDoctorRepository{
@@ -10,4 +10,5 @@ export interface IDoctorRepository{
     updateDoctorProfile(formData:HospitalData,userId:string):Promise<GetDoctorProfile>
     changeProfile(userId:string,formData:ProfileFormData):Promise<GetDoctorProfile>
     changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetDoctorProfile>
+    slotAsign(userId:string,slotData:DoctorSlotRequest):Promise<SuccessResponse>
 }

@@ -102,3 +102,16 @@ export type DoctorSignupInput = {
     state: string;
     experience: number;
   }
+
+  export type DoctorSlotRequest= {
+    doctorId: string;
+    date: string;
+    startTime: string; 
+    endTime: string; 
+  }
+
+  export type SuccessResponse ={
+    status: string;       
+    message: string;      
+                 
+  }

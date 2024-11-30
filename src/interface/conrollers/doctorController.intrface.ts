@@ -12,4 +12,5 @@ export interface IDoctorConroller{
     verifyProfile(httpRequest:Request):Promise<ControllerResponse>
     changeProfile(httpRequest:Request):Promise<ControllerResponse>
     changePassword(httpRequest:Request):Promise<ControllerResponse>
+    slotAssign(httpRequest:Request):Promise<ControllerResponse>
 }

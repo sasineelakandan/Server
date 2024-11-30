@@ -120,3 +120,17 @@ export type AddDoctorInput = {
     state: string;
     experience: number;
   }
+
+
+  export type DoctorSlotRequest= {
+    
+    date: string;
+    startTime: string; 
+    endTime: string; 
+  }
+
+  export type SuccessResponse ={
+    status: string;       
+    message: string;      
+                 
+  }
