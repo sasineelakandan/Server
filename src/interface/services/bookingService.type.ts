@@ -22,3 +22,6 @@ export type DoctorDetials = {
     readonly updatedAt: Date;
    
   };
+
+  export type DoctorSlots= Array<{ [key: string]: any }>
+   

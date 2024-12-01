@@ -18,5 +18,6 @@ router
 .route('/getdoctors')
 .get(authMiddleware,checkIfBlocked,expressCallback(controller.getDoctors))
 .patch(authMiddleware,checkIfBlocked,expressCallback(controller.doctorDetails))
+.put(authMiddleware,checkIfBlocked,expressCallback(controller.getSlots))
 
 export default router;

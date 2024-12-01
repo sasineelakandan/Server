@@ -76,5 +76,37 @@ doctorDetails=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
         };
     }
 }
+getSlots=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try {
+        
+        
+        const {doctorId}=httpRequest?.body
+       
+        if(!doctorId){
+            throw error('doctorId not found')
+        }
+        const slots= await this.bookingService.getSlots(doctorId);
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: slots,
+        };
+    } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+}
      
 }

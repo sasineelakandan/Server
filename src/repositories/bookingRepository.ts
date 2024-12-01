@@ -1,7 +1,7 @@
 import { IBookingRepository } from "../interface/repositories/bookingRepository.interface";
-import { doctorData, DoctorDetials } from "../interface/repositories/bookingRepository.type";
+import { doctorData, DoctorDetials, SlotData } from "../interface/repositories/bookingRepository.type";
 import Doctor from "../models/doctorModel";
-
+import Slot from "../models/slotsModel"
 
 export class BookingRepository implements IBookingRepository{
 
@@ -62,5 +62,22 @@ export class BookingRepository implements IBookingRepository{
       throw new Error(error.message);
     }
   }
-
+   getSlots=async(doctorId: string): Promise<SlotData> =>{
+    try {
+         
+      
+      const slots = await Slot.find({doctorId:doctorId});
+    if (!slots) {
+        throw new Error(`Doctor with doctor not found.`);
+      }
+    
+      return slots
+        
+       
+      
+    } catch (error: any) {
+      console.error("Error in slot creation:", error);
+      throw new Error(error.message);
+    }
+   }
      }
