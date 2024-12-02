@@ -19,5 +19,6 @@ router
 .get(authMiddleware,checkIfBlocked,expressCallback(controller.getDoctors))
 .patch(authMiddleware,checkIfBlocked,expressCallback(controller.doctorDetails))
 .put(authMiddleware,checkIfBlocked,expressCallback(controller.getSlots))
+.post(authMiddleware,checkIfBlocked,expressCallback(controller.bookingSlots))
 
 export default router;

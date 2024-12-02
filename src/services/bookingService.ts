@@ -1,7 +1,7 @@
 import { error } from "console";
 import { IBookingRepository } from "../interface/repositories/bookingRepository.interface";
 import { IBookingService } from "../interface/services/bookingService.interface";
-import { doctorData, DoctorDetials, DoctorSlots } from "../interface/services/bookingService.type";
+import { doctorData, DoctorDetials, DoctorSlots, SelectedSlots, SuccessResponse } from "../interface/services/bookingService.type";
 
 export class BookingService implements IBookingService {
   private bookingRepository: IBookingRepository;
@@ -46,6 +46,20 @@ export class BookingService implements IBookingService {
       const slots = await this.bookingRepository.getSlots(doctorId);
         if(!slots){
           throw error('doctor not found')
+        }
+      return slots
+    } catch (error: any) {
+      console.log("Error in doctor slots", error.message);
+      throw new Error(error.message);
+    }
+  }
+
+  bookingSlots=async(userId:string,doctorId: string, selectedSlots: SelectedSlots): Promise<SuccessResponse>=> {
+    try {
+      
+      const slots = await this.bookingRepository.bookingSlots(userId,doctorId,selectedSlots);
+        if(!slots){
+          throw error('response is failed')
         }
       return slots
     } catch (error: any) {

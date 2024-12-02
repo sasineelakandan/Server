@@ -1,5 +1,5 @@
 import { IBookingRepository } from "../interface/repositories/bookingRepository.interface";
-import { doctorData, DoctorDetials, SlotData } from "../interface/repositories/bookingRepository.type";
+import { doctorData, DoctorDetials, SelectedSlots, SlotData, SuccessResponse } from "../interface/repositories/bookingRepository.type";
 import Doctor from "../models/doctorModel";
 import Slot from "../models/slotsModel"
 
@@ -66,12 +66,46 @@ export class BookingRepository implements IBookingRepository{
     try {
          
       
-      const slots = await Slot.find({doctorId:doctorId});
+      const slots = await Slot.find({doctorId:doctorId,booked:false});
     if (!slots) {
         throw new Error(`Doctor with doctor not found.`);
       }
     
       return slots
+        
+       
+      
+    } catch (error: any) {
+      console.error("Error in slot creation:", error);
+      throw new Error(error.message);
+    }
+   }
+
+   bookingSlots=async(userId:string,doctorId: string, selectedSlots: SelectedSlots): Promise<SuccessResponse> =>{
+    try {
+         
+      const existingSlot = await Slot.findOne({ _id: selectedSlots });
+  
+      if (existingSlot && existingSlot.status === 'booked') {
+        
+        return {
+          status:existingSlot.status,
+          success: false,
+          message: 'This slot is already booked by another user.',
+        };
+      }
+      const slots = await Slot.updateOne({_id:selectedSlots,doctorId:doctorId},{$set:{status:"booked",userId:userId,booked:true}});
+
+      
+    if (!slots) {
+        throw new Error(`Doctor with slot not found.`);
+      }
+    
+      return {
+        status:'booked',
+        success:true,
+        message:'slot status successfully change'
+      }
         
        
       

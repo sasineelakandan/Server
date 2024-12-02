@@ -6,4 +6,5 @@ export interface IBookingController{
   getDoctors(httpRequest:CustomRequest):Promise<ControllerResponse>
   doctorDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
   getSlots(httpRequest:CustomRequest):Promise<ControllerResponse>
+  bookingSlots(httpRequest:CustomRequest):Promise<ControllerResponse>
 }

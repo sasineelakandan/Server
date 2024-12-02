@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 // Doctor Slot Schema
@@ -24,6 +23,15 @@ const doctorSlotSchema = new mongoose.Schema({
   endTime: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "booked", "confirmed"], 
+    default: "pending", 
+  },
+  booked: {
+    type: Boolean,
+    default: false, 
   },
   createdAt: {
     type: Date,

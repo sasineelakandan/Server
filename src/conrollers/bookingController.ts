@@ -108,5 +108,39 @@ getSlots=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
         };
     }
 }
+bookingSlots=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try {
+        const userId=httpRequest?.user?.id
+        if(!userId){
+            throw error('user unauthorized')
+        }
+        const {doctorId,selectedSlot}=httpRequest?.body
+       console.log(selectedSlot)
+        if(!doctorId){
+            throw error('doctorId not found')
+        }
+        const slotStatus= await this.bookingService.bookingSlots(userId,doctorId,selectedSlot);
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: slotStatus,
+        };
+    } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+}
      
 }

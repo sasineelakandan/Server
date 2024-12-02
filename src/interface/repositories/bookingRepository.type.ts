@@ -23,3 +23,12 @@ export type DoctorDetials = {
   };
 
   export type SlotData=Array<{ [key: string]: any }>
+
+
+  export type SelectedSlots=string[]
+
+  export type SuccessResponse={
+    status:string
+    success:boolean,
+    message:string
+  }
