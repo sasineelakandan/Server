@@ -39,6 +39,6 @@ const doctorSlotSchema = new mongoose.Schema({
   },
 });
 
-// Create and export DoctorSlot model
+
 const DoctorSlot = mongoose.model("DoctorSlot", doctorSlotSchema);
 export default DoctorSlot;

@@ -21,4 +21,10 @@ router
 .put(authMiddleware,checkIfBlocked,expressCallback(controller.getSlots))
 .post(authMiddleware,checkIfBlocked,expressCallback(controller.bookingSlots))
 
+router
+.route('/bookings')
+.post(authMiddleware,checkIfBlocked,expressCallback(controller.patientDetails))
+.put(authMiddleware,checkIfBlocked,expressCallback(controller.paymentDetails))
+.patch(expressCallback(controller.PaymentSucess))
+
 export default router;

@@ -1,7 +1,7 @@
 import { error } from "console";
 import { IBookingRepository } from "../interface/repositories/bookingRepository.interface";
 import { IBookingService } from "../interface/services/bookingService.interface";
-import { doctorData, DoctorDetials, DoctorSlots, SelectedSlots, SuccessResponse } from "../interface/services/bookingService.type";
+import { ConfirmData, doctorData, DoctorDetials, DoctorSlots, IPayment, OutPutPatient, Patient, SelectedSlots, SuccessResponse } from "../interface/services/bookingService.type";
 
 export class BookingService implements IBookingService {
   private bookingRepository: IBookingRepository;
@@ -67,5 +67,45 @@ export class BookingService implements IBookingService {
       throw new Error(error.message);
     }
   }
+  patientDetails=async(userId: string, patientDetails: Patient): Promise<OutPutPatient> =>{
+    try {
+      
+      const slots = await this.bookingRepository.patientDetails(userId,patientDetails);
+        if(!slots){
+          throw error('response is failed')
+        }
+      return slots
+    } catch (error: any) {
+      console.log("Error in doctor slots", error.message);
+      throw new Error(error.message);
+    }
   }
+  paymentDetails=async(userId: string, PaymentData: IPayment): Promise<SuccessResponse>=> {
+    try {
+      
+      const payment = await this.bookingRepository.paymentDetails(userId,PaymentData);
+        if(!payment){
+          throw error('response is failed')
+        }
+      return payment
+    } catch (error: any) {
+      console.log("Error in doctor slots", error.message);
+      throw new Error(error.message);
+    }
+  }
+  paymentSuccess=async(userId: string, txnid:string): Promise<SuccessResponse>=> {
+    try {
+      
+      const payment = await this.bookingRepository.paymentSuccess(userId,txnid);
+        if(!payment){
+          throw error('response is failed')
+        }
+      return payment
+    } catch (error: any) {
+      console.log("Error in doctor slots", error.message);
+      throw new Error(error.message);
+    }
+  }
+}
+ 
 

@@ -32,3 +32,46 @@ export type DoctorDetials = {
     success:boolean,
     message:string
   }
+
+  export type  Patient ={
+    firstName: string; 
+    lastName: string; 
+    doctorId: string;  
+    slotId: string;    
+    reason: string;    
+    terms: boolean;    
+      age: number;     
+      gender:string;   
+        
+    };
+    
+    export type OutPutPatient={
+      _id:string
+      firstName: string; 
+    lastName: string; 
+    doctorId: string;  
+    slotId: string;    
+    reason: string;    
+    userId: string;    
+      age: number;     
+      gender:string;
+
+    }
+
+   export  type  IPayment= {
+      slotId: string
+      doctorId: string
+      patientId:string 
+    
+      amount:string;
+      
+      txnid: string;  
+    }
+
+    export  type  ConfirmData= {
+    
+      
+      
+      txnid?: string;  
+    }
+  

@@ -142,5 +142,102 @@ bookingSlots=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
         };
     }
 }
+patientDetails=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try {
+        const userId=httpRequest?.user?.id
+        const patientDetails=httpRequest?.body
+        if(!userId){
+            throw error('user unauthorized')
+        }
+        
+       
+        const Patient= await this.bookingService.patientDetails(userId,patientDetails);
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: Patient,
+        };
+    } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+}
+paymentDetails=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try {
+        const userId=httpRequest?.user?.id
+        const paymentDetails=httpRequest?.body
+        if(!userId){
+            throw error('user unauthorized')
+        }
+        
+       
+        const payment= await this.bookingService.paymentDetails(userId,paymentDetails);
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: payment,
+        };
+    } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    }
+}
+
+PaymentSucess=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try {
+         
+        const {productinfo}=httpRequest?.body
+        const {txnid}=httpRequest?.body
+        
+       
+        
+       
+        const payment= await this.bookingService.paymentSuccess(productinfo,txnid);
+        
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: payment,
+        };
+    } catch (e: any) {
+        console.error("Error in adminLogin:", e);
+
+        return {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            statusCode: e.statusCode || 500,
+            body: {
+                error: e.message || "An unexpected error occurred",
+            },
+        };
+    } 
+}
      
 }
