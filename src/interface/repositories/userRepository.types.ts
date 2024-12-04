@@ -71,3 +71,5 @@ export type GetuserProfileOutput = {
   readonly createdAt: Date;
   readonly updatedAt: Date;
 };
+
+export type Appointments= Array<{ [key: string]: any }>

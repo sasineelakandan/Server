@@ -1,6 +1,6 @@
 import { IDoctorService } from "../interface/services/doctorService.interface";
 import { IDoctorRepository } from "../interface/repositories/doctorRepository.interface";
-import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData, ProfileFormData, DoctorSlotRequest, SuccessResponse} from "../interface/services/doctorService.type";
+import {FindDoctorOtp,DoctorOtpInput,DoctorSignupInput,DoctorSignupOutput,DoctorOtpOutput, DoctorFormData, DoctorProfileOutput, FormData, ProfileFormData, DoctorSlotRequest, SuccessResponse, Appointments} from "../interface/services/doctorService.type";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -157,6 +157,15 @@ export class DoctorService implements IDoctorService{
            status:'success',
            message:'slot asign successfully'
           }
+    }catch(error:any){
+     console.log("Error in doctorProfile", error.message);
+     throw new Error(error.message);
+    }
+       }
+       getAppointments=async(doctorId: string): Promise<Appointments> =>{
+        try{
+          const appointments=await this.doctorRepository.getAppointments(doctorId)
+          return appointments
     }catch(error:any){
      console.log("Error in doctorProfile", error.message);
      throw new Error(error.message);

@@ -10,4 +10,5 @@ export interface IBookingController{
   patientDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
   paymentDetails(httpRequest:CustomRequest):Promise<ControllerResponse>
   PaymentSucess(httpRequest:CustomRequest):Promise<ControllerResponse>
+  
 }

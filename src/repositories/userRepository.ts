@@ -1,7 +1,8 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
+import Appointment from "../models/appointmentModel";
 
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -171,6 +172,27 @@ export class UserRepository implements IuserRepository {
       }catch(error:any){
         console.error("Error find loginUser:", error);
         
+        throw new Error(error.message);
+      }
+    }
+    getAppointments=async(userId: string): Promise<Appointments>=> {
+      try {
+          
+       
+        const appointments = await Appointment.find({ userId: userId })
+        .populate('slotId')       
+        .populate('doctorId')     
+        .populate('patientId')    
+        .populate('userId');
+        
+        console.log(appointments)
+        if (!appointments) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+      
+        return appointments
+      } catch (error: any) {
+        console.error("Error in slot creation:", error);
         throw new Error(error.message);
       }
     }

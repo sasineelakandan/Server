@@ -236,6 +236,40 @@ export class UserController implements IUserConroller {
       };
     }
   }
+  getAppointments=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+    try {
+    
+      const userId = httpRequest?.user?.id;
+      
+      
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
+  
+      
+      const appointment = await this.userService.getAppointments( userId);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body:appointment,
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
   
   
 }

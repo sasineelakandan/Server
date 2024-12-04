@@ -1,4 +1,4 @@
-import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput } from "./userService.types";
+import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput, Appointments } from "./userService.types";
 
 export interface IUserService {
   userSignup(userData: UserSignupInput): Promise<UserSignupOutput>;
@@ -7,4 +7,5 @@ export interface IUserService {
   userProfile(profilePic:string,userId:string):Promise<UserProfileOutput>
   changeProfile(userId: string,name:string,phone:number):Promise<UserProfileOutput>
   changePassword(userId: string,oldPassword:string,newPassword:string):Promise<UserProfileOutput>
+  getAppointments(userId:string):Promise<Appointments>
 }

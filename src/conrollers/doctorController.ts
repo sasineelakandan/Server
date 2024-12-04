@@ -292,6 +292,40 @@ export class DoctorController implements IDoctorConroller {
         };
       }
     }
+    getAppointments=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const doctorId = httpRequest?.user?.id;
+        
+        
+        if (!doctorId) {
+          console.error('User ID not found');
+          throw new Error('User ID is required to fetch the profile.');
+        }
+    
+        
+        const appointment = await this.doctorService.getAppointments( doctorId);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, 
+          body:appointment,
+        };
+      } catch (error: any) {
+        console.error('Error in userProfile:', error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
     }
     
  

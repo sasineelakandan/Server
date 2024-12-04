@@ -115,3 +115,4 @@ export type DoctorSignupInput = {
     message: string;      
                  
   }
+  export type Appointments= Array<{ [key: string]: any }>

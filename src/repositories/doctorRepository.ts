@@ -1,9 +1,10 @@
 import {IDoctorRepository} from "../interface/repositories/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, SuccessResponse, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, SuccessResponse, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/slotsModel";
 import { ProfileFormData } from "../interface/services/doctorService.type";
+import Appointment from "../models/appointmentModel";
 
 export class DoctorRepository implements IDoctorRepository {
    addDoctor=async(doctorData: AddDoctorInput): Promise<AddDoctorOutput>=> {
@@ -335,5 +336,26 @@ export class DoctorRepository implements IDoctorRepository {
       console.error("Error in slot creation:", error);
       throw new Error(error.message);
     }
+}
+getAppointments=async(doctorId: string): Promise<Appointments>=> {
+  try {
+      
+   
+    const appointments = await Appointment.find({ doctorId: doctorId })
+    .populate('slotId')       
+    .populate('doctorId')     
+    .populate('patientId')    
+    .populate('userId');
+    
+    console.log(appointments)
+    if (!appointments) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return appointments
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
 }
 }

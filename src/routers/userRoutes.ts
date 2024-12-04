@@ -34,4 +34,7 @@ router
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
+  router
+  .route('/appointments')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))
 export default router;

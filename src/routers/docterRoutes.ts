@@ -35,11 +35,13 @@ router
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
   router
   .route('/verifyprofile')
-  .post(authMiddleware,expressCallback(controller.verifyProfile))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.verifyProfile))
   router
   .route('/createslots')
-  .post(authMiddleware,expressCallback(controller.slotAssign))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.slotAssign))
+  router
+  .route('/appointments')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))
 
-
-  
+ 
 export default router;

@@ -1,4 +1,4 @@
-import { doctorData, DoctorDetials, DoctorSlots, Patient, SelectedSlots, SuccessResponse ,OutPutPatient, IPayment, ConfirmData} from "./bookingService.type";
+import { doctorData, DoctorDetials, DoctorSlots, Patient, SelectedSlots, SuccessResponse ,OutPutPatient, IPayment,} from "./bookingService.type";
 
 export  interface IBookingService{
     getDoctors(userId:string):Promise<doctorData|null>
@@ -8,4 +8,5 @@ export  interface IBookingService{
     patientDetails(userId:string,patientDetails:Patient):Promise<OutPutPatient>
     paymentDetails(userId:string,PaymentData:IPayment):Promise<SuccessResponse>
     paymentSuccess(userId:string,txnid:string):Promise<SuccessResponse>
+    
 }

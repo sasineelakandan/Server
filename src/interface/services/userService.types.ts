@@ -33,6 +33,7 @@ export type UserSignupInput = {
     generatedOtp:string         
      
 }
+export type Appointments= Array<{ [key: string]: any }>
 
 
 

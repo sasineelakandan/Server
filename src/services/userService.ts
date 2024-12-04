@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { findOtp, OtpOutput, UserProfileOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { Appointments, findOtp, OtpOutput, UserProfileOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -151,5 +151,14 @@ console.log("Error in userLogin", error.message);
 console.log("Error in changepassword", error.message);
   throw new Error(error.message);
 }
+     }
+     getAppointments=async(userId: string): Promise<Appointments> =>{
+      try{
+        const appointments=await this.userRepository.getAppointments(userId)
+        return appointments
+  }catch(error:any){
+   console.log("Error in doctorProfile", error.message);
+   throw new Error(error.message);
+  }
      }
     }
