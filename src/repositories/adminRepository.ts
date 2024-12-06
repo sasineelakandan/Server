@@ -1,5 +1,6 @@
 import { IAdminRepository } from "../interface/repositories/adminRepository.interface";
-import { doctorData, SuccessResponse, userData } from "../interface/repositories/adminRepository.type";
+import { AppointmentData, doctorData, SuccessResponse, userData } from "../interface/repositories/adminRepository.type";
+import Appointment from "../models/appointmentModel";
 import Doctor from "../models/doctorModel";
 import User from "../models/userModel";
 
@@ -222,6 +223,36 @@ export class AdminRepository implements IAdminRepository{
       } catch (error) {
         console.error("Error finding or updating user:", error);
         throw new Error("Unable to fetch users. Please try again later.");
+      }
+    }
+    getAppoinments=async(admin: string): Promise<AppointmentData | null>=> {
+      try {
+        if (!admin) {
+          
+          return null;
+        }
+    
+        
+        const appointments = await Appointment.find({ })
+    .populate('slotId')       
+    .populate('doctorId')     
+    .populate('patientId')    
+    .populate('userId')
+    .populate('paymentId')
+    
+        if (!appointments || appointments.length === 0) {
+          return null
+          
+        }
+    
+        
+        return appointments;
+    
+      } catch (error: any) {
+        
+        console.error("Error finding appointments:", error.message);
+      
+        return null
       }
     }
     }

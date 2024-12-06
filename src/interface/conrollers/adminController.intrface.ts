@@ -12,4 +12,5 @@ export interface IAdminController{
   verifiedDoctors(httpRequest:CustomRequest):Promise<ControllerResponse>
   blockDoctor(httpRequest:CustomRequest):Promise<ControllerResponse>
   deleteDoctor(httpRequest:CustomRequest):Promise<ControllerResponse>
+  getAppointments(httpRequest:CustomRequest):Promise<ControllerResponse>
 }

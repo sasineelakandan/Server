@@ -33,4 +33,8 @@ router
 .patch(authMiddleware,expressCallback(controller.blockDoctor))
 .delete(authMiddleware,expressCallback(controller.deleteDoctor))
 
+router
+.route('/appointments')
+.get(authMiddleware,expressCallback(controller.getAppointments))
+
 export default router;

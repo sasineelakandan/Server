@@ -196,6 +196,7 @@ export class BookingRepository implements IBookingRepository{
         slotId:payment?.slotId,
         doctorId:payment?.doctorId,
         patientId:payment?.patientId,
+        paymentId:payment?._id,
         
         
       })

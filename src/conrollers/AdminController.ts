@@ -346,5 +346,36 @@ deleteDoctor=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
        };
    }
    }
+   getAppointments=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try{
+        
+        const admin=httpRequest.user?.id
+        
+        if (!admin || typeof admin !== 'string') {
+            throw new Error("userId is required and must be a string.");
+          }
+       const appointments=await this.adminService.getAppoinments(admin)
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: 200,
+           body: appointments
+       };
+      } catch (e: any) {
+       console.error("Error in adminLogin:", e);
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: e.statusCode || 500,
+           body: {
+               error: e.message || "An unexpected error occurred",
+           },
+       };
+   }
+   }
 }
 

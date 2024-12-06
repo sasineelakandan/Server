@@ -1,6 +1,7 @@
 // models/appointment.js
 
 import mongoose from "mongoose";
+import Payment from "./paymentModel";
 
 const appointmentSchema = new mongoose.Schema({
     slotId: {
@@ -21,6 +22,11 @@ const appointmentSchema = new mongoose.Schema({
       userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
+      },
+      paymentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Payment",
         required: true,
       },
   

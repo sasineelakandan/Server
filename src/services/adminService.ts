@@ -1,6 +1,6 @@
 import { IAdminRepository } from "../interface/repositories/adminRepository.interface";
 import { IAdminService } from "../interface/services/adminService.interface";
-import { AdminInputData, AdminOutputData, doctorData, SuccessResponse, userData} from "../interface/services/adminService.type";
+import { AdminInputData, AdminOutputData, AppointmentData, doctorData, SuccessResponse, userData} from "../interface/services/adminService.type";
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "../utils/constant";
 import { AppError } from "../utils/errors";
 
@@ -221,6 +221,29 @@ deleteDoctor=async(doctorId: string): Promise<SuccessResponse>=> {
   } catch (error: any) {
     console.log("Error in user service", error.message);
     return { success: false, message: `Error: ${error.message}` }; 
+  }
+}
+getAppoinments=async(admin: string): Promise<AppointmentData | null>=> {
+  try {
+    if (!admin) {
+      
+      return null;
+    }
+
+  
+    const appointments = await this.adminRepository.getAppoinments(admin);
+
+    if (!appointments) {
+    
+      return null;
+    }
+
+    return appointments;
+
+  } catch (error: any) {
+    console.log("Error in user service:", error.message);
+  
+    return null;
   }
 }
 } 

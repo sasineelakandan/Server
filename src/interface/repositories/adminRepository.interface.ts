@@ -1,4 +1,4 @@
-import { userData,SuccessResponse, doctorData } from "./adminRepository.type";
+import { userData,SuccessResponse, doctorData, AppointmentData } from "./adminRepository.type";
 
 export interface IAdminRepository{
     patientDetails(admin:string):Promise<userData|null>
@@ -9,5 +9,5 @@ export interface IAdminRepository{
     verifiedDoctors(admin:string):Promise<doctorData|null>
     doctorBlock(doctorId:string):Promise<SuccessResponse>
     deleteDoctor(doctorId:string):Promise<SuccessResponse>
-    
+    getAppoinments(admin:string):Promise<AppointmentData|null>
 }
