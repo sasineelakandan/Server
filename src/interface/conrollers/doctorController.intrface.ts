@@ -14,4 +14,8 @@ export interface IDoctorConroller{
     changePassword(httpRequest:Request):Promise<ControllerResponse>
     slotAssign(httpRequest:Request):Promise<ControllerResponse>
     getAppointments(httpRequest:Request):Promise<ControllerResponse>
+    resheduleAppointment(httpRequest:Request):Promise<ControllerResponse>
+    completeAppointment(httpRequest:Request):Promise<ControllerResponse>
+    cancelAppointment(httpRequest:Request):Promise<ControllerResponse>
+    updateProfilepic(httpRequest:Request):Promise<ControllerResponse>
 }

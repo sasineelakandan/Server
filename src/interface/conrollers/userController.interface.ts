@@ -11,4 +11,5 @@ export interface IUserConroller{
     changeProfile(httpRequest:Request):Promise<ControllerResponse>
     changePassword(httpRequest:Request):Promise<ControllerResponse>
     getAppointments(httpRequest:Request):Promise<ControllerResponse>
+    cancelAppointments(httpRequest:Request):Promise<ControllerResponse>
 }

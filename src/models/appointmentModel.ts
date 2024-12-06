@@ -26,7 +26,7 @@ const appointmentSchema = new mongoose.Schema({
   
   status: {
     type: String,
-    enum: ["scheduled", "rescheduled", "canceled"],
+    enum: ["scheduled", "rescheduled", "canceled",'completed'],
     default: "scheduled",
   },
 });

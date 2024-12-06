@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../interface/repositories/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, SuccessResponse, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor  } from "../interface/repositories/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/slotsModel";
@@ -113,10 +113,10 @@ export class DoctorRepository implements IDoctorRepository {
   throw new Error(error.message);
 }
    }
-   getDoctorProfile = async (userId: string,profilePic:string): Promise<GetDoctorProfile> => {
+   getDoctorProfile = async (userId:string): Promise<GetDoctorProfile> => {
     try {
 
-      const doctor1=await Doctor.updateOne({_id: userId },{$set:{profilePic}})
+      
       const doctor = await Doctor.findOne({ _id: userId });
   
       
@@ -347,12 +347,91 @@ getAppointments=async(doctorId: string): Promise<Appointments>=> {
     .populate('patientId')    
     .populate('userId');
     
-    console.log(appointments)
+    
     if (!appointments) {
       throw new Error(`Doctor with ID ${doctorId} not found.`);
     }
   
     return appointments
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+resheduleAppointment=async(doctorId: string, payloadData: ResheduleData): Promise<SuccessResponse> =>{
+  try {
+      
+    const {date,startTime,endTime,appointmentId}=payloadData
+   
+    const appointments = await Appointment.findOne({ doctorId: doctorId,_id:appointmentId })
+    
+    const slotUpdate=await Slot.updateOne({_id:appointments?.slotId},{$set:{date:date,startTime:startTime,endTime:endTime}})
+    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'rescheduled'}})
+    if (!appointments) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return {
+      status: 'success',
+      message: 'Slot assigned successfully',
+    };
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+completeAppointment=async(doctorId: string, appointmentId: string): Promise<SuccessResponse> =>{
+  try {
+      
+    
+    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'completed'}})
+    if (!doctorId) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return {
+      status: 'success',
+      message: 'Slot assigned successfully',
+    };
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+cancelAppointment=async(doctorId: string, appointmentId: string): Promise<SuccessResponse>=> {
+  try {
+      
+    
+    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
+    if (!doctorId) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return {
+      status: 'success',
+      message: 'Slot assigned successfully',
+    };
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+updateProfilepic=async(doctorId: string, profilePic: string): Promise<SuccessResponse> =>{
+  try {
+      
+    
+    const updateProfilePic = await Doctor.updateOne(
+      { _id: doctorId },
+      { $set: { profilePic: profilePic } }
+    )
+    if (!doctorId) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return {
+      status: 'success',
+      message: 'Slot assigned successfully',
+    };
   } catch (error: any) {
     console.error("Error in slot creation:", error);
     throw new Error(error.message);

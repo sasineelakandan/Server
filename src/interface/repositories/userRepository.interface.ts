@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments } from '../repositories/userRepository.types'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse} from '../repositories/userRepository.types'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -10,4 +10,5 @@ export interface IuserRepository{
     changeProfile(userId: string,name:string,phone:number):Promise<GetuserProfileOutput>
     changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetuserProfileOutput>
     getAppointments(userId:string):Promise<Appointments>
+    cancelAppointments(userId:string,appointmentId:string):Promise<SuccessResponse>
 }

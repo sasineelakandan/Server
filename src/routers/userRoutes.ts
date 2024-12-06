@@ -37,4 +37,5 @@ router
   router
   .route('/appointments')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.cancelAppointments))
 export default router;

@@ -73,3 +73,9 @@ export type GetuserProfileOutput = {
 };
 
 export type Appointments= Array<{ [key: string]: any }>
+
+export type SuccessResponse ={
+  status: string;       
+  message: string;      
+               
+}

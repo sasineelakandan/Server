@@ -136,3 +136,10 @@ export type AddDoctorInput = {
   }
 
   export type Appointments= Array<{ [key: string]: any }>
+
+  export type ResheduleData={
+    appointmentId:string
+    date:string,
+    startTime:string
+    endTime:string
+  }

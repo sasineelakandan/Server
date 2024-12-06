@@ -54,3 +54,9 @@ export type findOtp={
 export type resendOtp={
   message:string
 }
+
+export type SuccessResponse ={
+  status: string;       
+  message: string;      
+               
+}

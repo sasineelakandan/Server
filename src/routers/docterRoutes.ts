@@ -30,18 +30,23 @@ router
   .post(loginValidator,expressCallback(controller.doctorLogin))
   router
   .route('/profile')
-  .post(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
+  .get(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.updateProfilepic))
   router
   .route('/verifyprofile')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.verifyProfile))
+
   router
   .route('/createslots')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.slotAssign))
   router
   .route('/appointments')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.resheduleAppointment))
+  .patch(authMiddleware,checkIfBlocked,expressCallback(controller.completeAppointment))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.cancelAppointment))
 
  
 export default router;

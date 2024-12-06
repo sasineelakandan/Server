@@ -1,5 +1,5 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
@@ -191,6 +191,24 @@ export class UserRepository implements IuserRepository {
         }
       
         return appointments
+      } catch (error: any) {
+        console.error("Error in slot creation:", error);
+        throw new Error(error.message);
+      }
+    }
+    cancelAppointments=async(userId: string, appointmentId: string): Promise<SuccessResponse> =>{
+      try {
+      
+    
+        const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
+        if (!userId) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+      
+        return {
+          status: 'success',
+          message: 'Slot assigned successfully',
+        };
       } catch (error: any) {
         console.error("Error in slot creation:", error);
         throw new Error(error.message);

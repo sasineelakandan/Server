@@ -130,14 +130,14 @@ export class DoctorController implements IDoctorConroller {
     try {
       
       const userId = httpRequest?.user?.id;
-      const {profilePic}=httpRequest?.body
+      
       if (!userId) {
         console.error("User ID not found");
         throw new Error("User ID is required to fetch the doctor profile.");
       }
   
     
-      const doctor = await this.doctorService.doctorProfile(userId,profilePic);
+      const doctor = await this.doctorService.doctorProfile(userId);
   
       return {
         headers: {
@@ -325,6 +325,151 @@ export class DoctorController implements IDoctorConroller {
           body: { error: error.message || 'An unknown error occurred.' },
         };
       }
+    }
+    resheduleAppointment=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+      try {
+      
+        const doctorId = httpRequest?.user?.id;
+        const payloadData=httpRequest?.body
+
+        
+        if (!doctorId) {
+          console.error('User ID not found');
+          throw new Error('User ID is required to fetch the profile.');
+        }
+    
+        
+        const appointment = await this.doctorService.resheduleAppointment( doctorId,payloadData);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, 
+          body:appointment,
+        };
+      } catch (error: any) {
+        console.error('Error in userProfile:', error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
+    completeAppointment=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const doctorId = httpRequest?.user?.id;
+        const {appointmentId}=httpRequest?.body
+
+        
+        if (!doctorId) {
+          console.error('User ID not found');
+          throw new Error('User ID is required to fetch the profile.');
+        }
+    
+        
+        const appointment = await this.doctorService.completeAppointment( doctorId,appointmentId);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, 
+          body:appointment,
+        };
+      } catch (error: any) {
+        console.error('Error in userProfile:', error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+      
+    }
+    cancelAppointment=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const doctorId = httpRequest?.user?.id;
+        const {appointmentId}=httpRequest?.body
+        console.log(appointmentId)
+        
+        if (!doctorId) {
+          console.error('User ID not found');
+          throw new Error('User ID is required to fetch the profile.');
+        }
+    
+        
+        const appointment = await this.doctorService.cancelAppointment( doctorId,appointmentId);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, 
+          body:appointment,
+        };
+      } catch (error: any) {
+        console.error('Error in userProfile:', error.message);
+    
+        
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, 
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
+    updateProfilepic=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+      try {
+        console.log(httpRequest)
+        const doctorId = httpRequest?.user?.id;
+        const uploadedUrl = httpRequest?.body?.uploadedUrl;
+        console.log(uploadedUrl)
+        if (!uploadedUrl) {
+          throw new Error('Profile picture URL is required.');
+        }
+      
+        if (!doctorId) {
+          console.error('User ID not found in the request.');
+          throw new Error('Doctor ID is required to update the profile.');
+        }
+      
+        const updatedProfile = await this.doctorService.updateProfilepic(doctorId, uploadedUrl);
+      
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 201, // Created
+          body: { message: "Profile picture updated successfully.", data: updatedProfile },
+        };
+      } catch (error: any) {
+        console.error('Error in updateProfilePic:', error.message);
+      
+        const statusCode = error.message.includes('required') ? 400 : 500; // Client or server error
+      
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode,
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+      
     }
     }
     
