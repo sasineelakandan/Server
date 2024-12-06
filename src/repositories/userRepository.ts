@@ -100,11 +100,11 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     } 
-    userProfile=async(profilePic: string, userId: string): Promise<GetuserProfileOutput>=> {
+    userProfile=async(userId: string): Promise<GetuserProfileOutput>=> {
       
     
       try{
-        const userUpdate=await User.updateOne({_id:userId},{$set:{profilePic}})
+        
         const user=await User.findOne({_id:userId})
         if (!user) {
           throw new Error(`Doctor with ID ${userId} not found.`);
@@ -114,7 +114,7 @@ export class UserRepository implements IuserRepository {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          profilePic:user.profilePic,
+          profilePic:user.profilePic||'',
           password:user.password,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -138,7 +138,7 @@ export class UserRepository implements IuserRepository {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          profilePic:user.profilePic,
+          profilePic:user.profilePic||'',
           password:user.password,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -163,7 +163,7 @@ export class UserRepository implements IuserRepository {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          profilePic:user.profilePic,
+          profilePic:user.profilePic||'',
           password:user.password,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -214,7 +214,27 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     }
-    
+    updateProfilePic=async(userId: string, profilePic: string): Promise<SuccessResponse> =>{
+      try {
+      
+        if (!userId) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+        const updateProfilePic = await User.updateOne(
+          { _id: userId },
+          { $set: { profilePic: profilePic } }
+        )
+        
+      
+        return {
+          status: 'success',
+          message: 'Slot assigned successfully',
+        };
+      } catch (error: any) {
+        console.error("Error in slot creation:", error);
+        throw new Error(error.message);
+      }
+    }
      
    } 
     

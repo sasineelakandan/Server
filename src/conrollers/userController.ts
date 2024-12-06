@@ -137,7 +137,7 @@ export class UserController implements IUserConroller {
     try {
       
       const userId = httpRequest?.user?.id;
-      const { profilePic } = httpRequest.body;
+      
   
       if (!userId) {
         console.error('User ID not found');
@@ -145,7 +145,7 @@ export class UserController implements IUserConroller {
       }
   
       
-      const user = await this.userService.userProfile(profilePic, userId);
+      const user = await this.userService.userProfile( userId);
       
       return {
         headers: {
@@ -302,6 +302,44 @@ export class UserController implements IUserConroller {
           "Content-Type": "application/json",
         },
         statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  updateProfilepic=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try {
+      
+      const userId = httpRequest?.user?.id;
+      const uploadedUrl = httpRequest?.body?.uploadedUrl;
+      console.log(uploadedUrl)
+      if (!uploadedUrl) {
+        throw new Error('Profile picture URL is required.');
+      }
+    
+      if (!userId) {
+        console.error('User ID not found in the request.');
+        throw new Error('Doctor ID is required to update the profile.');
+      }
+    
+      const updatedProfile = await this.userService.updateProfilePic(userId, uploadedUrl);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, // Created
+        body: { message: "Profile picture updated successfully.", data: updatedProfile },
+      };
+    } catch (error: any) {
+      console.error('Error in updateProfilePic:', error.message);
+    
+      const statusCode = error.message.includes('required') ? 400 : 500; // Client or server error
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode,
         body: { error: error.message || 'An unknown error occurred.' },
       };
     }

@@ -22,7 +22,7 @@ export type UserSignupInput = {
     readonly username: string;
     readonly email: string;
     readonly phone: string;
-    readonly profilePic?:string|null
+    readonly profilePic?:string
     readonly createdAt: Date;
     readonly updatedAt: Date;
    

@@ -31,9 +31,11 @@ router
   .post(loginValidator,expressCallback(controller.userLogin))
   router
   .route('/profile')
-  .post(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.updateProfilepic))
+
   router
   .route('/appointments')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))

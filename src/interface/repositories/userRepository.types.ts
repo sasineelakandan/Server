@@ -62,14 +62,14 @@ export type updateUser={
 }
 
 export type GetuserProfileOutput = {
-  readonly _id: string;
-  readonly username: string;
-  readonly email: string;
-  readonly phone: string;
-  readonly password: string;
-  readonly  profilePic?: string|null
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+   _id: string;
+   username: string;
+   email: string;
+   phone: string;
+   password: string;
+   profilePic: string
+   createdAt: Date;
+   updatedAt: Date;
 };
 
 export type Appointments= Array<{ [key: string]: any }>

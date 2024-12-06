@@ -6,9 +6,10 @@ export interface IuserRepository{
     verifyOtp(userData:findOtp):Promise<AddOtpOutput>
     getUserByEmail(email: string) : Promise<GetUserOutput>;
     updateUserOtp(userId:string):Promise<updateUser>
-    userProfile(profilePic:string,userId:string):Promise<GetuserProfileOutput>
+    userProfile(userId:string):Promise<GetuserProfileOutput>
     changeProfile(userId: string,name:string,phone:number):Promise<GetuserProfileOutput>
     changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetuserProfileOutput>
     getAppointments(userId:string):Promise<Appointments>
     cancelAppointments(userId:string,appointmentId:string):Promise<SuccessResponse>
+    updateProfilePic(userId:string,profilePic:string):Promise<SuccessResponse>
 }

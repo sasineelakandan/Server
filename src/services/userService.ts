@@ -84,18 +84,18 @@ export class UserService implements IUserService{
         }
      }
      
-     userProfile=async(profilePic: string, userId: string): Promise<UserProfileOutput> =>{
+     userProfile=async( userId: string): Promise<UserProfileOutput> =>{
        
      
        try{
-                const user=await this.userRepository.userProfile(profilePic,userId)
+                const user=await this.userRepository.userProfile(userId)
                 console.log(user)
                 return {
                   _id: user._id,
                   username: user.username,
                   email: user.email,
                   phone: user.phone,
-                  profilePic:profilePic,
+                  profilePic:user?.profilePic,
                   createdAt: user.createdAt,
                   updatedAt: user.updatedAt,
                   
@@ -114,7 +114,7 @@ export class UserService implements IUserService{
           username: user.username,
           email: user.email,
           phone: user.phone,
-          profilePic:user?.profilePic,
+          profilePic:user.profilePic||'',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           
@@ -166,6 +166,18 @@ console.log("Error in changepassword", error.message);
         const appointments = await this.userRepository.cancelAppointments(
           userId,
           appointmentId
+        );
+        return appointments;
+      } catch (error: any) {
+        console.log("Error in doctorProfile", error.message);
+        throw new Error(error.message);
+      }
+     }
+     updateProfilePic=async(userId: string, profilePic: string): Promise<SuccessResponse> =>{
+      try {
+        const appointments = await this.userRepository.updateProfilePic(
+          userId,
+          profilePic
         );
         return appointments;
       } catch (error: any) {
