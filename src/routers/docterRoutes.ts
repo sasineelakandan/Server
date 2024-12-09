@@ -48,5 +48,14 @@ router
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.completeAppointment))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.cancelAppointment))
 
+  router
+  .route('/chat')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getMessages))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.chatwithUser))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.sendMessage))
+ 
+  router
+  .route('/chatroom')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getChatMembers))
  
 export default router;

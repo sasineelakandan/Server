@@ -1,5 +1,5 @@
 import { promises } from "dns";
-import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData} from "./doctorService.type";
+import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData,ChatMembers,Messages} from "./doctorService.type";
 
 export interface IDoctorService {
   doctorSignup(doctorData:DoctorSignupInput): Promise<DoctorSignupOutput>;
@@ -15,4 +15,8 @@ export interface IDoctorService {
   completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
   cancelAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
   updateProfilepic(doctorId:string,profilePic:string):Promise<SuccessResponse>
+  chatwithUser(doctorId:string,appointmentId:string):Promise<SuccessResponse>
+  sendMessage(roomId:string,message:string):Promise<SuccessResponse>
+  getMessage(roomId:string):Promise<Messages>
+  getChatMembers(userId:string):Promise<ChatMembers>
 }

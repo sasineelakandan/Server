@@ -18,4 +18,8 @@ export interface IDoctorConroller{
     completeAppointment(httpRequest:Request):Promise<ControllerResponse>
     cancelAppointment(httpRequest:Request):Promise<ControllerResponse>
     updateProfilepic(httpRequest:Request):Promise<ControllerResponse>
+    chatwithUser(httpRequest:Request):Promise<ControllerResponse>
+    sendMessage(httpRequest:Request):Promise<ControllerResponse>
+    getMessages(httpRequest:Request):Promise<ControllerResponse>
+    getChatMembers(httpRequest:Request):Promise<ControllerResponse>
 }

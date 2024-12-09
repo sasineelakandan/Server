@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { Appointments, findOtp, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput} from "../interface/services/userService.types";
+import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -185,4 +185,53 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
      }
+     chatwithDoctor=async(userId: string, appointmentId: string): Promise<SuccessResponse> =>{
+      try {
+        const appointments = await this.userRepository.chatwithDoctor(
+          userId,
+          appointmentId
+        );
+        return appointments;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
+     sendMessage=async(roomId: string, message: string): Promise<SuccessResponse> =>{
+      try {
+        const chatmessage = await this.userRepository.sendMessage(
+          roomId,
+          message
+        );
+        return chatmessage;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
+     getMessage=async(roomId: string): Promise<Messages> =>{
+      try {
+        const chatmessage = await this.userRepository.getMessage(
+          roomId
+          
+        );
+        return chatmessage;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
+     getChatMembers=async(userId: string): Promise<ChatMembers>=> {
+      try {
+        const chatmessage = await this.userRepository.getChatMembers(
+          userId
+          
+        );
+        return chatmessage;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
+     
     }

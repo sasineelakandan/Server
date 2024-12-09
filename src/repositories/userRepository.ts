@@ -1,8 +1,10 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
+import ChatRoom from "../models/chatRoomModel";
+import Message from "../models/messageModel";
 
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -218,7 +220,7 @@ export class UserRepository implements IuserRepository {
       try {
       
         if (!userId) {
-          throw new Error(`Doctor with ID ${userId} not found.`);
+          throw new Error(`user with ID ${userId} not found.`);
         }
         const updateProfilePic = await User.updateOne(
           { _id: userId },
@@ -232,6 +234,106 @@ export class UserRepository implements IuserRepository {
         };
       } catch (error: any) {
         console.error("Error in slot creation:", error);
+        throw new Error(error.message);
+      }
+    }
+
+    chatwithDoctor=async(userId: string, appointmentId: string): Promise<SuccessResponse> =>{
+      try {
+        
+        if (!userId) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+    
+      
+        if (!appointmentId) {
+          throw new Error(`Appointment with ID ${appointmentId} not found.`);
+        }
+        const chatter=await Appointment.findOne({_id:appointmentId,userId:userId})
+        
+        
+        const existingRoom = await ChatRoom.findOne({ patient: userId, doctor:chatter?.doctorId });
+       
+        if (existingRoom) {
+          
+          return {
+            status: existingRoom?._id.toString(),
+            message: "Chat room already exists.",
+          };
+        }
+    
+        
+        const newChatRoom = new ChatRoom({
+          patient: userId,
+          doctor: chatter?.doctorId, 
+        });
+    
+      
+        const savedRoom = await newChatRoom.save();
+    
+        
+        return {
+          status: savedRoom?._id.toString(),
+          message: "Chat room created successfully",
+        };
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+    }
+
+    sendMessage=async(roomId: string, message: string): Promise<SuccessResponse>=> {
+      try {
+        
+        if (!roomId) {
+          throw new Error(`User with ID ${roomId} not found.`);
+        }
+    
+      
+        if (!message) {
+          throw new Error(`Appointment with ID ${message} not found.`);
+        }
+
+        const chatter=await ChatRoom.findOne({_id:roomId})
+        const updateChatter=await ChatRoom.updateOne({_id:roomId},{$set:{lastMessage:message}})
+        
+        
+        const createMsg = await Message.create({sender:chatter?.patient,receiver:chatter?.doctor,roomId,content:message});
+        return {
+          status: 'sucess',
+          message: "Chat room created successfully",
+        };
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+    }
+    getMessage=async(roomId: string): Promise<Messages>=> {
+      try {
+        
+        if (!roomId) {
+          throw new Error(`User with ID ${roomId} not found.`);
+        }
+         const message = await Message.find({roomId:roomId});
+
+        return message
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+    }
+    getChatMembers=async(userId: string): Promise<ChatMembers>=>{
+      try {
+        
+        if (!userId) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+         const message = await ChatRoom.find({patient:userId}).populate('doctor');
+         
+
+        return message
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
         throw new Error(error.message);
       }
     }

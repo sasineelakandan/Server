@@ -344,6 +344,150 @@ export class UserController implements IUserConroller {
       };
     }
   }
+  chatwithDoctor=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    try {
+      
+      const userId = httpRequest?.user?.id;
+      const {apptId}= httpRequest?.body;
+      
+      if (!apptId) {
+        throw new Error('Profile picture URL is required.');
+      }
+    
+      if (!userId) {
+        console.error('User ID not found in the request.');
+        throw new Error('Doctor ID is required to update the profile.');
+      }
+    
+      const updatedProfile = await this.userService.chatwithDoctor(userId, apptId);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, // Created
+        body: { message: "Profile picture updated successfully.", data: updatedProfile },
+      };
+    } catch (error: any) {
+      console.error('Error in updateProfilePic:', error.message);
+    
+      const statusCode = error.message.includes('required') ? 400 : 500; // Client or server error
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode,
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  sendMessage=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+    try {
+      
+      const userId = httpRequest?.user?.id;
+      const {activeUser,message}= httpRequest?.body;
+      
+      if (!activeUser) {
+        throw new Error('Profile picture URL is required.');
+      }
+    
+      if (!userId) {
+        console.error('User ID not found in the request.');
+        throw new Error('Doctor ID is required to update the profile.');
+      }
+    
+      const createmessage = await this.userService.sendMessage(activeUser, message);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body: { message: "Msg send  successfully.", data: createmessage },
+      };
+    } catch (error: any) {
+      console.error('Error in updateProfilePic:', error.message);
+    
+      const statusCode = error.message.includes('required') ? 400 : 500; 
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode,
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+
+  getMessages = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
+    try {
+  
+      const roomId = httpRequest?.query?.roomId;
+  
+      
+      if (!roomId || typeof roomId !== 'string') {
+        console.error('Invalid room ID');
+        throw new Error('Room ID is required and must be a string.');
+      }
+  
+      
+      const messages = await this.userService.getMessage(roomId);
+     console.log(messages)
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 200, 
+        body: messages, 
+      };
+    } catch (error: any) {
+      console.error('Error in getMessages:', error.message);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, // Internal Server Error
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  };
+  getChatMembers=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
+    try {
+  
+      const userId = httpRequest?.user?.id;
+  
+      
+      if (!userId || typeof userId !== 'string') {
+        console.error('Invalid room ID');
+        throw new Error('Room ID is required and must be a string.');
+      }
+  
+      
+      const messages = await this.userService.getChatMembers(userId);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 200, 
+        body: messages, 
+      };
+    } catch (error: any) {
+      console.error('Error in getMessages:', error.message);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, // Internal Server Error
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  
   }
   
   

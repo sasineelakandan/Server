@@ -28,6 +28,7 @@ export type UserSignupInput = {
    
   };
 
+
   export type OtpInput = {
     userId: string;         
     generatedOtp:string         
@@ -60,3 +61,6 @@ export type SuccessResponse ={
   message: string;      
                
 }
+
+export type Messages= Array<{ [key: string]: any }>
+export type ChatMembers= Array<{ [key: string]: any }>

@@ -40,4 +40,16 @@ router
   .route('/appointments')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.cancelAppointments))
+
+
+  router
+  .route('/chat')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getMessages))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.chatwithDoctor))
+  .put(authMiddleware,checkIfBlocked,expressCallback(controller.sendMessage))
+ 
+  router
+  .route('/chatroom')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getChatMembers))
+
 export default router;

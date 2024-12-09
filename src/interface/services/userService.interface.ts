@@ -1,4 +1,4 @@
-import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput, Appointments, SuccessResponse } from "./userService.types";
+import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers } from "./userService.types";
 
 export interface IUserService {
   userSignup(userData: UserSignupInput): Promise<UserSignupOutput>;
@@ -10,4 +10,8 @@ export interface IUserService {
   getAppointments(userId:string):Promise<Appointments>
   cancelAppointments(userId:string,appointmentId:string):Promise<SuccessResponse>
   updateProfilePic(userId:string,profilePic:string):Promise<SuccessResponse>
+  chatwithDoctor(userId:string,appointmentId:string):Promise<SuccessResponse>
+  sendMessage(roomId:string,message:string):Promise<SuccessResponse>
+  getMessage(roomId:string):Promise<Messages>
+  getChatMembers(userId:string):Promise<ChatMembers>
 }

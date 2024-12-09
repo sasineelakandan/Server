@@ -13,4 +13,8 @@ export interface IUserConroller{
     getAppointments(httpRequest:Request):Promise<ControllerResponse>
     cancelAppointments(httpRequest:Request):Promise<ControllerResponse>
     updateProfilepic(httpRequest:Request):Promise<ControllerResponse>
+    chatwithDoctor(httpRequest:Request):Promise<ControllerResponse>
+    sendMessage(httpRequest:Request):Promise<ControllerResponse>
+    getMessages(httpRequest:Request):Promise<ControllerResponse>
+    getChatMembers(httpRequest:Request):Promise<ControllerResponse>
 }

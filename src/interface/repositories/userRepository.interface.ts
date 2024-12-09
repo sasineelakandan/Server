@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse} from '../repositories/userRepository.types'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers} from '../repositories/userRepository.types'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -12,4 +12,10 @@ export interface IuserRepository{
     getAppointments(userId:string):Promise<Appointments>
     cancelAppointments(userId:string,appointmentId:string):Promise<SuccessResponse>
     updateProfilePic(userId:string,profilePic:string):Promise<SuccessResponse>
+    chatwithDoctor(userId:string,appointmentId:string):Promise<SuccessResponse>
+    sendMessage(roomId:string,message:string):Promise<SuccessResponse>
+    getMessage(roomId:string):Promise<Messages>
+    getChatMembers(userId:string):Promise<ChatMembers>
+    
+    
 }

@@ -79,3 +79,6 @@ export type SuccessResponse ={
   message: string;      
                
 }
+
+export type Messages= Array<{ [key: string]: any }>
+export type ChatMembers= Array<{ [key: string]: any }>

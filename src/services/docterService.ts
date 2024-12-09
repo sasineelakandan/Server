@@ -14,6 +14,8 @@ import {
   SuccessResponse,
   Appointments,
   ResheduleData,
+  ChatMembers,
+  Messages
 } from "../interface/services/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
@@ -259,4 +261,53 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message);
     }
   }
+  chatwithUser=async(doctorId: string, appointmentId: string): Promise<SuccessResponse> =>{
+    try {
+      const appointments = await this.doctorRepository.chatwithUser(
+        doctorId,
+        appointmentId
+      );
+      return appointments;
+    } catch (error: any) {
+      console.log("Error in chat", error.message);
+      throw new Error(error.message);
+    }
+   }
+   sendMessage=async(roomId: string, message: string): Promise<SuccessResponse> =>{
+    try {
+      const chatmessage = await this.doctorRepository.sendMessage(
+        roomId,
+        message
+      );
+      return chatmessage;
+    } catch (error: any) {
+      console.log("Error in chat", error.message);
+      throw new Error(error.message);
+    }
+   }
+   getMessage=async(roomId: string): Promise<  Messages   > =>{
+    try {
+      const chatmessage = await this.doctorRepository.getMessage(
+        roomId
+        
+      );
+      return chatmessage;
+    } catch (error: any) {
+      console.log("Error in chat", error.message);
+      throw new Error(error.message);
+    }
+   }
+   getChatMembers=async(doctorId: string): Promise<ChatMembers>=> {
+    try {
+      const chatmessage = await this.doctorRepository.getChatMembers(
+        doctorId
+        
+      );
+      return chatmessage;
+    } catch (error: any) {
+      console.log("Error in chat", error.message);
+      throw new Error(error.message);
+    }
+   }
+   
 }

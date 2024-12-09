@@ -1,4 +1,4 @@
-import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData } from '../repositories/doctorRepositery.types'
+import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData,ChatMembers,Messages } from '../repositories/doctorRepositery.types'
 import { ProfileFormData } from '../services/doctorService.type';
 
 export interface IDoctorRepository{
@@ -16,5 +16,9 @@ export interface IDoctorRepository{
     completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
     cancelAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
     updateProfilepic(doctorId:string,profilePic:string):Promise<SuccessResponse>
+    chatwithUser(doctorId:string,appointmentId:string):Promise<SuccessResponse>
+    sendMessage(roomId:string,message:string):Promise<SuccessResponse>
+    getMessage(roomId:string):Promise<Messages>
+    getChatMembers(userId:string):Promise<ChatMembers>
 
 }

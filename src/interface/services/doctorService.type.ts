@@ -123,3 +123,6 @@ export type DoctorSignupInput = {
     startTime:string
     endTime:string
   }
+
+  export type Messages= Array<{ [key: string]: any }>
+export type ChatMembers= Array<{ [key: string]: any }>
