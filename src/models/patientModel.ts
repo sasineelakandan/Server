@@ -8,7 +8,7 @@ const patientSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    required: true,
+    required:true,
   },
   doctorId: {
     type: mongoose.Schema.Types.ObjectId,

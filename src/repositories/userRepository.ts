@@ -179,7 +179,7 @@ export class UserRepository implements IuserRepository {
       try {
           
        
-        const appointments = await Appointment.find({ userId: userId })
+        const appointments = await Appointment.find({ userId: userId }).sort({_id:-1})
         .populate('slotId')       
         .populate('doctorId')     
         .populate('patientId')    
