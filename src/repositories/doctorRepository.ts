@@ -306,40 +306,7 @@ export class DoctorRepository implements IDoctorRepository {
       throw new Error(error.message);
     }
   }
-  slotAsign=async(userId: string, slotData: DoctorSlotRequest): Promise<SuccessResponse>=> {
-
-    try {
-      
-      const existingSlot = await Slot.findOne({
-        doctorId: userId,
-        date: slotData.date, 
-        startTime: slotData.startTime, 
-        endTime: slotData.endTime, 
-      });
-    
-      if (existingSlot) {
-        throw new Error(`Slot already exists for this time range.`);
-      }
-    
-      
-      const doctor = await Slot.create({
-        doctorId: userId,
-        ...slotData,
-      });
-    
-      if (!doctor) {
-        throw new Error(`Doctor with ID ${userId} not found.`);
-      }
-    
-      return {
-        status: 'success',
-        message: 'Slot assigned successfully',
-      };
-    } catch (error: any) {
-      console.error("Error in slot creation:", error);
-      throw new Error(error.message);
-    }
-}
+  
 getAppointments=async(doctorId: string): Promise<Appointments>=> {
   try {
       

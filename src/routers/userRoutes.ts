@@ -43,6 +43,10 @@ router
 
 
   router
+  .route('/createslots')
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.slotAssign))
+
+  router
   .route('/chat')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getMessages))
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.chatwithDoctor))

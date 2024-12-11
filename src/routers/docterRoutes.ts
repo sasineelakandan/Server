@@ -38,9 +38,7 @@ router
   .route('/verifyprofile')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.verifyProfile))
 
-  router
-  .route('/createslots')
-  .post(authMiddleware,checkIfBlocked,expressCallback(controller.slotAssign))
+ 
   router
   .route('/appointments')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getAppointments))

@@ -82,3 +82,21 @@ export type SuccessResponse ={
 
 export type Messages= Array<{ [key: string]: any }>
 export type ChatMembers= Array<{ [key: string]: any }>
+
+
+export type AppointmentSlot= {
+  date: string; 
+  doctorId: string; 
+  startTime: string;
+  endTime: string; 
+  isBooked: boolean; 
+}
+
+export type AppointmentSlotOutput= {
+  _id:string;
+  date: string; 
+  doctorId: string; 
+  startTime: string;
+  endTime: string; 
+  isBooked: boolean; 
+}

@@ -9,7 +9,7 @@ export interface IDoctorService {
   updateProfile(formData:FormData,userId:string):Promise<DoctorProfileOutput>
   changeProfile(userId:string,formData:ProfileFormData):Promise<DoctorProfileOutput>
   changePassword(userId: string,oldPassword:string,newPassword:string):Promise<DoctorProfileOutput>
-  slotAsign(userId:string,slotData:DoctorSlotRequest):Promise<SuccessResponse>
+ 
   getAppointments(doctorId:string):Promise<Appointments>
   resheduleAppointment(doctorId:string,payloadData:ResheduleData):Promise<SuccessResponse>
   completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>

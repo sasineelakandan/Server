@@ -17,4 +17,5 @@ export interface IUserConroller{
     sendMessage(httpRequest:Request):Promise<ControllerResponse>
     getMessages(httpRequest:Request):Promise<ControllerResponse>
     getChatMembers(httpRequest:Request):Promise<ControllerResponse>
+    slotAssign(httpRequest:Request):Promise<ControllerResponse>
 }

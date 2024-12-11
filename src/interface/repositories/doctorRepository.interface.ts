@@ -10,7 +10,7 @@ export interface IDoctorRepository{
     updateDoctorProfile(formData:HospitalData,userId:string):Promise<GetDoctorProfile>
     changeProfile(userId:string,formData:ProfileFormData):Promise<GetDoctorProfile>
     changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetDoctorProfile>
-    slotAsign(userId:string,slotData:DoctorSlotRequest):Promise<SuccessResponse>
+
     getAppointments(doctorId:string):Promise<Appointments>
     resheduleAppointment(doctorId:string,payloadData:ResheduleData):Promise<SuccessResponse>
     completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>

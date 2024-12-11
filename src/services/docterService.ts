@@ -182,21 +182,7 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message);
     }
   };
-  slotAsign = async (
-    userId: string,
-    slotData: DoctorSlotRequest
-  ): Promise<SuccessResponse> => {
-    try {
-      const user = await this.doctorRepository.slotAsign(userId, slotData);
-      return {
-        status: "success",
-        message: "slot asign successfully",
-      };
-    } catch (error: any) {
-      console.log("Error in doctorProfile", error.message);
-      throw new Error(error.message);
-    }
-  };
+  
   getAppointments = async (doctorId: string): Promise<Appointments> => {
     try {
       const appointments = await this.doctorRepository.getAppointments(

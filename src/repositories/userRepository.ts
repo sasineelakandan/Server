@@ -1,10 +1,11 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
+import Slot from '../models/slotsModel'
 import {io} from "../../src/index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -338,6 +339,48 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     }
-     
+    slotAsign = async (userId: string, slotData: AppointmentSlot): Promise<AppointmentSlotOutput> => {
+      try {
+        const existingSlot = await Slot.findOne({
+          doctorId: slotData.doctorId,
+          userId,
+          date: slotData.date,
+          startTime: slotData.startTime,
+          endTime: slotData.endTime,
+          booked:true,
+          
+        });
+    
+        if (existingSlot) {
+          throw new Error(`Slot already exists for this time range.`);
+        }
+    
+        const data = await Slot.create({
+          doctorId: slotData.doctorId,
+          userId,
+          date: slotData.date,
+          startTime: slotData.startTime,
+          endTime: slotData.endTime,
+          status:'booked'
+        });
+    
+        if (!data) {
+          throw new Error(`Doctor with ID ${userId} not found.`);
+        }
+    
+        return {
+          _id:data._id.toString(),
+          date: data.date.toDateString(),
+          startTime: data.startTime,
+          doctorId: data.doctorId.toString(),
+          isBooked: data.booked, 
+          endTime: data.endTime
+        };
+      } catch (error: any) {
+        console.error("Error in slot creation:", error);
+        throw new Error(error.message);
+      }
+    }
+    
    } 
     

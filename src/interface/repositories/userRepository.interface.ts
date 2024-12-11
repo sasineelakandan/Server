@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers} from '../repositories/userRepository.types'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput} from '../repositories/userRepository.types'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -16,6 +16,6 @@ export interface IuserRepository{
     sendMessage(roomId:string,message:string):Promise<SuccessResponse>
     getMessage(roomId:string):Promise<Messages>
     getChatMembers(userId:string):Promise<ChatMembers>
-    
+    slotAsign(userId:string,slotData:AppointmentSlot):Promise<AppointmentSlotOutput>
     
 }

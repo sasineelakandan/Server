@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers} from "../interface/services/userService.types";
+import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -233,5 +233,24 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
      }
+     slotAsign = async (
+      userId: string,
+      slotData: AppointmentSlot
+    ): Promise<AppointmentSlotOutput> => {
+      try {
+        const data = await this.userRepository.slotAsign(userId, slotData);
+        return {
+          _id:data._id.toString(),
+          date:data.date,
+          startTime:data.startTime,
+          doctorId:data.doctorId,
+          isBooked:data.isBooked,
+          endTime:data.endTime
+        };
+      } catch (error: any) {
+        console.log("Error in doctorProfile", error.message);
+        throw new Error(error.message);
+      }
+    };
      
     }

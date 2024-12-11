@@ -485,9 +485,43 @@ export class UserController implements IUserConroller {
         statusCode: 500, // Internal Server Error
         body: { error: error.message || 'An unknown error occurred.' },
       };
+      
     }
   }
+  slotAssign=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+    try {
+    
+      const userId = httpRequest?.user?.id;
+      const slotData= httpRequest?.body;
+      console.log(slotData)
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
   
+      
+      const user = await this.userService.slotAsign( userId,slotData);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body: { ...user },
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
   }
   
   
