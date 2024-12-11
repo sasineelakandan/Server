@@ -5,7 +5,7 @@ import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
-
+import {io} from "../../src/index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
       try {
@@ -282,7 +282,7 @@ export class UserRepository implements IuserRepository {
       }
     }
 
-    sendMessage=async(roomId: string, message: string): Promise<SuccessResponse>=> {
+    sendMessage=async(roomId: string, message:any): Promise<SuccessResponse>=> {
       try {
         
         if (!roomId) {
@@ -295,10 +295,11 @@ export class UserRepository implements IuserRepository {
         }
 
         const chatter=await ChatRoom.findOne({_id:roomId})
-        const updateChatter=await ChatRoom.updateOne({_id:roomId},{$set:{lastMessage:message}})
+        const updateChatter=await ChatRoom.updateOne({_id:roomId},{$set:{lastMessage:message?.content}})
         
         
-        const createMsg = await Message.create({sender:chatter?.patient,receiver:chatter?.doctor,roomId,content:message});
+        const createMsg = await Message.create({sender:chatter?.patient,receiver:chatter?.doctor,roomId,content:message?.content});
+        io.to(roomId).emit("message", {createMsg})
         return {
           status: 'sucess',
           message: "Chat room created successfully",

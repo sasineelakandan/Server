@@ -197,7 +197,7 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
      }
-     sendMessage=async(roomId: string, message: string): Promise<SuccessResponse> =>{
+     sendMessage=async(roomId: string, message: any): Promise<SuccessResponse> =>{
       try {
         const chatmessage = await this.userRepository.sendMessage(
           roomId,

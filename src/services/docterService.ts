@@ -273,7 +273,7 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message);
     }
    }
-   sendMessage=async(roomId: string, message: string): Promise<SuccessResponse> =>{
+   sendMessage=async(roomId: string, message: any): Promise<SuccessResponse> =>{
     try {
       const chatmessage = await this.doctorRepository.sendMessage(
         roomId,

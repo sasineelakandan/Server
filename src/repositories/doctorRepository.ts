@@ -7,6 +7,7 @@ import { ProfileFormData } from "../interface/services/doctorService.type";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
+import {io} from "../../src/index";
 
 export class DoctorRepository implements IDoctorRepository {
    addDoctor=async(doctorData: AddDoctorInput): Promise<AddDoctorOutput>=> {
@@ -484,32 +485,47 @@ chatwithUser=async(doctorId: string, appointmentId: string): Promise<SuccessResp
   }
 }
 
-sendMessage=async(roomId: string, message: string): Promise<SuccessResponse>=> {
+sendMessage = async (roomId: string, message:any): Promise<SuccessResponse> => {
   try {
-    
+    // Validate inputs
     if (!roomId) {
-      throw new Error(`User with ID ${roomId} not found.`);
+      throw new Error("Room ID is required.");
     }
 
-  
     if (!message) {
-      throw new Error(`Appointment with ID ${message} not found.`);
+      throw new Error("Message content is required.");
     }
 
-    const chatter=await ChatRoom.findOne({_id:roomId})
-    const updateChatter=await ChatRoom.updateOne({_id:roomId},{$set:{lastMessage:message}})
+    // Find the chat room
+    const chatter = await ChatRoom.findOne({ _id: roomId });
+    if (!chatter) {
+      throw new Error(`Chat room with ID ${roomId} not found.`);
+    }
+
     
+    await ChatRoom.updateOne({ _id: roomId }, { $set: { lastMessage: message?.content } });
+
     
-    const createMsg = await Message.create({sender:chatter?.patient,receiver:chatter?.doctor,roomId,content:message});
+    const createMsg = await Message.create({
+      sender: chatter.patient,
+      receiver: chatter.doctor,
+      roomId,
+      content: message?.content,
+    });
+
+     io.to(roomId).emit("message", {createMsg})
+   
+
     return {
-      status: 'sucess',
-      message: "Chat room created successfully",
+      status: "success",
+      message: "Message sent successfully.",
     };
   } catch (error: any) {
-    console.error("Error in chatroom:", error);
+    console.error("Error in sendMessage doctor:", error);
     throw new Error(error.message);
   }
-}
+};
+
 getMessage=async(roomId: string): Promise<Messages>=> {
   try {
     
