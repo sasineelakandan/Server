@@ -40,10 +40,10 @@ export class BookingService implements IBookingService {
       throw new Error(error.message);
     }
   };
-  getSlots=async(doctorId: string): Promise<DoctorSlots> =>{
+  getSlots=async(doctorId: string,userId:string): Promise<DoctorSlots> =>{
     try {
       
-      const slots = await this.bookingRepository.getSlots(doctorId);
+      const slots = await this.bookingRepository.getSlots(doctorId,userId);
         if(!slots){
           throw error('doctor not found')
         }

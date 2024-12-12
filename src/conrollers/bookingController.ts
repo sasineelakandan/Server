@@ -79,13 +79,15 @@ doctorDetails=async(httpRequest: CustomRequest): Promise<ControllerResponse> =>{
 getSlots=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
     try {
         
-        
+        const userId=httpRequest?.user?.id
         const {doctorId}=httpRequest?.body
-       
+        if(!userId){
+            throw error('userId not found')
+        }
         if(!doctorId){
             throw error('doctorId not found')
         }
-        const slots= await this.bookingService.getSlots(doctorId);
+        const slots= await this.bookingService.getSlots(doctorId,userId);
         
         return {
             headers: {

@@ -64,11 +64,11 @@ export class BookingRepository implements IBookingRepository{
       throw new Error(error.message);
     }
   }
-   getSlots=async(doctorId: string): Promise<SlotData> =>{
+   getSlots=async(doctorId: string,userId:string): Promise<SlotData> =>{
     try {
          
       
-      const slots = await Slot.find({doctorId:doctorId,booked:false});
+      const slots = await Slot.find({doctorId:doctorId,status:'confirmed'});
     if (!slots) {
         throw new Error(`Doctor with doctor not found.`);
       }
