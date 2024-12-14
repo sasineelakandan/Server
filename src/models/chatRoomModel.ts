@@ -15,6 +15,14 @@ const chatRoomSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  isReadUc: {
+    type:Number,
+    default:0, 
+  },
+  isReadDc: {
+    type:Number,
+    default:0, 
+  },
   createdAt: {
     type: Date,
     default: Date.now,

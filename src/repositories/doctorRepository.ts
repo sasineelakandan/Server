@@ -470,9 +470,10 @@ sendMessage = async (roomId: string, message:any): Promise<SuccessResponse> => {
     }
 
     
-    await ChatRoom.updateOne({ _id: roomId }, { $set: { lastMessage: message?.content } });
+    await ChatRoom.updateOne({ _id: roomId }, { $set: { lastMessage: message?.content} });
 
-    
+    const updatedRoom = await ChatRoom.findOne({ _id: roomId });
+    console.log('Updated Chat Room:', updatedRoom);
     const createMsg = await Message.create({
       sender: chatter.patient,
       receiver: chatter.doctor,
@@ -499,6 +500,8 @@ getMessage=async(roomId: string): Promise<Messages>=> {
     if (!roomId) {
       throw new Error(`User with ID ${roomId} not found.`);
     }
+
+   
      const message = await Message.find({roomId:roomId});
 
     return message

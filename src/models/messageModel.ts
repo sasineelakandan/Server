@@ -1,7 +1,7 @@
 // models/Message.js
 import mongoose from 'mongoose';
 
-// Define 
+// Define
 const messageSchema = new mongoose.Schema({
   sender: {
     type: String,
@@ -24,8 +24,11 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isRead: {
+    type: Boolean,
+    default: false, 
+  },
 });
-
 
 const Message = mongoose.model('Message', messageSchema);
 

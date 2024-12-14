@@ -318,7 +318,9 @@ export class UserRepository implements IuserRepository {
         if (!roomId) {
           throw new Error(`User with ID ${roomId} not found.`);
         }
+        const chatRoomUp=await ChatRoom.updateOne({_id:roomId},{$set:{isReadUc:0}})
          const message = await Message.find({roomId:roomId});
+       
 
         return message
       } catch (error: any) {
