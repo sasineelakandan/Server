@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput} from '../repositories/userRepository.types'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput} from '../repositories/userRepository.types'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -17,5 +17,7 @@ export interface IuserRepository{
     getMessage(roomId:string):Promise<Messages>
     getChatMembers(userId:string):Promise<ChatMembers>
     slotAsign(userId:string,slotData:AppointmentSlot):Promise<AppointmentSlotOutput>
-    
+    getcompleteAppointment(userId:string):Promise<Appointments>
+    userReview(userId:string,Review:ReviewData):Promise<ReviewOutput>
+    googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
 }

@@ -233,7 +233,7 @@ export class AdminRepository implements IAdminRepository{
         }
     
         
-        const appointments = await Appointment.find({ })
+        const appointments = await Appointment.find({ }).sort({_id:-1})
     .populate('slotId')       
     .populate('doctorId')     
     .populate('patientId')    

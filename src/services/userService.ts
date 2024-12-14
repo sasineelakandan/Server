@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput} from "../interface/services/userService.types";
+import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -252,5 +252,59 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
     };
+    getcompleteAppointment=async(userId: string): Promise<Appointments>=> {
+      try {
+        const data = await this.userRepository.getcompleteAppointment(userId);
+        console.log(data)
+        return data
+      } catch (error: any) {
+        console.log("Error in doctorProfile", error.message);
+        throw new Error(error.message);
+      }
+    }
+    userReview=async(userId: string, Review: ReviewData): Promise<ReviewOutput>=> {
+      try {
+        const data = await this.userRepository.userReview(userId,Review);
+        
+        return {
+          reviewText:data?.reviewText,
+          rating:data?.rating,
+          createdAt:data?.createdAt.toString()
+        };
+      } catch (error: any) {
+        console.log("Error in doctorProfile", error.message);
+        throw new Error(error.message);
+      }
+    }
+    googleLogin=async(GoogleUser: GoogleUser): Promise<GoogleUserOutput> =>{
+      try {
+        function generateUniquePhoneNumber() {
+          
+          const firstDigit = Math.floor(Math.random() * 4) + 6;
+          const restOfTheNumber = Math.floor(Math.random() * 900000000) + 100000000; 
+          const phoneNumber = `${firstDigit}${restOfTheNumber}`; 
+        
+          return phoneNumber;
+        }
+        
+        
+        const uniquePhoneNumber = generateUniquePhoneNumber();
+        const phone=uniquePhoneNumber.toString()
+  
+        const user = await this.userRepository.googleLogin({
+          ...GoogleUser,
+  phone: phone
+          
+      });
+  
+        const accessToken = generateAccessToken(user._id, "user");
+        const refreshToken = generateRefreshToken(user._id, "user");
+  
+        return { ...user, accessToken, refreshToken };
+      } catch (error: any) {
+        console.log("Error in user service", error.message);
+        throw new Error(error.message);
+      }
+    }
      
     }

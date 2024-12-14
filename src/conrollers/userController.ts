@@ -4,6 +4,8 @@ import { IUserService } from "../interface/services/userService.interface";
 import { ControllerResponse } from '../interface/conrollers/userController.types';
 import OtpService from "../midlewere/otpservice/user/saveOtp";
 import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
+import Appointment from "../models/appointmentModel";
+import Review from "../models/reviewModel";
 
 
 export class UserController implements IUserConroller {
@@ -522,6 +524,122 @@ export class UserController implements IUserConroller {
       };
     }
   }
+  getcompleteAppointment=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    
+    try {
+    
+      const userId = httpRequest?.user?.id;
+      
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
+  
+      
+      const appointments = await this.userService.getcompleteAppointment( userId);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body:appointments
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+    
+  }
+  userReview=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    try {
+    
+      const userId = httpRequest?.user?.id;
+      const review=httpRequest?.body
+      
+      if (!userId) {
+        console.error('User ID not found');
+        throw new Error('User ID is required to fetch the profile.');
+      }
+  
+      
+      const appointments = await this.userService.userReview( userId,review);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 201, 
+        body:appointments
+      };
+    } catch (error: any) {
+      console.error('Error in userProfile:', error.message);
+  
+      
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, 
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  googleLogin=async(httpRequest: Request): Promise<ControllerResponse>=> {
+
+      try {
+          const { displayName,email,photoURL} = httpRequest.body;
+          
+        
+          
+          
+        
+          const user = await this.userService.googleLogin({
+            displayName,
+              email,
+              photoURL
+              
+              
+          });
+
+          const { accessToken, refreshToken } = user;
+          const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+          const userId=user._id.toString()
+          const useremail=email
+          await this.otpService.saveOtp({userId,generatedOtp},email);
+
+          
+         
+          
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 201,
+              body: { ...user, accessToken, refreshToken },
+          };
+      } catch (e: any) {
+          console.error("Error in userSignup:", e);
+          
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: e.statusCode || 500,
+              body: {
+                  error: e.message || "An unexpected error occurred",
+              },
+          };
+      }
+  };
   }
   
   

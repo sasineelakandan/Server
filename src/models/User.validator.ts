@@ -11,7 +11,7 @@ const validationMessages = {
 };
 
 const usernameValidator = (value: string) => {
-  return validator.isAlphanumeric(value) && validator.isLength(value, { min: 3, max: 50 });
+  return validator.isLength(value, { min: 3, max: 50 });
 };
 
 const emailValidator = (value: string) => {

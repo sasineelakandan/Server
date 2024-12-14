@@ -1,11 +1,12 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
 import Slot from '../models/slotsModel'
+import Reviews from "../models/reviewModel";
 import {io} from "../../src/index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -19,7 +20,7 @@ export class UserRepository implements IuserRepository {
           _id: user._id.toString(),
           username: user.username,
           email: user.email,
-          phone: user.phone,
+          phone: user.phone||'',
          
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -76,9 +77,9 @@ export class UserRepository implements IuserRepository {
             _id: user._id.toString(),
             username: user.username,
             email: user.email,
-            phone: user.phone,
+            phone: user.phone||'',
            
-            password:user.password,
+            password:user.password||'',
          
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
@@ -116,9 +117,9 @@ export class UserRepository implements IuserRepository {
           _id: user._id.toString(),
           username: user.username,
           email: user.email,
-          phone: user.phone,
+          phone: user.phone||'',
           profilePic:user.profilePic||'',
-          password:user.password,
+          password:user.password||'',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -140,9 +141,9 @@ export class UserRepository implements IuserRepository {
           _id: user._id.toString(),
           username: user.username,
           email: user.email,
-          phone: user.phone,
+          phone: user.phone||'',
           profilePic:user.profilePic||'',
-          password:user.password,
+          password:user.password||'',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -165,9 +166,9 @@ export class UserRepository implements IuserRepository {
           _id: user._id.toString(),
           username: user.username,
           email: user.email,
-          phone: user.phone,
+          phone: user.phone||'',
           profilePic:user.profilePic||'',
-          password:user.password,
+          password:user?.password||'',
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -202,7 +203,8 @@ export class UserRepository implements IuserRepository {
     cancelAppointments=async(userId: string, appointmentId: string): Promise<SuccessResponse> =>{
       try {
       
-    
+        const appointment=await Appointment.findOne({_id:appointmentId})
+        const slot=await Slot.updateOne({_id:appointment?.slotId},{status:'booked',booked:false})
         const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
         if (!userId) {
           throw new Error(`Doctor with ID ${userId} not found.`);
@@ -380,6 +382,92 @@ export class UserRepository implements IuserRepository {
         console.error("Error in slot creation:", error);
         throw new Error(error.message);
       }
+    }
+    getcompleteAppointment=async(userId: string): Promise<Appointments>=> {
+      try {
+        
+        if (!userId) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+        const appointments = await Appointment.find({ userId: userId, status:'completed' }).sort({_id:-1})
+        .populate('slotId')       
+        .populate('doctorId')     
+        .populate('patientId')    
+        .populate('userId');
+         
+
+        return appointments
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+    }
+    userReview=async(userId: string, Review: ReviewData): Promise<ReviewOutput> =>{
+      try {
+        
+        if (!userId) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+    
+      
+        if (!Review) {
+          throw new Error(`Appointment with ID ${Review} not found.`);
+        }
+
+        const data = await Reviews.create({
+          userId,
+          ...Review, 
+        });
+        
+       
+        return {
+          reviewText:data?.reviewText,
+          rating:data?.rating,
+          createdAt:data?.createdAt.toString()
+        };
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+    }
+    googleLogin=async(GoogleUser: GoogleUser): Promise<GoogleUserOutput>=> {
+      try {
+        const users = await User.updateOne(
+          { email: GoogleUser.email }, 
+          {
+            $set: {
+              username: GoogleUser.displayName,
+             
+              phone:'Not Provider', 
+            },
+          },
+          { upsert: true } 
+        )
+
+        const user=await User.findOne({email:GoogleUser.email}) 
+
+  
+         if (!user) {
+      throw new Error("User not found after upsert.");
+    }
+
+    
+    return {
+      _id: user._id.toString(),
+      username: user.username,
+      email: user.email,
+      profilePic:user?.profilePic||''
+    };
+      } catch (error: any) {
+        console.error("Error adding user:", error);
+        if (error.code === 11000) {
+          const field = Object.keys(error.keyValue)[0]; 
+          const value = error.keyValue[field]; 
+          error.message = `${field} '${value}' already exists.`;
+        }
+        throw new Error(error.message);
+      }
+
     }
     
    } 

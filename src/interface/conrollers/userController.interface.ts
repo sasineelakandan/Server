@@ -18,4 +18,7 @@ export interface IUserConroller{
     getMessages(httpRequest:Request):Promise<ControllerResponse>
     getChatMembers(httpRequest:Request):Promise<ControllerResponse>
     slotAssign(httpRequest:Request):Promise<ControllerResponse>
+    getcompleteAppointment(httpRequest:Request):Promise<ControllerResponse>
+    userReview(httpRequest:Request):Promise<ControllerResponse>
+    googleLogin(httpRequest:Request):Promise<ControllerResponse>
 }

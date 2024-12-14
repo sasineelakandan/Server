@@ -56,4 +56,14 @@ router
   .route('/chatroom')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getChatMembers))
 
+  router
+  .route('/Notification')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getcompleteAppointment))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.userReview))
+
+  router
+  .route('/google-login')
+  .post(expressCallback(controller.googleLogin))
+
+
 export default router;

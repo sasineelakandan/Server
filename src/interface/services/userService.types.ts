@@ -80,3 +80,42 @@ export type AppointmentSlotOutput= {
   endTime: string; 
   isBooked: boolean; 
 }
+
+export type ReviewData ={
+ 
+  doctorId: string;
+  appointmentId:string; 
+  rating: number; 
+  reviewText: string;
+  
+}
+
+export type ReviewOutput ={
+   
+  
+  rating: number; 
+  reviewText: string;
+  createdAt:string
+  
+}
+
+export type GoogleUser= {
+  displayName: string;
+  email: string;
+  photoURL: string;
+  
+
+}
+
+export type GoogleUserOutput= {
+  readonly _id:string
+  readonly username: string;
+  readonly email: string;
+  
+  readonly profilePic?:string
+  
+  
+  readonly accessToken?: string;
+  readonly refreshToken?: string;
+
+}
