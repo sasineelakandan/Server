@@ -501,7 +501,7 @@ getMessage=async(roomId: string): Promise<Messages>=> {
       throw new Error(`User with ID ${roomId} not found.`);
     }
 
-   
+    const chatRoomUp=await Message.updateMany({roomId:roomId},{$set:{isRead:true}})
      const message = await Message.find({roomId:roomId});
 
     return message
@@ -516,6 +516,7 @@ getChatMembers=async(doctorId: string): Promise<ChatMembers>=>{
     if (!doctorId) {
       throw new Error(`User with ID ${doctorId} not found.`);
     }
+
      const message = await ChatRoom.find({doctor:doctorId}).populate('patient');
      
 

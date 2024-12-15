@@ -1,4 +1,3 @@
-// models/Message.js
 import mongoose from 'mongoose';
 
 // Define
@@ -10,6 +9,14 @@ const messageSchema = new mongoose.Schema({
   receiver: {
     type: String,
     required: true,
+  },
+  senderId: {
+    type: String,
+    equired: true
+  },
+  receiverId: {
+    type: String,
+     required: true,
   },
   roomId: {
     type: mongoose.Schema.Types.ObjectId,

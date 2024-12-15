@@ -36,56 +36,48 @@ export const socketHandler = (io: SocketIOServer) => {
           { _id: roomId },
           {
             $set: { lastMessage: content },
-            $inc: { [incrementField]: 1 }, 
+            $inc: { [incrementField]: 1 },
           }
         );
 
-        // Save the message to MongoDB
-        const newMessage = new Message({
-          roomId,
-          sender,
-          receiver,
-          content,
-          timestamp: new Date(),
-        });
-
-        const savedMessage = await newMessage.save();
-        console.log("Message saved to MongoDB:", savedMessage);
-
-        // Find the chat room details
         const room = await ChatRoom.findById(roomId);
         if (!room) {
           console.log("Room not found:", roomId);
           return;
         }
 
-        // Calculate unread messages count for the sender's side
-        let unreadCountuser = 0;
-        let unreadCount=0
+        const receiverId = sender === "patient" ? room.doctor : room.patient;
+        const senderId = sender === "Doctor" ? room.doctor : room.patient;
 
-        // If sender is 'patient', calculate unread count for patient
-        if (sender === "patient") {
-          const patientRooms = await ChatRoom.find({ doctor: room.doctor });
+        const newMessage = new Message({
+          roomId,
+          sender,
+          receiver,
+          receiverId,
+          senderId,
+          content,
+          isRead: false, 
+          timestamp: new Date(),
+        });
 
-          unreadCount = patientRooms.reduce(
-            (acc, chatRoom) => acc + chatRoom.isReadDc,
-            0
-          );
-          console.log(unreadCount)
+        const savedMessage = await newMessage.save();
+        console.log("Message saved to MongoDB:", savedMessage);
+
+        // Calculate unread message counts for the receiver
+        const unreadMessageCount = await Message.countDocuments({
+          receiverId,
+          isRead: false,
+        });
+
+        console.log(`Unread messages for receiver ${receiverId}:`, unreadMessageCount);
+
+        if (receiver === "Doctor") {
+          
+          io.emit("updateDoctorUnreadCount",  unreadMessageCount );
         } else {
-          // If sender is not 'patient', calculate unread count for doctor
-          const doctorRooms = await ChatRoom.find({ patient: room.patient });
-          unreadCountuser = doctorRooms.reduce(
-            (acc, chatRoom) => acc + chatRoom.isReadUc,
-            0
-          );
+          
+          io.emit("updateUnreadCount",  unreadMessageCount );
         }
-
-
-       
-
-        // Emit the unread count to all connected clients
-        io.emit("updateUnreaduser", unreadCountuser);
 
         // Emit the message to the room
         io.to(roomId).emit("receiveMessage", savedMessage);

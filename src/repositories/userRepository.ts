@@ -319,6 +319,7 @@ export class UserRepository implements IuserRepository {
           throw new Error(`User with ID ${roomId} not found.`);
         }
         const chatRoomUp=await ChatRoom.updateOne({_id:roomId},{$set:{isReadUc:0}})
+        const readmessage = await Message.updateMany({roomId:roomId},{$set:{isRead:true}});
          const message = await Message.find({roomId:roomId});
        
 
