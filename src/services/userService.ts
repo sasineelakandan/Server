@@ -1,6 +1,6 @@
 import { IUserService } from "../interface/services/userService.interface";
 import { IuserRepository } from "../interface/repositories/userRepository.interface";
-import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput} from "../interface/services/userService.types";
+import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas} from "../interface/services/userService.types";
 import { encryptPassword,comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
 
@@ -303,6 +303,16 @@ console.log("Error in changepassword", error.message);
         return { ...user, accessToken, refreshToken };
       } catch (error: any) {
         console.log("Error in user service", error.message);
+        throw new Error(error.message);
+      }
+    }
+    getReview=async(userId: string): Promise<ReviewDatas> =>{
+      try {
+        const data = await this.userRepository.getReview(userId);
+        
+        return data
+      } catch (error: any) {
+        console.log("Error in doctorProfile", error.message);
         throw new Error(error.message);
       }
     }

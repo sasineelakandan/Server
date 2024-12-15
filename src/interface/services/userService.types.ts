@@ -119,3 +119,5 @@ export type GoogleUserOutput= {
   readonly refreshToken?: string;
 
 }
+
+export type ReviewDatas= Array<{ [key: string]: any }>

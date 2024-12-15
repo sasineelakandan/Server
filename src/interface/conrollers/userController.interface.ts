@@ -21,4 +21,5 @@ export interface IUserConroller{
     getcompleteAppointment(httpRequest:Request):Promise<ControllerResponse>
     userReview(httpRequest:Request):Promise<ControllerResponse>
     googleLogin(httpRequest:Request):Promise<ControllerResponse>
+    getReview(httpRequest:Request):Promise<ControllerResponse>
 }

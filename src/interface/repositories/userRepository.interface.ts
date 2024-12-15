@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput} from '../repositories/userRepository.types'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas} from '../repositories/userRepository.types'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -20,4 +20,5 @@ export interface IuserRepository{
     getcompleteAppointment(userId:string):Promise<Appointments>
     userReview(userId:string,Review:ReviewData):Promise<ReviewOutput>
     googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
+    getReview(userId:string):Promise<ReviewDatas>
 }

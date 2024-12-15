@@ -1,5 +1,5 @@
 import {IuserRepository } from "../interface/repositories/userRepository.interface"
-import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput } from "../interface/repositories/userRepository.types"
+import { findOtp, AddOtpOutput, AddUserInput,AddUserOuput, GetUserOutput,updateUser, GetuserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas } from "../interface/repositories/userRepository.types"
 import User from "../models/userModel";
 import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
@@ -471,6 +471,25 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
 
+    }
+
+    getReview=async(userId: string): Promise<ReviewDatas> =>{
+      
+      try {
+        
+        if (!userId) {
+          throw new Error(`User with ID ${userId} not found.`);
+        }
+        const reviewDatas = await Reviews.find({ userId: userId}).sort({_id:-1})
+        .populate('userId');
+         
+
+        return reviewDatas
+      } catch (error: any) {
+        console.error("Error in chatroom:", error);
+        throw new Error(error.message);
+      }
+      
     }
     
    } 
