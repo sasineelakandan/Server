@@ -12,7 +12,7 @@ export interface IDoctorConroller{
     verifyProfile(httpRequest:Request):Promise<ControllerResponse>
     changeProfile(httpRequest:Request):Promise<ControllerResponse>
     changePassword(httpRequest:Request):Promise<ControllerResponse>
-    
+    forgotPasswordOtp(httpRequest:Request):Promise<ControllerResponse>
     getAppointments(httpRequest:Request):Promise<ControllerResponse>
     resheduleAppointment(httpRequest:Request):Promise<ControllerResponse>
     completeAppointment(httpRequest:Request):Promise<ControllerResponse>
@@ -22,4 +22,5 @@ export interface IDoctorConroller{
     sendMessage(httpRequest:Request):Promise<ControllerResponse>
     getMessages(httpRequest:Request):Promise<ControllerResponse>
     getChatMembers(httpRequest:Request):Promise<ControllerResponse>
+    forgotPassword(httpRequest:Request):Promise<ControllerResponse>
 }

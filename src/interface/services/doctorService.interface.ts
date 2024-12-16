@@ -9,7 +9,7 @@ export interface IDoctorService {
   updateProfile(formData:FormData,userId:string):Promise<DoctorProfileOutput>
   changeProfile(userId:string,formData:ProfileFormData):Promise<DoctorProfileOutput>
   changePassword(userId: string,oldPassword:string,newPassword:string):Promise<DoctorProfileOutput>
- 
+  forgotPasswordOtp(email:string):Promise<SuccessResponse>
   getAppointments(doctorId:string):Promise<Appointments>
   resheduleAppointment(doctorId:string,payloadData:ResheduleData):Promise<SuccessResponse>
   completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
@@ -19,4 +19,5 @@ export interface IDoctorService {
   sendMessage(roomId:string,message:string):Promise<SuccessResponse>
   getMessage(roomId:string):Promise<Messages>
   getChatMembers(userId:string):Promise<ChatMembers>
+  forgotPassword(otpDataa:any):Promise<SuccessResponse>
 }

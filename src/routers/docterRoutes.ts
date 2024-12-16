@@ -55,5 +55,11 @@ router
   router
   .route('/chatroom')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getChatMembers))
+
+
+  router
+  .route('/forgotpassword')
+  .post(expressCallback(controller.forgotPasswordOtp))
+  .put(expressCallback(controller.forgotPassword))
  
 export default router;

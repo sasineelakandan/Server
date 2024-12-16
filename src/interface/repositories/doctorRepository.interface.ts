@@ -10,7 +10,7 @@ export interface IDoctorRepository{
     updateDoctorProfile(formData:HospitalData,userId:string):Promise<GetDoctorProfile>
     changeProfile(userId:string,formData:ProfileFormData):Promise<GetDoctorProfile>
     changePassword(userId:string,newpassword:string,oldPassword:string):Promise<GetDoctorProfile>
-
+    forgotPasswordOtp(email:string):Promise<SuccessResponse>
     getAppointments(doctorId:string):Promise<Appointments>
     resheduleAppointment(doctorId:string,payloadData:ResheduleData):Promise<SuccessResponse>
     completeAppointment(doctorId:string,appointmentId:string):Promise<SuccessResponse>
@@ -20,5 +20,7 @@ export interface IDoctorRepository{
     sendMessage(roomId:string,message:string):Promise<SuccessResponse>
     getMessage(roomId:string):Promise<Messages>
     getChatMembers(userId:string):Promise<ChatMembers>
+    forgotPassword(otpDataa:any):Promise<SuccessResponse>
+    updateDoctorPassword(userId:string,password:string):Promise<SuccessResponse>
 
 }

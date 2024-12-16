@@ -20,5 +20,5 @@ export interface IuserRepository{
     getcompleteAppointment(userId:string):Promise<Appointments>
     userReview(userId:string,Review:ReviewData):Promise<ReviewOutput>
     googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
-    getReview(userId:string):Promise<ReviewDatas>
+    getReview(doctorId:string):Promise<ReviewDatas>
 }

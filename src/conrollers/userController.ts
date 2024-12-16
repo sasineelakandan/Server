@@ -643,16 +643,18 @@ export class UserController implements IUserConroller {
   getReview=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
     try {
     
-      const userId = httpRequest?.user?.id;
+      const doctorId = httpRequest?.query?.doctorId;
+      if (typeof doctorId !== 'string') {
+        throw new Error('doctorId must be a valid string.');
+      }
       
-      
-      if (!userId) {
+      if (!doctorId) {
         console.error('User ID not found');
         throw new Error('User ID is required to fetch the profile.');
       }
   
       
-      const reviewDatas = await this.userService.getReview( userId);
+      const reviewDatas = await this.userService.getReview( doctorId);
   
       return {
         headers: {

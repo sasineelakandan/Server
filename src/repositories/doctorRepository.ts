@@ -526,4 +526,72 @@ getChatMembers=async(doctorId: string): Promise<ChatMembers>=>{
     throw new Error(error.message);
   }
 }
+
+forgotPasswordOtp=async(email: string): Promise<SuccessResponse> =>{
+  try {
+      
+    
+    const doctor = await Doctor.findOne(
+      { email: email },
+      
+    )
+    if (!email) {
+      throw new Error(`Doctor with ID ${email} not found.`);
+    }
+  
+    return {
+      status: doctor?._id.toString()||'',
+      message: 'Slot assigned successfully',
+    };
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+
+forgotPassword=async(userId: string): Promise<SuccessResponse>=> {
+  try{
+    
+  
+    const otp=await Otp.findOne({userId:userId})
+     
+    if (!otp) {
+      throw new Error("OTP not found or expired.");
+  }
+  if (otp.expiresAt < new Date()) {
+    throw new Error("OTP has expired.");
+  }
+  
+    return {
+      status: otp.otpCode,
+      message: "Message sent successfully.",
+    };
+ } catch (error: any) {
+  console.error("Error find Otp:", error);
+  if (error.code === 11000) {
+    const field = Object.keys(error.keyValue)[0]; 
+    const value = error.keyValue[field]; 
+    error.message = `${field} '${value}' already exists.`;
+  }
+  throw new Error(error.message);
+}
+}
+
+updateDoctorPassword=async(userId:string,password:string):Promise<SuccessResponse>=>{
+try{
+  const user=await Doctor.updateOne({_id:userId},{$set:{password}})
+  return {
+    status: "success",
+    message: "Message sent successfully.",
+  };
+} catch (error: any) {
+  console.error("Error find update Doctor:", error);
+  if (error.code === 11000) {
+    const field = Object.keys(error.keyValue)[0]; 
+    const value = error.keyValue[field]; 
+    error.message = `${field} '${value}' already exists.`;
+  }
+  throw new Error(error.message);
+}
+}
 }

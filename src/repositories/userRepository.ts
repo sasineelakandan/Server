@@ -473,14 +473,14 @@ export class UserRepository implements IuserRepository {
 
     }
 
-    getReview=async(userId: string): Promise<ReviewDatas> =>{
+    getReview=async(doctorId: string): Promise<ReviewDatas> =>{
       
       try {
         
-        if (!userId) {
-          throw new Error(`User with ID ${userId} not found.`);
+        if (!doctorId) {
+          throw new Error(`User with ID ${doctorId} not found.`);
         }
-        const reviewDatas = await Reviews.find({ userId: userId}).sort({_id:-1})
+        const reviewDatas = await Reviews.find({ doctorId: doctorId}).sort({_id:-1})
         .populate('userId');
          
 

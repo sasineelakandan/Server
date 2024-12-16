@@ -295,5 +295,38 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message);
     }
    }
+
+   forgotPasswordOtp=async(email: string): Promise<SuccessResponse> =>{
+    try {
+      const otp= await this.doctorRepository.forgotPasswordOtp(
+        email
+        
+      );
+      return otp;
+    } catch (error: any) {
+      console.log("Error in chat", error.message);
+      throw new Error(error.message);
+    }
+   }
+
+   forgotPassword=async(otpDataa: any): Promise<SuccessResponse>=> {
+    try {
+      const { userId, otp,password} = otpDataa;
+      console.log(userId)
+      const hashedPassword = await encryptPassword(password);
+      const userotp = await this.doctorRepository.forgotPassword(userId);
+      if (userotp.status !== otp) {
+        throw new Error("Invalid OTP.");
+      }
+      if (userotp.status == otp) {
+        await this.doctorRepository.updateDoctorPassword(userId,hashedPassword);
+      }
+
+      return { ...userotp };
+    } catch (error: any) {
+      console.log("Error in verifyOtp", error.message);
+      throw new Error(error.message);
+    }
+   }
    
 }

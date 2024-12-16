@@ -306,9 +306,9 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
     }
-    getReview=async(userId: string): Promise<ReviewDatas> =>{
+    getReview=async(doctorId: string): Promise<ReviewDatas> =>{
       try {
-        const data = await this.userRepository.getReview(userId);
+        const data = await this.userRepository.getReview(doctorId);
         
         return data
       } catch (error: any) {

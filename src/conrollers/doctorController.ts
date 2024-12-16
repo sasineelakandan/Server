@@ -581,7 +581,68 @@ export class DoctorController implements IDoctorConroller {
         };
       }
     }
+    forgotPasswordOtp=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+      try {
+    
+        const email = httpRequest?.body?.email;
+    
+        
+        if (!email || typeof email !== 'string') {
+          console.error('Invalid room ID');
+          throw new Error('email is required and must be a string.');
+        }
+
+        const otp = await this.doctorService.forgotPasswordOtp(email);
+        const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        const userId=otp.status
+        await this.otpService.saveOtp({userId,generatedOtp},email);
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 200, 
+          body: otp, 
+        };
+      } catch (error: any) {
+        console.error('Error in getMessages:', error.message);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, // Internal Server Error
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
+    forgotPassword=async(httpRequest: Request): Promise<ControllerResponse>=> {
+      try{
+      console.log(httpRequest)
+           const{userId,otp,password}= httpRequest.body
+           
+           const savedOtp = await this.doctorService.forgotPassword({userId,otp,password});
+           return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 201,
+              body: {...savedOtp},
+          };
+        } catch (e: any) {
+            console.error("Error in userSignup:", e);
+            
+            return {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                statusCode: e.statusCode || 500,
+                body: {
+                    error: e.message || "An unexpected error occurred",
+                },
+            };
+        }
     }
     
+  } 
  
   
