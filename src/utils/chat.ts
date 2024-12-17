@@ -4,19 +4,28 @@ import mongoose from "mongoose";
 import ChatRoom from "../models/chatRoomModel";
 
 export const socketHandler = (io: SocketIOServer) => {
+
+let onlineUsers:any = {}; 
   io.on("connection", (socket: Socket) => {
     console.log("User connected:", socket.id);
 
-    // User joins a specific room
+    
     socket.on("joinRoom", (roomId: string) => {
       socket.join(roomId);
       console.log(`User joined room: ${roomId}`);
     });
 
+    socket.on("userOnline", (userId) => {
+      onlineUsers[userId] = socket.id; 
+      io.emit("updateUserStatus", onlineUsers); 
+  });
+
     // Handle message creation and emit to users in the room
     socket.on("sendMessage", async (data: any) => {
       try {
+        
         const { roomId, message } = data;
+        console.log(message)
         const { sender, receiver, content } = message;
 
         // Validate the roomId
@@ -88,6 +97,13 @@ export const socketHandler = (io: SocketIOServer) => {
 
     // Handle user disconnection
     socket.on("disconnect", () => {
+      for (let userId in onlineUsers) {
+        if (onlineUsers[userId] === socket.id) {
+            delete onlineUsers[userId];
+            break;
+        }
+    }
+    io.emit("updateUserStatus", onlineUsers); 
       console.log("User disconnected:", socket.id);
     });
   });
