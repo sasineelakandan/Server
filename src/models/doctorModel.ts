@@ -121,6 +121,11 @@ const DoctorSchema = new Schema(
       required: false, // Optional field
       default: "", // Default empty string if not provided
     },
+    location: {
+      address: { type: String, required: true },
+      latitude: { type: Number, required: true },
+      longitude: { type: Number, required: true },
+    },
   },
   {
     timestamps: true,
