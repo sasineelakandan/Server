@@ -7,6 +7,7 @@ export type AddDoctorInput = {
     experience: number;
     profilePic?: string;
     licensePic?: string;
+    location:any
   };
   
   export type AddDoctorOutput = {
@@ -83,9 +84,7 @@ export type AddDoctorInput = {
     readonly name: string;
     readonly email: string;
     readonly phone: string;
-    readonly state:string;
-    readonly street:string;
-    readonly city:string;
+    readonly location:any
     readonly password: string;
     readonly specialization: string;
     readonly licenseNumber:string,
@@ -102,9 +101,6 @@ export type AddDoctorInput = {
   export type HospitalData ={
     hospitalName: string;
     licenseNumber: string;
-    street: string;
-    city: string;
-    state: string;
     licenseImage: string;
     licenseImage1: string;
     fees: number;
@@ -115,9 +111,7 @@ export type AddDoctorInput = {
     phone: string;
     hospitalName: string;
     fees: number;
-    street: string;
-    city: string;
-    state: string;
+    location:any
     experience: number;
   }
 

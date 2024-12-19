@@ -145,9 +145,7 @@ export class DoctorRepository implements IDoctorRepository {
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
-        state: doctor.state || "",
-        street: doctor.street || "",
-        city: doctor.city || "",
+        location:doctor.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
       };
@@ -164,15 +162,13 @@ export class DoctorRepository implements IDoctorRepository {
 
 
 
-      const {licenseImage,licenseImage1,hospitalName,city,state,street,fees,licenseNumber}=formData
+      const {licenseImage,licenseImage1,hospitalName,fees,licenseNumber}=formData
       
       const updateDoctor=await Doctor.updateOne({_id:userId},{$set:{
         licenseImage:licenseImage,
         profilePic:licenseImage1,
         hospitalName:hospitalName,
-        city:city,
-        state:state,
-        street:street,
+        
         fees:fees,
         licenseNumber:licenseNumber
       }})
@@ -200,9 +196,7 @@ export class DoctorRepository implements IDoctorRepository {
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
-        state: doctor.state || "",
-        street: doctor.street || "",
-        city: doctor.city || "",
+        location:doctor.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
       };
@@ -219,15 +213,13 @@ export class DoctorRepository implements IDoctorRepository {
 
 
 
-      const {phone,name,hospitalName,city,state,street,fees,experience}=formData
+      const {phone,name,hospitalName,fees,experience}=formData
       
       const updateDoctor=await Doctor.updateOne({_id:userId},{$set:{
         name:name,
         phone:phone,
         hospitalName:hospitalName,
-        city:city,
-        state:state,
-        street:street,
+        
         fees:fees,
         experience:experience
 
@@ -257,9 +249,7 @@ export class DoctorRepository implements IDoctorRepository {
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
-        state: doctor.state || "",
-        street: doctor.street || "",
-        city: doctor.city || "",
+        location:doctor.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
       };
@@ -293,9 +283,7 @@ export class DoctorRepository implements IDoctorRepository {
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
-        state: doctor.state || "",
-        street: doctor.street || "",
-        city: doctor.city || "",
+        location:doctor?.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
       };

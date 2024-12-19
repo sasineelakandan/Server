@@ -51,9 +51,7 @@ export class BookingRepository implements IBookingRepository{
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
-        state: doctor.state || "",
-        street: doctor.street || "",
-        city: doctor.city || "",
+        location:doctor.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
       } 

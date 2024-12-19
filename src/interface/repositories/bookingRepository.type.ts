@@ -5,9 +5,7 @@ export type DoctorDetials = {
     readonly name: string;
     readonly email: string;
     readonly phone: string;
-    readonly state:string;
-    readonly street:string;
-    readonly city:string;
+    readonly location:any;
     readonly password: string;
     readonly specialization: string;
     readonly licenseNumber:string,

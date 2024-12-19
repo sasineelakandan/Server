@@ -16,14 +16,16 @@ export class DoctorController implements IDoctorConroller {
   
   doctorSignup=async(httpRequest: Request): Promise<ControllerResponse>=> {
       try{
-        const { name,email,password,phone, specialization,experience} = httpRequest.body;
+        const { name,email,password,phone, specialization,experience,location} = httpRequest.body;
+        console.log(location)
         const doctor = await this.doctorService.doctorSignup({
             name,
             email,
             phone,
             password,
             specialization,
-            experience
+            experience,
+            location
             
         });
         const { accessToken, refreshToken } = doctor;

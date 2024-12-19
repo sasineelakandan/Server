@@ -7,6 +7,7 @@ export type DoctorSignupInput = {
     experience: number;
     profilePic?: string;
     licensePic?: string;
+    location:any
   };
   
   export type DoctorSignupOutput = {
@@ -64,9 +65,7 @@ export type DoctorSignupInput = {
     readonly name: string;
     readonly email: string;
     readonly phone: string;
-    readonly state:string;
-    readonly street:string;
-    readonly city:string;
+    readonly location:any
     readonly password: string;
     readonly specialization: string;
     readonly licenseNumber:string,
