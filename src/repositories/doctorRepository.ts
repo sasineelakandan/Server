@@ -302,7 +302,8 @@ getAppointments=async(doctorId: string): Promise<Appointments>=> {
     const appointments = await Appointment.find({ doctorId: doctorId }).sort({_id:-1})
     .populate('slotId')       
     .populate('doctorId')     
-    .populate('patientId')    
+    .populate('patientId') 
+    .populate('paymentId')   
     .populate('userId');
     
     
