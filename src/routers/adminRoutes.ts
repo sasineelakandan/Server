@@ -37,4 +37,9 @@ router
 .route('/appointments')
 .get(authMiddleware,expressCallback(controller.getAppointments))
 
+router
+.route('/reviews')
+.get(authMiddleware,expressCallback(controller.getReviews))
+.delete(authMiddleware,expressCallback(controller.deleteReview))
+
 export default router;

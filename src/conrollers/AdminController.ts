@@ -1,6 +1,7 @@
 import { IAdminController } from "../interface/conrollers/adminController.intrface";
 import { ControllerResponse } from "../interface/conrollers/userController.types";
 import { IAdminService } from "../interface/services/adminService.interface";
+import { ReviewDatas } from "../interface/services/adminService.type";
 import { CustomRequest } from "../midlewere/jwt/authentiCateToken";
 
 
@@ -377,5 +378,94 @@ deleteDoctor=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
        };
    }
    }
-}
+   getReviews=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+       
+   {
+    try{
+        
+        const admin=httpRequest.user?.id
+        
+        if (!admin || typeof admin !== 'string') {
+            throw new Error("userId is required and must be a string.");
+          }
+       const reviews=await this.adminService.getReviews(admin)
 
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: 200,
+           body: reviews
+       };
+      } catch (e: any) {
+       console.error("Error in adminLogin:", e);
+
+       return {
+           headers: {
+               "Content-Type": "application/json",
+           },
+           statusCode: e.statusCode || 500,
+           body: {
+               error: e.message || "An unexpected error occurred",
+           },
+       };
+   }
+   }
+}
+deleteReview=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
+    try {
+        const reviewId = httpRequest?.query?.reviewId;
+        
+      
+        if (!reviewId) {
+          return {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            statusCode: 400,
+            body: {
+              error: "Review ID is missing.",
+            },
+          };
+        }
+      
+        if (typeof reviewId !== 'string') {
+          return {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            statusCode: 400,
+            body: {
+              error: "Review ID must be a string.",
+            },
+          };
+        }
+      
+        const deleteReview = await this.adminService.deleteReviews(reviewId);
+      
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: {
+            message: "Review deleted successfully.",
+            reviewId,
+          },
+        };
+      } catch (e: any) {
+        console.error("Error in deleteReview:", e);
+      
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: e.statusCode || 500,
+          body: {
+            error: e.message || "An unexpected error occurred.",
+          },
+        };
+      }
+      
+}
+}

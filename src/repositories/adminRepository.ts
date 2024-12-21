@@ -1,7 +1,8 @@
 import { IAdminRepository } from "../interface/repositories/adminRepository.interface";
-import { AppointmentData, doctorData, SuccessResponse, userData } from "../interface/repositories/adminRepository.type";
+import { AppointmentData, doctorData, ReviewDatas, SuccessResponse, userData } from "../interface/repositories/adminRepository.type";
 import Appointment from "../models/appointmentModel";
 import Doctor from "../models/doctorModel";
+import Review from "../models/reviewModel";
 import User from "../models/userModel";
 
 export class AdminRepository implements IAdminRepository{
@@ -255,5 +256,50 @@ export class AdminRepository implements IAdminRepository{
         return null
       }
     }
+
+    getReviews=async(admin: string): Promise<ReviewDatas|null> =>{
+      try {
+        if (!admin) {
+          
+          return null;
+        }
+    
+        
+    const reviews = await Review.find().sort({_id:-1})
+          
+    .populate('doctorId')     
+      
+    .populate('userId')
+   
+    
+        if (!reviews || reviews.length === 0) {
+          return null
+          
+        }
+    
+        
+        return reviews;
+    
+      } catch (error: any) {
+        
+        console.error("Error finding appointments:", error.message);
+      
+        return null
+      }
+    }
+   deleteReviews=async(review: string): Promise<SuccessResponse> =>{
+    try {
+      if (!review) {
+        return { success: false, message: "User ID is required" };
+      }
+     console.log(review)
+      const user = await Review.deleteOne({ _id: review });
+      return { success: true };
+    } catch (error) {
+      console.error("Error finding or updating user:", error);
+      throw new Error("Unable to fetch users. Please try again later.");
+    }
+   }
+
     }
     

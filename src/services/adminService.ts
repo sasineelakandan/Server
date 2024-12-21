@@ -1,6 +1,6 @@
 import { IAdminRepository } from "../interface/repositories/adminRepository.interface";
 import { IAdminService } from "../interface/services/adminService.interface";
-import { AdminInputData, AdminOutputData, AppointmentData, doctorData, SuccessResponse, userData} from "../interface/services/adminService.type";
+import { AdminInputData, AdminOutputData, AppointmentData, doctorData, ReviewDatas, SuccessResponse, userData} from "../interface/services/adminService.type";
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "../utils/constant";
 import { AppError } from "../utils/errors";
 
@@ -246,4 +246,50 @@ getAppoinments=async(admin: string): Promise<AppointmentData | null>=> {
     return null;
   }
 }
+
+getReviews = async (admin: string): Promise<ReviewDatas | null> => {
+  try {
+    if (!admin) {
+      console.warn("Admin identifier is required but not provided.");
+      return null;
+    }
+
+    const reviews = await this.adminRepository.getReviews(admin);
+
+    if (!reviews) {
+      console.info(`No reviews found for admin: ${admin}`);
+      return null;
+    }
+
+    return reviews;
+  } catch (error: any) {
+    console.error("Error in getReviews service:", error.message);
+    return null; // Or rethrow the error with `throw error;` if needed
+  }
+};
+deleteReviews=async(review: string): Promise<SuccessResponse>=> {
+  try {
+    
+    if (!review) {
+      return { success: false, message: "reviewId is required" };
+    }
+
+    
+    const users = await this.adminRepository.deleteReviews(review);
+
+    if (!users) {
+      return { success: false, message: "User not found or error fetching data" }
+    }
+
+  
+    return { success: true, message: "User block status fetched successfully" };
+
+  } catch (error: any) {
+    console.log("Error in user service", error.message);
+    return { success: false, message: `Error: ${error.message}` };  // Return error message
+  }
+}
+
 } 
+
+

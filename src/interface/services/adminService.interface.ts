@@ -1,5 +1,5 @@
 
-import { SuccessResponse, AdminOutputData, userData, doctorData, AppointmentData } from "./adminService.type";
+import { SuccessResponse, AdminOutputData, userData, doctorData, AppointmentData, ReviewDatas } from "./adminService.type";
 
 export interface IAdminService{
 
@@ -13,4 +13,6 @@ export interface IAdminService{
     doctorBlock(doctorId:string):Promise<SuccessResponse>
     deleteDoctor(doctorId:string):Promise<SuccessResponse>
     getAppoinments(admin:string):Promise<AppointmentData|null>
+    getReviews(admin:string):Promise<ReviewDatas|null>
+    deleteReviews(review:string):Promise<SuccessResponse>
 }

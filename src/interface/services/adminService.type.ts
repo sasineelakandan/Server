@@ -17,3 +17,5 @@ export type SuccessResponse = {
     success: boolean;
     message?: string; 
   };
+
+  export type ReviewDatas= Array<{ [key: string]: any }>
