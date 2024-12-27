@@ -38,9 +38,9 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/api/user',userrouter)
-app.use('/api/doctor',doctorrouter)
-app.use('/api/admin',adminRoutes)
-app.use('/api/booking',bookingRoutes)
+app.use('v1/api/user',userrouter)
+app.use('v1/api/doctor',doctorrouter)
+app.use('v1/api/admin',adminRoutes)
+app.use('v1/api/booking',bookingRoutes)
 
 httpServer.listen(PORT, () => console.log(`Server started running on port ${PORT}`));
