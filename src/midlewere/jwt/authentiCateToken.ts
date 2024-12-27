@@ -53,6 +53,9 @@ const authMiddleware = async (req: CustomRequest, res: Response, next: NextFunct
         
         res.cookie('accessToken', newAccessToken, {
           httpOnly: true,
+          secure: true,
+        sameSite: "strict",
+        domain: ".docreserva.site"
           
         });
 
