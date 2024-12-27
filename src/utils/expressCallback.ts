@@ -39,9 +39,7 @@ export function expressCallback(controller: any) {
       if (httpResponse.body.refreshToken) {
         res.cookie("refreshToken", httpResponse.body.refreshToken, {
           httpOnly: true,
-          secure: true,
-        sameSite: "strict",
-        domain: ".docreserva.site"
+          
         });
       }
 
