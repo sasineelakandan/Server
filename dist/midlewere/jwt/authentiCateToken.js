@@ -41,6 +41,9 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 const newAccessToken = jsonwebtoken_1.default.sign({ id: decoded.id, role: decoded.role }, (0, constant_1.JWT_SECRET)(), { expiresIn: '1h' });
                 res.cookie('accessToken', newAccessToken, {
                     httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                    domain: ".docreserva.site",
                 });
                 req.user = decoded; // Attach user payload to the request
                 return next(); // Proceed to the next controlle
