@@ -278,18 +278,11 @@ console.log("Error in changepassword", error.message);
     }
     googleLogin=async(GoogleUser: GoogleUser): Promise<GoogleUserOutput> =>{
       try {
-        function generateUniquePhoneNumber() {
-          
-          const firstDigit = Math.floor(Math.random() * 4) + 6;
-          const restOfTheNumber = Math.floor(Math.random() * 900000000) + 100000000; 
-          const phoneNumber = `${firstDigit}${restOfTheNumber}`; 
-        
-          return phoneNumber;
-        }
         
         
-        const uniquePhoneNumber = generateUniquePhoneNumber();
-        const phone=uniquePhoneNumber.toString()
+        
+       
+        const phone='Not provider'
   
         const user = await this.userRepository.googleLogin({
           ...GoogleUser,

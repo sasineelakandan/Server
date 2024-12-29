@@ -1,4 +1,6 @@
 export class AppError extends Error {
+    message;
+    statusCode;
     constructor(message, statusCode) {
         console.log('this app', message);
         super(message);
