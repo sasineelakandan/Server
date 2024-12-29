@@ -1,16 +1,23 @@
-import bcrypt from "bcryptjs";
-import { BCRYPT_SALT } from "./constant";
-export function encryptPassword(password) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.encryptPassword = encryptPassword;
+exports.comparePassword = comparePassword;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const constant_1 = require("./constant");
+function encryptPassword(password) {
     try {
-        return bcrypt.hashSync(password, BCRYPT_SALT());
+        return bcryptjs_1.default.hashSync(password, (0, constant_1.BCRYPT_SALT)());
     }
     catch (error) {
         throw new Error(error.message);
     }
 }
-export function comparePassword(inputPassword, passwordFromDb) {
+function comparePassword(inputPassword, passwordFromDb) {
     try {
-        return bcrypt.compareSync(inputPassword, passwordFromDb);
+        return bcryptjs_1.default.compareSync(inputPassword, passwordFromDb);
     }
     catch (error) {
         throw new Error(error.message);

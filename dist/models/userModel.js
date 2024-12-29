@@ -1,14 +1,16 @@
-import { Schema, model } from "mongoose";
-import { userValidators } from "../models/User.validator";
-const UserSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const User_validator_1 = require("../models/User.validator");
+const UserSchema = new mongoose_1.Schema({
     username: {
         type: String,
         required: true,
         unique: true,
         trim: true,
         validate: {
-            validator: userValidators.username.validator,
-            message: userValidators.username.message,
+            validator: User_validator_1.userValidators.username.validator,
+            message: User_validator_1.userValidators.username.message,
         },
     },
     email: {
@@ -18,8 +20,8 @@ const UserSchema = new Schema({
         trim: true,
         lowercase: true,
         validate: {
-            validator: userValidators.email.validator,
-            message: userValidators.email.message,
+            validator: User_validator_1.userValidators.email.validator,
+            message: User_validator_1.userValidators.email.message,
         },
     },
     phone: {
@@ -27,16 +29,16 @@ const UserSchema = new Schema({
         required: false,
         trim: true,
         validate: {
-            validator: userValidators.phone.validator,
-            message: userValidators.phone.message,
+            validator: User_validator_1.userValidators.phone.validator,
+            message: User_validator_1.userValidators.phone.message,
         },
     },
     password: {
         type: String,
         required: false,
         validate: {
-            validator: userValidators.password.validator,
-            message: userValidators.password.message,
+            validator: User_validator_1.userValidators.password.validator,
+            message: User_validator_1.userValidators.password.message,
         },
     },
     profilePic: {
@@ -59,4 +61,4 @@ const UserSchema = new Schema({
 }, {
     timestamps: true,
 });
-export default model("User", UserSchema);
+exports.default = (0, mongoose_1.model)("User", UserSchema);

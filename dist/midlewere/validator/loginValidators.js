@@ -1,10 +1,16 @@
-import validator from "validator";
-export function loginValidator(req, res, next) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.loginValidator = loginValidator;
+const validator_1 = __importDefault(require("validator"));
+function loginValidator(req, res, next) {
     try {
         const { email, password } = req.body;
         if (!email)
             throw new Error("Email is required");
-        if (!validator.isEmail(email))
+        if (!validator_1.default.isEmail(email))
             throw new Error("Invalid email format");
         if (!password)
             throw new Error("Password is required");

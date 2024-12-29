@@ -1,28 +1,33 @@
+"use strict";
 // models/appointment.js
-import mongoose from "mongoose";
-const appointmentSchema = new mongoose.Schema({
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const appointmentSchema = new mongoose_1.default.Schema({
     slotId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
         ref: 'DoctorSlot',
     },
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
         ref: 'Doctor',
     },
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
         ref: 'Patient',
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     paymentId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Payment",
         required: true,
     },
@@ -32,5 +37,5 @@ const appointmentSchema = new mongoose.Schema({
         default: "scheduled",
     },
 });
-const Appointment = mongoose.model("Appointment", appointmentSchema);
-export default Appointment;
+const Appointment = mongoose_1.default.model("Appointment", appointmentSchema);
+exports.default = Appointment;

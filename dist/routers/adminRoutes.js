@@ -1,36 +1,41 @@
-import { Router } from "express";
-import { expressCallback } from "../utils/expressCallback";
-import { AdminController } from "../conrollers/AdminController";
-import { AdminRepository } from "../repositories/adminRepository";
-import { AdminService } from "../services/adminService";
-import { loginValidator } from "../midlewere/validator/loginValidators";
-import authMiddleware from "../midlewere/jwt/authentiCateToken";
-const router = Router();
-const repository = new AdminRepository();
-const service = new AdminService(repository);
-const controller = new AdminController(service);
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const expressCallback_1 = require("../utils/expressCallback");
+const AdminController_1 = require("../conrollers/AdminController");
+const adminRepository_1 = require("../repositories/adminRepository");
+const adminService_1 = require("../services/adminService");
+const loginValidators_1 = require("../midlewere/validator/loginValidators");
+const authentiCateToken_1 = __importDefault(require("../midlewere/jwt/authentiCateToken"));
+const router = (0, express_1.Router)();
+const repository = new adminRepository_1.AdminRepository();
+const service = new adminService_1.AdminService(repository);
+const controller = new AdminController_1.AdminController(service);
 router
     .route('/adminlogin')
-    .post(loginValidator, expressCallback(controller.adminLogin));
+    .post(loginValidators_1.loginValidator, (0, expressCallback_1.expressCallback)(controller.adminLogin));
 router
     .route('/patients')
-    .get(authMiddleware, expressCallback(controller.patientDetails))
-    .patch(authMiddleware, expressCallback(controller.isBlocked))
-    .delete(authMiddleware, expressCallback(controller.isDelete));
+    .get(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.patientDetails))
+    .patch(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.isBlocked))
+    .delete(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.isDelete));
 router
     .route('/doctors')
-    .get(authMiddleware, expressCallback(controller.doctorDetails))
-    .patch(authMiddleware, expressCallback(controller.isVerify));
+    .get(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.doctorDetails))
+    .patch(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.isVerify));
 router
     .route('/verifieddoctors')
-    .get(authMiddleware, expressCallback(controller.verifiedDoctors))
-    .patch(authMiddleware, expressCallback(controller.blockDoctor))
-    .delete(authMiddleware, expressCallback(controller.deleteDoctor));
+    .get(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.verifiedDoctors))
+    .patch(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.blockDoctor))
+    .delete(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.deleteDoctor));
 router
     .route('/appointments')
-    .get(authMiddleware, expressCallback(controller.getAppointments));
+    .get(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.getAppointments));
 router
     .route('/reviews')
-    .get(authMiddleware, expressCallback(controller.getReviews))
-    .delete(authMiddleware, expressCallback(controller.deleteReview));
-export default router;
+    .get(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.getReviews))
+    .delete(authentiCateToken_1.default, (0, expressCallback_1.expressCallback)(controller.deleteReview));
+exports.default = router;
