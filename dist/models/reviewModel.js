@@ -1,23 +1,18 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
+import mongoose from 'mongoose';
 // Define the schema
-const reviewSchema = new mongoose_1.default.Schema({
+const reviewSchema = new mongoose.Schema({
     userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId, // Reference to the User collection
+        type: mongoose.Schema.Types.ObjectId, // Reference to the User collection
         ref: 'User',
         required: true,
     },
     doctorId: {
-        type: mongoose_1.default.Schema.Types.ObjectId, // Reference to the Doctor collection
+        type: mongoose.Schema.Types.ObjectId, // Reference to the Doctor collection
         ref: 'Doctor',
         required: true,
     },
     appointmentId: {
-        type: mongoose_1.default.Schema.Types.ObjectId, // Reference to the Appointment collection
+        type: mongoose.Schema.Types.ObjectId, // Reference to the Appointment collection
         ref: 'Appointment',
         required: true,
     },
@@ -38,6 +33,6 @@ const reviewSchema = new mongoose_1.default.Schema({
     },
 });
 // Create the model
-const Review = mongoose_1.default.model('Review', reviewSchema);
+const Review = mongoose.model('Review', reviewSchema);
 // Export the model
-exports.default = Review;
+export default Review;

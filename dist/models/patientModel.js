@@ -1,11 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
+import mongoose from "mongoose";
 // Patient Schema
-const patientSchema = new mongoose_1.default.Schema({
+const patientSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -15,17 +10,17 @@ const patientSchema = new mongoose_1.default.Schema({
         required: true,
     },
     doctorId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor",
         required: true,
     },
     userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
     slotId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "DoctorSlot",
         required: true,
     },
@@ -53,5 +48,5 @@ const patientSchema = new mongoose_1.default.Schema({
         default: Date.now,
     },
 });
-const Patient = mongoose_1.default.model("Patient", patientSchema);
-exports.default = Patient;
+const Patient = mongoose.model("Patient", patientSchema);
+export default Patient;

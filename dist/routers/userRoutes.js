@@ -1,62 +1,57 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const expressCallback_1 = require("../utils/expressCallback");
-const userController_1 = require("../conrollers/userController");
-const userRepository_1 = require("../repositories/userRepository");
-const userService_1 = require("../services/userService");
-const signupValidators_1 = require("../midlewere/validator/signupValidators");
-const loginValidators_1 = require("../midlewere/validator/loginValidators");
-const authentiCateToken_1 = __importDefault(require("../midlewere/jwt/authentiCateToken"));
-const isBlockeduser_1 = __importDefault(require("../midlewere/isBlocked/isBlockeduser"));
-const router = (0, express_1.Router)();
-const repository = new userRepository_1.UserRepository();
-const service = new userService_1.UserService(repository);
-const controller = new userController_1.UserController(service);
+import { Router } from "express";
+import { expressCallback } from "../utils/expressCallback";
+import { UserController } from "../conrollers/userController";
+import { UserRepository } from "../repositories/userRepository";
+import { UserService } from "../services/userService";
+import { signupValidator } from "../midlewere/validator/signupValidators";
+import { loginValidator } from "../midlewere/validator/loginValidators";
+import authMiddleware from "../midlewere/jwt/authentiCateToken";
+import checkIfBlocked from "../midlewere/isBlocked/isBlockeduser";
+const router = Router();
+const repository = new UserRepository();
+const service = new UserService(repository);
+const controller = new UserController(service);
 router
     .route("/signup")
-    .post(signupValidators_1.signupValidator, (0, expressCallback_1.expressCallback)(controller.userSignup));
+    .post(signupValidator, expressCallback(controller.userSignup));
 router
     .route('/verifyotp')
-    .post((0, expressCallback_1.expressCallback)(controller.verifyOtp));
+    .post(expressCallback(controller.verifyOtp));
 router
     .route('/resendotp')
-    .post((0, expressCallback_1.expressCallback)(controller.resendOtp));
+    .post(expressCallback(controller.resendOtp));
 router
     .route('/login')
-    .post(loginValidators_1.loginValidator, (0, expressCallback_1.expressCallback)(controller.userLogin));
+    .post(loginValidator, expressCallback(controller.userLogin));
 router
     .route('/profile')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.userProfile))
-    .patch(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.changeProfile))
-    .put(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.changePassword))
-    .post(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.updateProfilepic));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.userProfile))
+    .patch(authMiddleware, checkIfBlocked, expressCallback(controller.changeProfile))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.changePassword))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.updateProfilepic));
 router
     .route('/appointments')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getAppointments))
-    .put(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.cancelAppointments));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getAppointments))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.cancelAppointments));
 router
     .route('/createslots')
-    .post(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.slotAssign));
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.slotAssign));
 router
     .route('/chat')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getMessages))
-    .post(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.chatwithDoctor))
-    .put(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.sendMessage));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getMessages))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.chatwithDoctor))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.sendMessage));
 router
     .route('/chatroom')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getChatMembers));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getChatMembers));
 router
     .route('/Notification')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getcompleteAppointment))
-    .post(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.userReview));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getcompleteAppointment))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.userReview));
 router
     .route('/google-login')
-    .post((0, expressCallback_1.expressCallback)(controller.googleLogin));
+    .post(expressCallback(controller.googleLogin));
 router
     .route('/reviews')
-    .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getReview));
-exports.default = router;
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getReview));
+export default router;

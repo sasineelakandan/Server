@@ -1,10 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.doctorValidators = void 0;
-const validator_1 = __importDefault(require("validator"));
+import validator from "validator";
 // Regular expression for password validation
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
 // Validation messages
@@ -21,19 +15,19 @@ const validationMessages = {
 };
 // Validators
 const nameValidator = (value) => {
-    return validator_1.default.isLength(value, { min: 3, max: 50 });
+    return validator.isLength(value, { min: 3, max: 50 });
 };
 const emailValidator = (value) => {
-    return validator_1.default.isEmail(value);
+    return validator.isEmail(value);
 };
 const phoneValidator = (value) => {
-    return validator_1.default.isMobilePhone(value);
+    return validator.isMobilePhone(value);
 };
 const passwordValidator = (value) => {
     return passwordRegex.test(value);
 };
 const specializationValidator = (value) => {
-    return validator_1.default.isLength(value, { min: 3, max: 50 });
+    return validator.isLength(value, { min: 3, max: 50 });
 };
 const experienceValidator = (value) => {
     return Number.isInteger(value) && value >= 0 && value <= 50;
@@ -48,7 +42,7 @@ const feesValidator = (value) => {
     return value === undefined || (typeof value === "number" && value > 0);
 };
 // Doctor validators object
-exports.doctorValidators = {
+export const doctorValidators = {
     name: {
         validator: nameValidator,
         message: validationMessages.name,

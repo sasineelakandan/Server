@@ -1,16 +1,13 @@
-"use strict";
-var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const Doctor_validator_1 = require("../models/Doctor.validator");
-const DoctorSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+import { doctorValidators } from "../models/Doctor.validator";
+const DoctorSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.name.validator,
-            message: Doctor_validator_1.doctorValidators.name.message,
+            validator: doctorValidators.name.validator,
+            message: doctorValidators.name.message,
         },
     },
     email: {
@@ -20,16 +17,16 @@ const DoctorSchema = new mongoose_1.Schema({
         trim: true,
         lowercase: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.email.validator,
-            message: Doctor_validator_1.doctorValidators.email.message,
+            validator: doctorValidators.email.validator,
+            message: doctorValidators.email.message,
         },
     },
     password: {
         type: String,
         required: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.password.validator,
-            message: Doctor_validator_1.doctorValidators.password.message,
+            validator: doctorValidators.password.validator,
+            message: doctorValidators.password.message,
         },
     },
     specialization: {
@@ -37,24 +34,24 @@ const DoctorSchema = new mongoose_1.Schema({
         required: true,
         trim: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.specialization.validator,
-            message: Doctor_validator_1.doctorValidators.specialization.message,
+            validator: doctorValidators.specialization.validator,
+            message: doctorValidators.specialization.message,
         },
     },
     experience: {
         type: Number,
         required: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.experience.validator,
-            message: Doctor_validator_1.doctorValidators.experience.message,
+            validator: doctorValidators.experience.validator,
+            message: doctorValidators.experience.message,
         },
     },
     profilePic: {
         type: String,
         required: false,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.profilePic.validator,
-            message: Doctor_validator_1.doctorValidators.profilePic.message,
+            validator: doctorValidators.profilePic.validator,
+            message: doctorValidators.profilePic.message,
         },
     },
     phone: {
@@ -62,7 +59,7 @@ const DoctorSchema = new mongoose_1.Schema({
         required: true,
         unique: true,
         validate: {
-            validator: Doctor_validator_1.doctorValidators.phone.validator,
+            validator: doctorValidators.phone.validator,
             message: "Please enter a valid phone number.",
         },
     },
@@ -86,8 +83,8 @@ const DoctorSchema = new mongoose_1.Schema({
         type: Number,
         required: false,
         validate: {
-            validator: (_a = Doctor_validator_1.doctorValidators.fees) === null || _a === void 0 ? void 0 : _a.validator,
-            message: Doctor_validator_1.doctorValidators.fees.message,
+            validator: doctorValidators.fees?.validator,
+            message: doctorValidators.fees.message,
         },
     },
     hospitalName: {
@@ -128,4 +125,4 @@ const DoctorSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("Doctor", DoctorSchema);
+export default model("Doctor", DoctorSchema);

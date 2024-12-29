@@ -1,58 +1,53 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const expressCallback_1 = require("../utils/expressCallback");
-const doctorController_1 = require("../conrollers/doctorController");
-const doctorRepository_1 = require("../repositories/doctorRepository");
-const docterService_1 = require("../services/docterService");
-const doctorsignupValidator_1 = require("../midlewere/validator/doctorsignupValidator");
-const authentiCateToken_1 = __importDefault(require("../midlewere/jwt/authentiCateToken"));
-const loginValidators_1 = require("../midlewere/validator/loginValidators");
-const isblockedDoctor_1 = __importDefault(require("../midlewere/isBlocked/isblockedDoctor"));
-const router = (0, express_1.Router)();
-const repository = new doctorRepository_1.DoctorRepository();
-const service = new docterService_1.DoctorService(repository);
-const controller = new doctorController_1.DoctorController(service);
+import { Router } from "express";
+import { expressCallback } from "../utils/expressCallback";
+import { DoctorController } from "../conrollers/doctorController";
+import { DoctorRepository } from "../repositories/doctorRepository";
+import { DoctorService } from "../services/docterService";
+import { signupValidator } from "../midlewere/validator/doctorsignupValidator";
+import authMiddleware from "../midlewere/jwt/authentiCateToken";
+import { loginValidator } from "../midlewere/validator/loginValidators";
+import checkIfBlocked from "../midlewere/isBlocked/isblockedDoctor";
+const router = Router();
+const repository = new DoctorRepository();
+const service = new DoctorService(repository);
+const controller = new DoctorController(service);
 router
     .route("/signup")
-    .post(doctorsignupValidator_1.signupValidator, (0, expressCallback_1.expressCallback)(controller.doctorSignup));
+    .post(signupValidator, expressCallback(controller.doctorSignup));
 router
     .route('/verifyotp')
-    .post((0, expressCallback_1.expressCallback)(controller.verifyOtp));
+    .post(expressCallback(controller.verifyOtp));
 router
     .route('/resendotp')
-    .post((0, expressCallback_1.expressCallback)(controller.resendOtp));
+    .post(expressCallback(controller.resendOtp));
 router
     .route('/login')
-    .post(loginValidators_1.loginValidator, (0, expressCallback_1.expressCallback)(controller.doctorLogin));
+    .post(loginValidator, expressCallback(controller.doctorLogin));
 router
     .route('/profile')
-    .get(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.doctorProfile))
-    .put(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.changeProfile))
-    .patch(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.changePassword))
-    .post(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.updateProfilepic));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.doctorProfile))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.changeProfile))
+    .patch(authMiddleware, checkIfBlocked, expressCallback(controller.changePassword))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.updateProfilepic));
 router
     .route('/verifyprofile')
-    .post(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.verifyProfile));
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.verifyProfile));
 router
     .route('/appointments')
-    .get(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.getAppointments))
-    .post(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.resheduleAppointment))
-    .patch(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.completeAppointment))
-    .put(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.cancelAppointment));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getAppointments))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.resheduleAppointment))
+    .patch(authMiddleware, checkIfBlocked, expressCallback(controller.completeAppointment))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.cancelAppointment));
 router
     .route('/chat')
-    .get(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.getMessages))
-    .post(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.chatwithUser))
-    .put(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.sendMessage));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getMessages))
+    .post(authMiddleware, checkIfBlocked, expressCallback(controller.chatwithUser))
+    .put(authMiddleware, checkIfBlocked, expressCallback(controller.sendMessage));
 router
     .route('/chatroom')
-    .get(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.getChatMembers));
+    .get(authMiddleware, checkIfBlocked, expressCallback(controller.getChatMembers));
 router
     .route('/forgotpassword')
-    .post((0, expressCallback_1.expressCallback)(controller.forgotPasswordOtp))
-    .put((0, expressCallback_1.expressCallback)(controller.forgotPassword));
-exports.default = router;
+    .post(expressCallback(controller.forgotPasswordOtp))
+    .put(expressCallback(controller.forgotPassword));
+export default router;

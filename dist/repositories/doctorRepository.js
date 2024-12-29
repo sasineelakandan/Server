@@ -1,30 +1,17 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DoctorRepository = void 0;
-const doctorModel_1 = __importDefault(require("../models/doctorModel"));
-const otpModel_1 = __importDefault(require("../models/otpModel"));
-const slotsModel_1 = __importDefault(require("../models/slotsModel"));
-const appointmentModel_1 = __importDefault(require("../models/appointmentModel"));
-const chatRoomModel_1 = __importDefault(require("../models/chatRoomModel"));
-const messageModel_1 = __importDefault(require("../models/messageModel"));
-const index_1 = require("../../src/index");
-class DoctorRepository {
+import Doctor from "../models/doctorModel";
+import Otp from "../models/otpModel";
+import Slot from "../models/slotsModel";
+import Appointment from "../models/appointmentModel";
+import ChatRoom from "../models/chatRoomModel";
+import Message from "../models/messageModel";
+import { io } from "../../src/index";
+export class DoctorRepository {
     constructor() {
-        this.addDoctor = (doctorData) => __awaiter(this, void 0, void 0, function* () {
+        this.addDoctor = async (doctorData) => {
             try {
-                const doctor = yield doctorModel_1.default.create(Object.assign({}, doctorData));
+                const doctor = await Doctor.create({
+                    ...doctorData,
+                });
                 return {
                     _id: doctor._id.toString(),
                     name: doctor.name,
@@ -46,11 +33,11 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.verifyOtp = (doctorOtpData) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.verifyOtp = async (doctorOtpData) => {
             try {
                 const { userId } = doctorOtpData;
-                const otp = yield otpModel_1.default.findOne({ userId: userId });
+                const otp = await Otp.findOne({ userId: userId });
                 if (!otp) {
                     throw new Error("OTP not found or expired.");
                 }
@@ -73,10 +60,10 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.updateDoctorOtp = (userId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.updateDoctorOtp = async (userId) => {
             try {
-                const user = yield doctorModel_1.default.updateOne({ _id: userId }, { $set: { isOtpVerified: true } });
+                const user = await Doctor.updateOne({ _id: userId }, { $set: { isOtpVerified: true } });
                 return { message: 'doctorOtp updated' };
             }
             catch (error) {
@@ -88,10 +75,10 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.getDoctorByEmail = (email) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.getDoctorByEmail = async (email) => {
             try {
-                const user = yield doctorModel_1.default.findOne({ email, isOtpVerified: true });
+                const user = await Doctor.findOne({ email, isOtpVerified: true });
                 if (!user) {
                     throw new Error("User not found .");
                 }
@@ -119,11 +106,10 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.getDoctorProfile = (userId) => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+        };
+        this.getDoctorProfile = async (userId) => {
             try {
-                const doctor = yield doctorModel_1.default.findOne({ _id: userId });
+                const doctor = await Doctor.findOne({ _id: userId });
                 if (!doctor) {
                     throw new Error(`Doctor with ID ${userId} not found.`);
                 }
@@ -135,8 +121,8 @@ class DoctorRepository {
                     specialization: doctor.specialization || "",
                     licenseImage: doctor.licenseImage || "",
                     hospitalName: doctor.hospitalName || "",
-                    fees: ((_a = doctor.fees) === null || _a === void 0 ? void 0 : _a.toString()) || "",
-                    licenseNumber: ((_b = doctor.licenseNumber) === null || _b === void 0 ? void 0 : _b.toString()) || "",
+                    fees: doctor.fees?.toString() || "",
+                    licenseNumber: doctor.licenseNumber?.toString() || "",
                     profilePic: doctor.profilePic || "",
                     experience: doctor.experience.toString() || "",
                     isVerified: doctor.isVerified,
@@ -150,19 +136,18 @@ class DoctorRepository {
                 console.error("Error finding doctor:", error);
                 throw new Error("Unable to fetch doctor profile. Please try again later.");
             }
-        });
-        this.updateDoctorProfile = (formData, userId) => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+        };
+        this.updateDoctorProfile = async (formData, userId) => {
             try {
                 const { licenseImage, licenseImage1, hospitalName, fees, licenseNumber } = formData;
-                const updateDoctor = yield doctorModel_1.default.updateOne({ _id: userId }, { $set: {
+                const updateDoctor = await Doctor.updateOne({ _id: userId }, { $set: {
                         licenseImage: licenseImage,
                         profilePic: licenseImage1,
                         hospitalName: hospitalName,
                         fees: fees,
                         licenseNumber: licenseNumber
                     } });
-                const doctor = yield doctorModel_1.default.findOne({ _id: userId });
+                const doctor = await Doctor.findOne({ _id: userId });
                 if (!doctor) {
                     throw new Error(`Doctor with ID ${userId} not found.`);
                 }
@@ -174,8 +159,8 @@ class DoctorRepository {
                     specialization: doctor.specialization || "",
                     licenseImage: doctor.licenseImage || "",
                     hospitalName: doctor.hospitalName || "",
-                    fees: ((_a = doctor.fees) === null || _a === void 0 ? void 0 : _a.toString()) || "",
-                    licenseNumber: ((_b = doctor.licenseNumber) === null || _b === void 0 ? void 0 : _b.toString()) || "",
+                    fees: doctor.fees?.toString() || "",
+                    licenseNumber: doctor.licenseNumber?.toString() || "",
                     profilePic: doctor.profilePic || "",
                     experience: doctor.experience.toString() || "",
                     isVerified: doctor.isVerified,
@@ -189,19 +174,18 @@ class DoctorRepository {
                 console.error("Error finding doctor:", error);
                 throw new Error("Unable to fetch doctor profile. Please try again later.");
             }
-        });
-        this.changeProfile = (userId, formData) => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+        };
+        this.changeProfile = async (userId, formData) => {
             try {
                 const { phone, name, hospitalName, fees, experience } = formData;
-                const updateDoctor = yield doctorModel_1.default.updateOne({ _id: userId }, { $set: {
+                const updateDoctor = await Doctor.updateOne({ _id: userId }, { $set: {
                         name: name,
                         phone: phone,
                         hospitalName: hospitalName,
                         fees: fees,
                         experience: experience
                     } });
-                const doctor = yield doctorModel_1.default.findOne({ _id: userId });
+                const doctor = await Doctor.findOne({ _id: userId });
                 if (!doctor) {
                     throw new Error(`Doctor with ID ${userId} not found.`);
                 }
@@ -213,8 +197,8 @@ class DoctorRepository {
                     specialization: doctor.specialization || "",
                     licenseImage: doctor.licenseImage || "",
                     hospitalName: doctor.hospitalName || "",
-                    fees: ((_a = doctor.fees) === null || _a === void 0 ? void 0 : _a.toString()) || "",
-                    licenseNumber: ((_b = doctor.licenseNumber) === null || _b === void 0 ? void 0 : _b.toString()) || "",
+                    fees: doctor.fees?.toString() || "",
+                    licenseNumber: doctor.licenseNumber?.toString() || "",
                     profilePic: doctor.profilePic || "",
                     experience: doctor.experience.toString() || "",
                     isVerified: doctor.isVerified,
@@ -228,15 +212,14 @@ class DoctorRepository {
                 console.error("Error finding doctor:", error);
                 throw new Error("Unable to fetch doctor profile. Please try again later.");
             }
-        });
-        this.changePassword = (userId, hashedPassword, oldPassword) => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+        };
+        this.changePassword = async (userId, hashedPassword, oldPassword) => {
             try {
-                const doctor = yield doctorModel_1.default.findOne({ _id: userId });
+                const doctor = await Doctor.findOne({ _id: userId });
                 if (!doctor) {
                     throw new Error(`Doctor with ID ${userId} not found.`);
                 }
-                const userUpdate = yield doctorModel_1.default.updateOne({ _id: userId }, { $set: { password: hashedPassword } });
+                const userUpdate = await Doctor.updateOne({ _id: userId }, { $set: { password: hashedPassword } });
                 return {
                     _id: doctor._id.toString(),
                     name: doctor.name || "",
@@ -245,13 +228,13 @@ class DoctorRepository {
                     specialization: doctor.specialization || "",
                     licenseImage: doctor.licenseImage || "",
                     hospitalName: doctor.hospitalName || "",
-                    fees: ((_a = doctor.fees) === null || _a === void 0 ? void 0 : _a.toString()) || "",
-                    licenseNumber: ((_b = doctor.licenseNumber) === null || _b === void 0 ? void 0 : _b.toString()) || "",
+                    fees: doctor.fees?.toString() || "",
+                    licenseNumber: doctor.licenseNumber?.toString() || "",
                     profilePic: doctor.profilePic || "",
                     experience: doctor.experience.toString() || "",
                     isVerified: doctor.isVerified,
                     password: doctor.password,
-                    location: doctor === null || doctor === void 0 ? void 0 : doctor.location,
+                    location: doctor?.location,
                     createdAt: doctor.createdAt,
                     updatedAt: doctor.updatedAt,
                 };
@@ -260,10 +243,10 @@ class DoctorRepository {
                 console.error("Error find loginUser:", error);
                 throw new Error(error.message);
             }
-        });
-        this.getAppointments = (doctorId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.getAppointments = async (doctorId) => {
             try {
-                const appointments = yield appointmentModel_1.default.find({ doctorId: doctorId }).sort({ _id: -1 })
+                const appointments = await Appointment.find({ doctorId: doctorId }).sort({ _id: -1 })
                     .populate('slotId')
                     .populate('doctorId')
                     .populate('patientId')
@@ -278,13 +261,13 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.resheduleAppointment = (doctorId, payloadData) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.resheduleAppointment = async (doctorId, payloadData) => {
             try {
                 const { date, startTime, endTime, appointmentId } = payloadData;
-                const appointments = yield appointmentModel_1.default.findOne({ doctorId: doctorId, _id: appointmentId });
-                const slotUpdate = yield slotsModel_1.default.updateOne({ _id: appointments === null || appointments === void 0 ? void 0 : appointments.slotId }, { $set: { date: date, startTime: startTime, endTime: endTime } });
-                const updateAppointment = yield appointmentModel_1.default.updateOne({ _id: appointmentId }, { $set: { status: 'rescheduled' } });
+                const appointments = await Appointment.findOne({ doctorId: doctorId, _id: appointmentId });
+                const slotUpdate = await Slot.updateOne({ _id: appointments?.slotId }, { $set: { date: date, startTime: startTime, endTime: endTime } });
+                const updateAppointment = await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'rescheduled' } });
                 if (!appointments) {
                     throw new Error(`Doctor with ID ${doctorId} not found.`);
                 }
@@ -297,10 +280,10 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.completeAppointment = (doctorId, appointmentId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.completeAppointment = async (doctorId, appointmentId) => {
             try {
-                const updateAppointment = yield appointmentModel_1.default.updateOne({ _id: appointmentId }, { $set: { status: 'completed' } });
+                const updateAppointment = await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'completed' } });
                 if (!doctorId) {
                     throw new Error(`Doctor with ID ${doctorId} not found.`);
                 }
@@ -313,10 +296,10 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.cancelAppointment = (doctorId, appointmentId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.cancelAppointment = async (doctorId, appointmentId) => {
             try {
-                const updateAppointment = yield appointmentModel_1.default.updateOne({ _id: appointmentId }, { $set: { status: 'canceled' } });
+                const updateAppointment = await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'canceled' } });
                 if (!doctorId) {
                     throw new Error(`Doctor with ID ${doctorId} not found.`);
                 }
@@ -329,10 +312,10 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.updateProfilepic = (doctorId, profilePic) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.updateProfilepic = async (doctorId, profilePic) => {
             try {
-                const updateProfilePic = yield doctorModel_1.default.updateOne({ _id: doctorId }, { $set: { profilePic: profilePic } });
+                const updateProfilePic = await Doctor.updateOne({ _id: doctorId }, { $set: { profilePic: profilePic } });
                 if (!doctorId) {
                     throw new Error(`Doctor with ID ${doctorId} not found.`);
                 }
@@ -345,8 +328,8 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.chatwithUser = (doctorId, appointmentId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.chatwithUser = async (doctorId, appointmentId) => {
             try {
                 if (!doctorId) {
                     throw new Error(`User with ID ${doctorId} not found.`);
@@ -354,21 +337,21 @@ class DoctorRepository {
                 if (!appointmentId) {
                     throw new Error(`Appointment with ID ${appointmentId} not found.`);
                 }
-                const chatter = yield appointmentModel_1.default.findOne({ _id: appointmentId, doctorId: doctorId });
-                const existingRoom = yield chatRoomModel_1.default.findOne({ patient: chatter === null || chatter === void 0 ? void 0 : chatter.userId, doctor: doctorId });
+                const chatter = await Appointment.findOne({ _id: appointmentId, doctorId: doctorId });
+                const existingRoom = await ChatRoom.findOne({ patient: chatter?.userId, doctor: doctorId });
                 if (existingRoom) {
                     return {
-                        status: existingRoom === null || existingRoom === void 0 ? void 0 : existingRoom._id.toString(),
+                        status: existingRoom?._id.toString(),
                         message: "Chat room already exists.",
                     };
                 }
-                const newChatRoom = new chatRoomModel_1.default({
-                    patient: chatter === null || chatter === void 0 ? void 0 : chatter.userId,
+                const newChatRoom = new ChatRoom({
+                    patient: chatter?.userId,
                     doctor: doctorId,
                 });
-                const savedRoom = yield newChatRoom.save();
+                const savedRoom = await newChatRoom.save();
                 return {
-                    status: savedRoom === null || savedRoom === void 0 ? void 0 : savedRoom._id.toString(),
+                    status: savedRoom?._id.toString(),
                     message: "Chat room created successfully",
                 };
             }
@@ -376,8 +359,8 @@ class DoctorRepository {
                 console.error("Error in chatroom:", error);
                 throw new Error(error.message);
             }
-        });
-        this.sendMessage = (roomId, message) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.sendMessage = async (roomId, message) => {
             try {
                 // Validate inputs
                 if (!roomId) {
@@ -387,20 +370,20 @@ class DoctorRepository {
                     throw new Error("Message content is required.");
                 }
                 // Find the chat room
-                const chatter = yield chatRoomModel_1.default.findOne({ _id: roomId });
+                const chatter = await ChatRoom.findOne({ _id: roomId });
                 if (!chatter) {
                     throw new Error(`Chat room with ID ${roomId} not found.`);
                 }
-                yield chatRoomModel_1.default.updateOne({ _id: roomId }, { $set: { lastMessage: message === null || message === void 0 ? void 0 : message.content } });
-                const updatedRoom = yield chatRoomModel_1.default.findOne({ _id: roomId });
+                await ChatRoom.updateOne({ _id: roomId }, { $set: { lastMessage: message?.content } });
+                const updatedRoom = await ChatRoom.findOne({ _id: roomId });
                 console.log('Updated Chat Room:', updatedRoom);
-                const createMsg = yield messageModel_1.default.create({
+                const createMsg = await Message.create({
                     sender: chatter.patient,
                     receiver: chatter.doctor,
                     roomId,
-                    content: message === null || message === void 0 ? void 0 : message.content,
+                    content: message?.content,
                 });
-                index_1.io.to(roomId).emit("message", { createMsg });
+                io.to(roomId).emit("message", { createMsg });
                 return {
                     status: "success",
                     message: "Message sent successfully.",
@@ -410,42 +393,42 @@ class DoctorRepository {
                 console.error("Error in sendMessage doctor:", error);
                 throw new Error(error.message);
             }
-        });
-        this.getMessage = (roomId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.getMessage = async (roomId) => {
             try {
                 if (!roomId) {
                     throw new Error(`User with ID ${roomId} not found.`);
                 }
-                const chatRoomUp = yield messageModel_1.default.updateMany({ roomId: roomId }, { $set: { isRead: true } });
-                const message = yield messageModel_1.default.find({ roomId: roomId });
+                const chatRoomUp = await Message.updateMany({ roomId: roomId }, { $set: { isRead: true } });
+                const message = await Message.find({ roomId: roomId });
                 return message;
             }
             catch (error) {
                 console.error("Error in chatroom:", error);
                 throw new Error(error.message);
             }
-        });
-        this.getChatMembers = (doctorId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.getChatMembers = async (doctorId) => {
             try {
                 if (!doctorId) {
                     throw new Error(`User with ID ${doctorId} not found.`);
                 }
-                const message = yield chatRoomModel_1.default.find({ doctor: doctorId }).populate('patient');
+                const message = await ChatRoom.find({ doctor: doctorId }).populate('patient');
                 return message;
             }
             catch (error) {
                 console.error("Error in chatroom:", error);
                 throw new Error(error.message);
             }
-        });
-        this.forgotPasswordOtp = (email) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.forgotPasswordOtp = async (email) => {
             try {
-                const doctor = yield doctorModel_1.default.findOne({ email: email });
+                const doctor = await Doctor.findOne({ email: email });
                 if (!email) {
                     throw new Error(`Doctor with ID ${email} not found.`);
                 }
                 return {
-                    status: (doctor === null || doctor === void 0 ? void 0 : doctor._id.toString()) || '',
+                    status: doctor?._id.toString() || '',
                     message: 'Slot assigned successfully',
                 };
             }
@@ -453,10 +436,10 @@ class DoctorRepository {
                 console.error("Error in slot creation:", error);
                 throw new Error(error.message);
             }
-        });
-        this.forgotPassword = (userId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.forgotPassword = async (userId) => {
             try {
-                const otp = yield otpModel_1.default.findOne({ userId: userId });
+                const otp = await Otp.findOne({ userId: userId });
                 if (!otp) {
                     throw new Error("OTP not found or expired.");
                 }
@@ -477,10 +460,10 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.updateDoctorPassword = (userId, password) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.updateDoctorPassword = async (userId, password) => {
             try {
-                const user = yield doctorModel_1.default.updateOne({ _id: userId }, { $set: { password } });
+                const user = await Doctor.updateOne({ _id: userId }, { $set: { password } });
                 return {
                     status: "success",
                     message: "Message sent successfully.",
@@ -495,7 +478,6 @@ class DoctorRepository {
                 }
                 throw new Error(error.message);
             }
-        });
+        };
     }
 }
-exports.DoctorRepository = DoctorRepository;

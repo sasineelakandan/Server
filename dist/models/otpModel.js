@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const Otp_validator_1 = require("../models/Otp.validator");
-const OtpSchema = new mongoose_1.Schema({
+import { Schema, model } from "mongoose";
+import { validateOtpCode } from "../models/Otp.validator";
+const OtpSchema = new Schema({
     userId: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
@@ -12,7 +10,7 @@ const OtpSchema = new mongoose_1.Schema({
         type: String,
         required: true,
         validate: {
-            validator: Otp_validator_1.validateOtpCode,
+            validator: validateOtpCode,
             message: "OTP must be a 6-digit number.",
         },
     },
@@ -28,4 +26,4 @@ const OtpSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("Otp", OtpSchema);
+export default model("Otp", OtpSchema);

@@ -1,26 +1,12 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const otpModel_1 = __importDefault(require("../../../models/otpModel"));
-const doctorModel_1 = __importDefault(require("../../../models/doctorModel"));
-const otpService_1 = require("../otpService");
+import Otp from "../../../models/otpModel";
+import Doctor from "../../../models/doctorModel";
+import { sendOtpEmail } from '../otpService';
 class OtpService {
     constructor() {
-        this.saveOtp = (otpData, email) => __awaiter(this, void 0, void 0, function* () {
+        this.saveOtp = async (otpData, email) => {
             try {
                 const { userId, generatedOtp } = otpData;
-                yield (0, otpService_1.sendOtpEmail)({
+                await sendOtpEmail({
                     email: email,
                     otp: generatedOtp,
                     subject: "Your OTP Code",
@@ -28,7 +14,7 @@ class OtpService {
                     html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
                 });
                 const otpExpirationTime = 1 * 60 * 1000;
-                const otp = yield otpModel_1.default.create({
+                const otp = await Otp.create({
                     userId,
                     otpCode: generatedOtp,
                     expiresAt: new Date(Date.now() + otpExpirationTime)
@@ -49,23 +35,23 @@ class OtpService {
                 }
                 throw new Error(error.message);
             }
-        });
-        this.resendOtp = (userId) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.resendOtp = async (userId) => {
             try {
-                const doctor = yield doctorModel_1.default.findOne({ _id: userId });
+                const doctor = await Doctor.findOne({ _id: userId });
                 if (!doctor) {
                     throw new Error("Doctor not found.");
                 }
                 const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
                 const otpExpirationTime = 1 * 60 * 1000;
-                yield (0, otpService_1.sendOtpEmail)({
+                await sendOtpEmail({
                     email: doctor.email,
                     otp: generatedOtp,
                     subject: "Your OTP Code",
                     text: `Your OTP code is: ${generatedOtp}`,
                     html: `<p>Your OTP code is: <b>${generatedOtp}</b></p>`,
                 });
-                const newOtp = yield otpModel_1.default.create({
+                const newOtp = await Otp.create({
                     userId: userId,
                     otpCode: generatedOtp,
                     expiresAt: new Date(Date.now() + otpExpirationTime),
@@ -82,7 +68,7 @@ class OtpService {
                 console.error("Error resending doctor OTP:", error);
                 throw new Error(error.message);
             }
-        });
+        };
     }
 }
-exports.default = OtpService;
+export default OtpService;

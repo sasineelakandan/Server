@@ -1,21 +1,9 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminController = void 0;
-class AdminController {
+export class AdminController {
     constructor(adminService) {
-        this.adminLogin = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
+        this.adminLogin = async (httpRequest) => {
             try {
                 const { email, password } = httpRequest.body;
-                const admin = yield this.adminService.adminLogin(email, password);
+                const admin = await this.adminService.adminLogin(email, password);
                 console.log(admin);
                 if (admin.admin == false) {
                     return {
@@ -34,7 +22,7 @@ class AdminController {
                         "Content-Type": "application/json",
                     },
                     statusCode: 200,
-                    body: Object.assign(Object.assign({}, admin), { accessToken, refreshToken }),
+                    body: { ...admin, accessToken, refreshToken },
                 };
             }
             catch (e) {
@@ -49,11 +37,10 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.patientDetails = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.patientDetails = async (httpRequest) => {
             try {
-                const admin = (_a = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
+                const admin = httpRequest?.user?.id;
                 if (!admin) {
                     return {
                         headers: {
@@ -65,7 +52,7 @@ class AdminController {
                         },
                     };
                 }
-                const users = yield this.adminService.patientDetails(admin);
+                const users = await this.adminService.patientDetails(admin);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -86,17 +73,16 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.isBlocked = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.isBlocked = async (httpRequest) => {
             try {
-                const email = (_a = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
-                const { userId } = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.body;
+                const email = httpRequest?.user?.id;
+                const { userId } = httpRequest?.body;
                 console.log(email, userId);
                 if (!email) {
                     throw new Error("Email is required but was not provided.");
                 }
-                const user = yield this.adminService.isBlocked(email, userId);
+                const user = await this.adminService.isBlocked(email, userId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -117,15 +103,15 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.isDelete = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.isDelete = async (httpRequest) => {
             try {
-                const { userId } = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.query;
+                const { userId } = httpRequest?.query;
                 console.log(userId);
                 if (!userId || typeof userId !== 'string') {
                     throw new Error("userId is required and must be a string.");
                 }
-                const user = yield this.adminService.isDelete(userId);
+                const user = await this.adminService.isDelete(userId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -146,15 +132,15 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.isVerify = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.isVerify = async (httpRequest) => {
             try {
-                const { userId } = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.body;
+                const { userId } = httpRequest?.body;
                 console.log(userId);
                 if (!userId || typeof userId !== 'string') {
                     throw new Error("userId is required and must be a string.");
                 }
-                const doctor = yield this.adminService.isVerify(userId);
+                const doctor = await this.adminService.isVerify(userId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -175,11 +161,10 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.doctorDetails = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.doctorDetails = async (httpRequest) => {
             try {
-                const admin = (_a = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
+                const admin = httpRequest?.user?.id;
                 if (!admin) {
                     return {
                         headers: {
@@ -191,7 +176,7 @@ class AdminController {
                         },
                     };
                 }
-                const doctors = yield this.adminService.doctorDetails(admin);
+                const doctors = await this.adminService.doctorDetails(admin);
                 console.log(doctors);
                 return {
                     headers: {
@@ -213,11 +198,10 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.verifiedDoctors = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.verifiedDoctors = async (httpRequest) => {
             try {
-                const admin = (_a = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
+                const admin = httpRequest?.user?.id;
                 if (!admin) {
                     return {
                         headers: {
@@ -229,7 +213,7 @@ class AdminController {
                         },
                     };
                 }
-                const doctors = yield this.adminService.verifiedDoctors(admin);
+                const doctors = await this.adminService.verifiedDoctors(admin);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -250,10 +234,10 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.blockDoctor = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.blockDoctor = async (httpRequest) => {
             try {
-                const { doctorId } = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.body;
+                const { doctorId } = httpRequest?.body;
                 if (!doctorId) {
                     return {
                         headers: {
@@ -265,7 +249,7 @@ class AdminController {
                         },
                     };
                 }
-                const doctors = yield this.adminService.doctorBlock(doctorId);
+                const doctors = await this.adminService.doctorBlock(doctorId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -286,15 +270,15 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.deleteDoctor = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
+        };
+        this.deleteDoctor = async (httpRequest) => {
             try {
-                const { doctorId } = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.query;
+                const { doctorId } = httpRequest?.query;
                 console.log(doctorId);
                 if (!doctorId || typeof doctorId !== 'string') {
                     throw new Error("userId is required and must be a string.");
                 }
-                const user = yield this.adminService.deleteDoctor(doctorId);
+                const user = await this.adminService.deleteDoctor(doctorId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -315,15 +299,14 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.getAppointments = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.getAppointments = async (httpRequest) => {
             try {
-                const admin = (_a = httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
+                const admin = httpRequest.user?.id;
                 if (!admin || typeof admin !== 'string') {
                     throw new Error("userId is required and must be a string.");
                 }
-                const appointments = yield this.adminService.getAppoinments(admin);
+                const appointments = await this.adminService.getAppoinments(admin);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -344,16 +327,15 @@ class AdminController {
                     },
                 };
             }
-        });
-        this.getReviews = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.getReviews = async (httpRequest) => {
             {
                 try {
-                    const admin = (_a = httpRequest.user) === null || _a === void 0 ? void 0 : _a.id;
+                    const admin = httpRequest.user?.id;
                     if (!admin || typeof admin !== 'string') {
                         throw new Error("userId is required and must be a string.");
                     }
-                    const reviews = yield this.adminService.getReviews(admin);
+                    const reviews = await this.adminService.getReviews(admin);
                     return {
                         headers: {
                             "Content-Type": "application/json",
@@ -375,11 +357,10 @@ class AdminController {
                     };
                 }
             }
-        });
-        this.deleteReview = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            var _a;
+        };
+        this.deleteReview = async (httpRequest) => {
             try {
-                const reviewId = (_a = httpRequest === null || httpRequest === void 0 ? void 0 : httpRequest.query) === null || _a === void 0 ? void 0 : _a.reviewId;
+                const reviewId = httpRequest?.query?.reviewId;
                 if (!reviewId) {
                     return {
                         headers: {
@@ -402,7 +383,7 @@ class AdminController {
                         },
                     };
                 }
-                const deleteReview = yield this.adminService.deleteReviews(reviewId);
+                const deleteReview = await this.adminService.deleteReviews(reviewId);
                 return {
                     headers: {
                         "Content-Type": "application/json",
@@ -426,8 +407,7 @@ class AdminController {
                     },
                 };
             }
-        });
+        };
         this.adminService = adminService;
     }
 }
-exports.AdminController = AdminController;

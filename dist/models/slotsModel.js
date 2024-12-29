@@ -1,18 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
+import mongoose from "mongoose";
 // Doctor Slot Schema
-const doctorSlotSchema = new mongoose_1.default.Schema({
+const doctorSlotSchema = new mongoose.Schema({
     doctorId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor",
         required: true,
     },
     userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
@@ -42,5 +37,5 @@ const doctorSlotSchema = new mongoose_1.default.Schema({
         default: Date.now,
     },
 });
-const DoctorSlot = mongoose_1.default.model("DoctorSlot", doctorSlotSchema);
-exports.default = DoctorSlot;
+const DoctorSlot = mongoose.model("DoctorSlot", doctorSlotSchema);
+export default DoctorSlot;
