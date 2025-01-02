@@ -22,4 +22,5 @@ export interface IUserConroller{
     userReview(httpRequest:Request):Promise<ControllerResponse>
     googleLogin(httpRequest:Request):Promise<ControllerResponse>
     getReview(httpRequest:Request):Promise<ControllerResponse>
+    
 }

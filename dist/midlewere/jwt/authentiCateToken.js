@@ -18,43 +18,41 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     const accessToken = req.cookies.accessToken;
     const refreshToken = req.cookies.refreshToken;
     const isTokenExpired = (exp) => Date.now() >= exp * 1000;
-    if (accessToken) {
-        try {
+    try {
+        if (accessToken) {
             const decoded = jsonwebtoken_1.default.decode(accessToken);
             if (decoded && !isTokenExpired(decoded.exp)) {
                 req.user = decoded;
-                return next();
+                next();
+                return;
             }
             console.log('Access token expired.');
         }
-        catch (err) {
-            return res.status(401).json({ message: 'Invalid access token.' });
-        }
-    }
-    // Check for refresh token if access token expired
-    if (refreshToken) {
-        try {
-            // Decode the refresh token without verifying (to manually check expiry)
+        if (refreshToken) {
             const decoded = jsonwebtoken_1.default.decode(refreshToken);
             if (decoded && !isTokenExpired(decoded.exp)) {
-                // Generate a new access token
                 const newAccessToken = jsonwebtoken_1.default.sign({ id: decoded.id, role: decoded.role }, (0, constant_1.JWT_SECRET)(), { expiresIn: '1h' });
                 res.cookie('accessToken', newAccessToken, {
                     httpOnly: true,
                     secure: true,
-                    sameSite: "strict",
-                    domain: ".docreserva.site",
+                    sameSite: 'strict',
+                    domain: '.docreserva.site',
                 });
-                req.user = decoded; // Attach user payload to the request
-                return next(); // Proceed to the next controlle
+                req.user = decoded;
+                next();
+                return;
             }
             console.log('Refresh token expired.');
-            return res.status(403).json({ message: 'Refresh token expired. Please log in again.' });
+            res.status(403).json({ message: 'Refresh token expired. Please log in again.' });
+            return;
         }
-        catch (err) {
-            return res.status(403).json({ message: 'Invalid refresh token.' });
-        }
+        res.status(401).json({ message: 'Unauthorized. Please log in.' });
+        return;
     }
-    return res.status(401).json({ message: 'Unauthorized. Please log in.' });
+    catch (error) {
+        console.error('Error in authentication middleware:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+        return;
+    }
 });
 exports.default = authMiddleware;

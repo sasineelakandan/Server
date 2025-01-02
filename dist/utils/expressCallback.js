@@ -29,6 +29,10 @@ function expressCallback(controller) {
             };
             try {
                 const httpResponse = yield controller(httpRequest);
+                if (httpResponse.headers.body === 'logout') {
+                    res.clearCookie('accessToken');
+                    res.clearCookie('refreshToken');
+                }
                 if (httpResponse.headers) {
                     res.set(httpResponse.headers);
                 }

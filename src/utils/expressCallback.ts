@@ -20,12 +20,13 @@ export function expressCallback(controller: any) {
     };
 
     try {
+      
       const httpResponse = await controller(httpRequest);
-
+      
       if (httpResponse.headers) {
         res.set(httpResponse.headers);
       }
-     
+      
     
       if (httpResponse.body.accessToken) {
         res.cookie("accessToken", httpResponse.body.accessToken, {
@@ -39,7 +40,7 @@ export function expressCallback(controller: any) {
 
       if (httpResponse.body.refreshToken) {
         res.cookie("refreshToken", httpResponse.body.refreshToken, {
-          httpOnly:false,
+          httpOnly:true,
           secure: true,
           sameSite: "strict",
           domain: ".docreserva.site",

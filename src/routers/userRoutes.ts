@@ -69,7 +69,7 @@ router
   .route('/reviews')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getReview))
 
-
+  
 
 
 export default router;
