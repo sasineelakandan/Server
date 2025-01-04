@@ -647,7 +647,7 @@ export class DoctorController implements IDoctorConroller {
     createSlots = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
       try {
           const slotData = httpRequest.body;
-          const doctorId = httpRequest.body.doctorId ;
+          const doctorId = httpRequest.user?.id;
   
           if (!doctorId) {
               throw new Error('Doctor ID is missing or not authorized.');
