@@ -52,6 +52,9 @@ router
     .route('/chatroom')
     .get(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.getChatMembers));
 router
+    .route('/createslots')
+    .post(authentiCateToken_1.default, isblockedDoctor_1.default, (0, expressCallback_1.expressCallback)(controller.createSlots));
+router
     .route('/forgotpassword')
     .post((0, expressCallback_1.expressCallback)(controller.forgotPasswordOtp))
     .put((0, expressCallback_1.expressCallback)(controller.forgotPassword));

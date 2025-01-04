@@ -23,4 +23,5 @@ export interface IDoctorConroller{
     getMessages(httpRequest:Request):Promise<ControllerResponse>
     getChatMembers(httpRequest:Request):Promise<ControllerResponse>
     forgotPassword(httpRequest:Request):Promise<ControllerResponse>
+    createSlots(httpRequest:Request):Promise<ControllerResponse>
 }

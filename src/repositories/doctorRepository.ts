@@ -583,4 +583,38 @@ try{
   throw new Error(error.message);
 }
 }
+createSlots = async (doctorId: string, slotData: any[]): Promise<SuccessResponse> => {
+  try {
+    // Validate input
+    if (!doctorId || !slotData.length) {
+      throw new Error("Doctor ID and slot data are required.");
+    }
+
+    // Prepare slots with the doctorId
+    const slots = slotData.map(slot => ({
+      ...slot,
+      doctorId, // Associate each slot with the provided doctorId
+    }));
+
+    // Insert multiple slot records into the database
+    await Slot.insertMany(slots);
+    
+    return {
+      status: "success",
+      message: "Slots created successfully.",
+    };
+  } catch (error: any) {
+    console.error("Error creating slots:", error);
+
+    // Handle duplicate key error (code 11000 for MongoDB)
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      const value = error.keyValue[field];
+      error.message = `${field} '${value}' already exists.`;
+    }
+
+    // Rethrow error with custom message
+    throw new Error(error.message || "Failed to create slots.");
+  }
+};
 }

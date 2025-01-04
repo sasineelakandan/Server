@@ -55,7 +55,9 @@ router
   router
   .route('/chatroom')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getChatMembers))
-
+  router
+  .route('/createslots')
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.createSlots))
 
   router
   .route('/forgotpassword')

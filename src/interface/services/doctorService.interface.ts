@@ -20,4 +20,5 @@ export interface IDoctorService {
   getMessage(roomId:string):Promise<Messages>
   getChatMembers(userId:string):Promise<ChatMembers>
   forgotPassword(otpDataa:any):Promise<SuccessResponse>
+  createSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
 }

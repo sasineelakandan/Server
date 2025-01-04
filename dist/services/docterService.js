@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoctorService = void 0;
 const encription_1 = require("../utils/encription");
 const errors_1 = require("../utils/errors");
+const rrule_1 = require("rrule");
 const generateJWT_1 = require("../utils/generateJWT");
 class DoctorService {
     constructor(doctorRepository) {
@@ -235,6 +236,69 @@ class DoctorService {
             catch (error) {
                 console.log("Error in verifyOtp", error.message);
                 throw new Error(error.message);
+            }
+        });
+        this.createSlots = (doctorId, slotData) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Extract doctor availability details from the passed slotData
+                const { fromTime, toTime, workingDays } = slotData;
+                // Parse start and end hours from time strings
+                const startHour = parseInt(fromTime.split(":")[0]);
+                const endHour = parseInt(toTime.split(":")[0]);
+                // Get current date and next month date
+                const currentDate = new Date();
+                const nextMonthDate = new Date(currentDate);
+                nextMonthDate.setMonth(currentDate.getMonth() + 1);
+                // Helper function to convert day names to RRule weekdays
+                const getRRuleWeekday = (dayName) => {
+                    const daysMap = {
+                        Sunday: rrule_1.RRule.SU,
+                        Monday: rrule_1.RRule.MO,
+                        Tuesday: rrule_1.RRule.TU,
+                        Wednesday: rrule_1.RRule.WE,
+                        Thursday: rrule_1.RRule.TH,
+                        Friday: rrule_1.RRule.FR,
+                        Saturday: rrule_1.RRule.SA,
+                    };
+                    return daysMap[dayName] || rrule_1.RRule.MO;
+                };
+                // Create a recurrence rule for monthly slots
+                const rule = new rrule_1.RRule({
+                    freq: rrule_1.RRule.MONTHLY,
+                    byweekday: workingDays.map((day) => getRRuleWeekday(day)), // Convert working days to RRule format
+                    dtstart: currentDate,
+                    until: nextMonthDate,
+                });
+                // Generate the recurrence dates based on the rule
+                const recurrenceDates = rule.all();
+                const slots = [];
+                // Generate the slots
+                recurrenceDates.forEach((date) => {
+                    workingDays.forEach((dayName) => {
+                        // Check if the date matches the working day (using getDay for comparison)
+                        if (date.getDay() === new Date(`${dayName}, January 1, 2025`).getDay()) {
+                            for (let hour = startHour; hour < endHour; hour++) {
+                                const fromSlot = `${hour.toString().padStart(2, "0")}:00`;
+                                const toSlot = `${(hour + 1).toString().padStart(2, "0")}:00`;
+                                slots.push({
+                                    doctorId,
+                                    day: dayName,
+                                    date: date.toISOString().split("T")[0], // Date in YYYY-MM-DD format
+                                    slot: `${fromSlot} - ${toSlot}`,
+                                    isBooked: false,
+                                });
+                            }
+                        }
+                    });
+                });
+                // Insert the generated slots into the database via the repository
+                yield this.doctorRepository.createSlots(doctorId, slots);
+                // Return a success response after creating slots
+                return { status: 'success', message: "Slots created successfully" };
+            }
+            catch (error) {
+                // Handle any errors during the process
+                throw new Error(error.message || "An error occurred while creating slots");
             }
         });
         this.doctorRepository = doctorRepository;

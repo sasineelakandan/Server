@@ -59,7 +59,4 @@ router
 router
     .route('/reviews')
     .get(authentiCateToken_1.default, isBlockeduser_1.default, (0, expressCallback_1.expressCallback)(controller.getReview));
-router
-    .route('/logout')
-    .get((0, expressCallback_1.expressCallback)(controller.logout));
 exports.default = router;

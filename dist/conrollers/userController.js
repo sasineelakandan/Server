@@ -573,27 +573,6 @@ class UserController {
                 };
             }
         });
-        this.logout = (httpRequest) => __awaiter(this, void 0, void 0, function* () {
-            try {
-                return {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    statusCode: 201,
-                    body: 'logout'
-                };
-            }
-            catch (error) {
-                console.error('Error in userProfile:', error.message);
-                return {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    statusCode: 500,
-                    body: { error: error.message || 'An unknown error occurred.' },
-                };
-            }
-        });
         this.userService = userService;
         this.otpService = new saveOtp_1.default();
     }

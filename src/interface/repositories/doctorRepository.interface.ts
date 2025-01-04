@@ -22,5 +22,5 @@ export interface IDoctorRepository{
     getChatMembers(userId:string):Promise<ChatMembers>
     forgotPassword(otpDataa:any):Promise<SuccessResponse>
     updateDoctorPassword(userId:string,password:string):Promise<SuccessResponse>
-
+    createSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
 }

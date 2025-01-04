@@ -19,7 +19,7 @@ import {
 } from "../interface/services/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encription";
 import { AppError } from "../utils/errors";
-
+import { RRule, Weekday } from 'rrule';
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -328,5 +328,79 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message);
     }
    }
+   createSlots = async (doctorId: string, slotData: { fromTime: string; toTime: string; workingDays: string[] }): Promise<SuccessResponse> => {
+    try {
+      // Extract doctor availability details from the passed slotData
+      const { fromTime, toTime, workingDays } = slotData;
+  
+      // Parse start and end hours from time strings
+      const startHour = parseInt(fromTime.split(":")[0]);
+      const endHour = parseInt(toTime.split(":")[0]);
+  
+      // Get current date and next month date
+      const currentDate = new Date();
+      const nextMonthDate = new Date(currentDate);
+      nextMonthDate.setMonth(currentDate.getMonth() + 1);
+  
+      // Helper function to convert day names to RRule weekdays
+      const getRRuleWeekday = (dayName: string): Weekday => {
+        const daysMap: { [key: string]: Weekday } = {
+          Sunday: RRule.SU,
+          Monday: RRule.MO,
+          Tuesday: RRule.TU,
+          Wednesday: RRule.WE,
+          Thursday: RRule.TH,
+          Friday: RRule.FR,
+          Saturday: RRule.SA,
+        };
+        return daysMap[dayName] || RRule.MO;
+      };
+  
+      // Create a recurrence rule for monthly slots
+      const rule = new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: workingDays.map((day: string) => getRRuleWeekday(day)), // Convert working days to RRule format
+        dtstart: currentDate,
+        until: nextMonthDate,
+      });
+  
+      // Generate the recurrence dates based on the rule
+      const recurrenceDates = rule.all();
+      const slots: any[] = [];
+  
+      // Generate the slots
+      recurrenceDates.forEach((date: Date) => {
+        workingDays.forEach((dayName: string) => {
+          // Check if the date matches the working day (using getDay for comparison)
+          if (date.getDay() === new Date(`${dayName}, January 1, 2025`).getDay()) {
+            for (let hour = startHour; hour < endHour; hour++) {
+              const fromSlot = `${hour.toString().padStart(2, "0")}:00`;
+              const toSlot = `${(hour + 1).toString().padStart(2, "0")}:00`;
+              slots.push({
+                doctorId,
+                day: dayName,
+                date: date.toISOString().split("T")[0], // Date in YYYY-MM-DD format
+                slot: `${fromSlot} - ${toSlot}`,
+                isBooked: false,
+              });
+            }
+          }
+        });
+      });
+  
+      // Insert the generated slots into the database via the repository
+      await this.doctorRepository.createSlots(doctorId, slots);
+  
+      // Return a success response after creating slots
+      return { status: 'success', message: "Slots created successfully" };
+    } catch (error: any) {
+      // Handle any errors during the process
+      throw new Error(error.message || "An error occurred while creating slots");
+    }
+  };
+  
+  
+
+
    
 }

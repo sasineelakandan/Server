@@ -644,6 +644,43 @@ export class DoctorController implements IDoctorConroller {
             };
         }
     }
+    createSlots = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
+      try {
+          const slotData = httpRequest.body;
+          const doctorId = httpRequest.body.doctorId ;
+  
+          if (!doctorId) {
+              throw new Error('Doctor ID is missing or not authorized.');
+          }
+  
+          // Assuming createSlots method in doctorService takes doctorId and slotData
+          const response = await this.doctorService.createSlots(doctorId, slotData);
+  
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode: 201, // Created
+              body: response,
+          };
+      } catch (e: any) {
+          console.error("Error in createSlots:", e);
+  
+          // Handling known error or unexpected error
+          const statusCode = e.statusCode || 500;
+          const errorMessage = e.message || "An unexpected error occurred";
+  
+          return {
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              statusCode,
+              body: {
+                  error: errorMessage,
+              },
+          };
+      }
+  };
     
   } 
  

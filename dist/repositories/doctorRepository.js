@@ -496,6 +496,33 @@ class DoctorRepository {
                 throw new Error(error.message);
             }
         });
+        this.createSlots = (doctorId, slotData) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Validate input
+                if (!doctorId || !slotData.length) {
+                    throw new Error("Doctor ID and slot data are required.");
+                }
+                // Prepare slots with the doctorId
+                const slots = slotData.map(slot => (Object.assign(Object.assign({}, slot), { doctorId })));
+                // Insert multiple slot records into the database
+                yield slotsModel_1.default.insertMany(slots);
+                return {
+                    status: "success",
+                    message: "Slots created successfully.",
+                };
+            }
+            catch (error) {
+                console.error("Error creating slots:", error);
+                // Handle duplicate key error (code 11000 for MongoDB)
+                if (error.code === 11000) {
+                    const field = Object.keys(error.keyValue)[0];
+                    const value = error.keyValue[field];
+                    error.message = `${field} '${value}' already exists.`;
+                }
+                // Rethrow error with custom message
+                throw new Error(error.message || "Failed to create slots.");
+            }
+        });
     }
 }
 exports.DoctorRepository = DoctorRepository;
