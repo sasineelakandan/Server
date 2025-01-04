@@ -26,15 +26,9 @@ export const io = new Server(httpServer, {
   },
 });
 
-// Use Socket.IO handler
 socketHandler(io);
 
-const corsOptions = {
-  origin: FRONTEND_URL() ||"*",
-  credentials: true,
-};
-
-app.use(cors(corsOptions)); 
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser());
