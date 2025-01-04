@@ -29,7 +29,7 @@ export const io = new Server(httpServer, {
 socketHandler(io);
 
 const corsOptions = {
-  origin:FRONTEND_URL,  // Allow only this origin
+  origin:FRONTEND_URL()||'*',  // Allow only this origin
   credentials: true,  // Allow credentials like cookies
 };
 
