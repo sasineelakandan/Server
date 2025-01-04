@@ -28,7 +28,12 @@ export const io = new Server(httpServer, {
 
 socketHandler(io);
 
-app.use(cors());
+const corsOptions = {
+  origin:FRONTEND_URL,  // Allow only this origin
+  credentials: true,  // Allow credentials like cookies
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
