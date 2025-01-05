@@ -353,7 +353,7 @@ export class UserRepository implements IuserRepository {
           throw new Error(`Slot already booked for this time range.`);
         }
     
-        const data = await Slots.updateOne({_id:slotData._id},{$set:{isBooked:true}});
+        const data = await Slots.updateOne({_id:slotData._id},{$set:{isBooked:false}});
     
         if (!data) {
           throw new Error(`Doctor with ID ${userId} not found.`);
