@@ -26,6 +26,7 @@ const authMiddleware = async (req: CustomRequest, res: Response, next: NextFunct
 
       if (decoded && !isTokenExpired(decoded.exp)) {
         req.user = decoded; 
+        console.log(req.user)
         next(); 
         return; 
       }

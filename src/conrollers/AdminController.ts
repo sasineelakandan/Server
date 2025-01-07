@@ -234,7 +234,7 @@ export class AdminController implements IAdminController {
     try{
           
         const admin=httpRequest?.user?.id
-         
+         console.log(admin)
       if (!admin) {
           return {
               headers: {

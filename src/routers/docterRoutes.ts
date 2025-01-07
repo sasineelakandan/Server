@@ -63,5 +63,10 @@ router
   .route('/forgotpassword')
   .post(expressCallback(controller.forgotPasswordOtp))
   .put(expressCallback(controller.forgotPassword))
+
+  router
+  .route('/transactions')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getWalletHisotry))
+
  
 export default router;

@@ -71,6 +71,7 @@ export type DoctorSignupInput = {
     readonly licenseNumber:string,
     readonly hospitalName:string;
     readonly fees:string;
+    readonly eWallet:number
     readonly isVerified:boolean;
     readonly experience: string;
     readonly profilePic?: string;
@@ -125,3 +126,4 @@ export type DoctorSignupInput = {
 
   export type Messages= Array<{ [key: string]: any }>
 export type ChatMembers= Array<{ [key: string]: any }>
+export type Transaction= Array<{ [key: string]: any }>

@@ -15,7 +15,8 @@ import {
   Appointments,
   ResheduleData,
   ChatMembers,
-  Messages
+  Messages,
+  Transaction
 } from "../Interface/Service/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encryption";
 import { AppError } from "../utils/errors";
@@ -387,7 +388,18 @@ export class DoctorService implements IDoctorService {
       throw new Error(error.message || 'An error occurred while creating slots');
     }
   };
-
+ getWalletHisotry=async(doctorId: string): Promise<Transaction>=> {
+  try {
+    const historys = await this.doctorRepository.getWalletHisotry(
+      doctorId
+      
+    );
+    return historys;
+  } catch (error: any) {
+    console.log("Error in chat", error.message);
+    throw new Error(error.message);
+  }
+ }
 
    
 }

@@ -56,8 +56,6 @@ const DoctorSchema = new Schema(
         message: doctorValidators.profilePic.message,
       },
     },
-   
-    
     phone: {
       type: String,
       required: true,
@@ -69,19 +67,19 @@ const DoctorSchema = new Schema(
     },
     isVerified: {
       type: Boolean,
-      default: false, // Default set to false
+      default: false,
     },
     isOtpVerified: {
       type: Boolean,
-      default: false, // Default set to false
+      default: false,
     },
     isBlocked: {
       type: Boolean,
-      default: false, // Default set to false
+      default: false,
     },
     isDeleted: {
       type: Boolean,
-      default: false, // Default set to false
+      default: false,
     },
     fees: {
       type: Number,
@@ -93,44 +91,47 @@ const DoctorSchema = new Schema(
     },
     hospitalName: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     licenseNumber: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     street: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     city: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     state: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     licenseImage: {
       type: String,
-      required: false, // Optional field
-      default: "", // Default empty string if not provided
+      required: false,
+      default: "",
     },
     location: {
       address: { type: String, required: true },
       latitude: { type: Number, required: true },
       longitude: { type: Number, required: true },
     },
+    eWallet: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
   }
 );
-
 
 export default model("Doctor", DoctorSchema);

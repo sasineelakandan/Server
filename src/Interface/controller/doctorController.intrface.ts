@@ -24,4 +24,5 @@ export interface IDoctorConroller{
     getChatMembers(httpRequest:Request):Promise<ControllerResponse>
     forgotPassword(httpRequest:Request):Promise<ControllerResponse>
     createSlots(httpRequest:Request):Promise<ControllerResponse>
+    getWalletHisotry(httpRequest:Request):Promise<ControllerResponse>
 }

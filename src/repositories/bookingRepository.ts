@@ -5,6 +5,7 @@ import Slots from "../models/Slots"
 import Patients from "../models/patientModel";
 import Payment from "../models/paymentModel";
 import Appointment from "../models/appointmentModel";
+import Transaction from "../models/Wallet";
 export class BookingRepository implements IBookingRepository{
 
     getDoctors=async(userId: string): Promise<doctorData|null> =>{
@@ -164,7 +165,16 @@ export class BookingRepository implements IBookingRepository{
         patientId:patientId
         
       })
-
+      const wallet=await Doctor.updateOne({_id:doctorId},{$inc:{eWallet:amount}})
+      const walletDetails=await Transaction.create({
+        id:txnid,
+        doctorId:doctorId,
+        date:new Date(),
+        type:'Consultation Fee',
+        amount:amount,
+        status:'Completed',
+        userId:userId
+      })
       
     if (!paymentDetail) {
         throw new Error(`Doctor with slot not found.`);

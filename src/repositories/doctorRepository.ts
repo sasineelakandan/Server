@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../Interface/Repostry/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers } from "../Interface/Repostry/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction } from "../Interface/Repostry/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/Slots";
@@ -8,6 +8,7 @@ import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
 import {io} from "../../src/index";
+import Transactions from "../models/Wallet";
 
 export class DoctorRepository implements IDoctorRepository {
    addDoctor=async(doctorData: AddDoctorInput): Promise<AddDoctorOutput>=> {
@@ -144,6 +145,7 @@ export class DoctorRepository implements IDoctorRepository {
         profilePic: doctor.profilePic || "",
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
+        eWallet:doctor?.eWallet,
         password: doctor.password, 
         location:doctor.location,
         createdAt: doctor.createdAt,
@@ -196,6 +198,7 @@ export class DoctorRepository implements IDoctorRepository {
         experience: doctor.experience.toString() || "",
         isVerified:doctor.isVerified,
         password: doctor.password, 
+        eWallet:doctor.eWallet,
         location:doctor.location,
         createdAt: doctor.createdAt,
         updatedAt: doctor.updatedAt,
@@ -244,6 +247,7 @@ export class DoctorRepository implements IDoctorRepository {
         licenseImage: doctor.licenseImage || "",
         hospitalName: doctor.hospitalName || "",
         fees: doctor.fees?.toString() || "",
+        eWallet:doctor.eWallet,
         licenseNumber: doctor.licenseNumber?.toString() || "",
         profilePic: doctor.profilePic || "",
         experience: doctor.experience.toString() || "",
@@ -281,6 +285,7 @@ export class DoctorRepository implements IDoctorRepository {
         licenseNumber: doctor.licenseNumber?.toString() || "",
         profilePic: doctor.profilePic || "",
         experience: doctor.experience.toString() || "",
+        eWallet:doctor.eWallet,
         isVerified:doctor.isVerified,
         password: doctor.password, 
         location:doctor?.location,
@@ -617,4 +622,21 @@ createSlots = async (doctorId: string, slotData: any[]): Promise<SuccessResponse
     throw new Error(error.message || "Failed to create slots.");
   }
 };
+
+getWalletHisotry=async(doctorId: string): Promise<Transaction>=> {
+  try {
+    
+    if (!doctorId) {
+      throw new Error(`User with ID ${doctorId} not found.`);
+    }
+
+     const historys = await Transactions.find({doctorId:doctorId}).populate('userId');
+     
+
+    return historys
+  } catch (error: any) {
+    console.error("Error in chatroom:", error);
+    throw new Error(error.message);
+  }
+}
 }

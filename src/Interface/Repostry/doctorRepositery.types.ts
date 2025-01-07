@@ -94,6 +94,7 @@ export type AddDoctorInput = {
     readonly experience: string;
     readonly profilePic?: string;
     readonly licenseImage?: string;
+    readonly eWallet:number
     readonly createdAt: Date;
     readonly updatedAt: Date;
   };
@@ -140,3 +141,4 @@ export type AddDoctorInput = {
 
   export type Messages= Array<{ [key: string]: any }>
   export type ChatMembers= Array<{ [key: string]: any }>
+  export type Transaction= Array<{ [key: string]: any }>
