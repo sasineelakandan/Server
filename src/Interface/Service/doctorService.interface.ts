@@ -1,5 +1,5 @@
 
-import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData,ChatMembers,Messages, Transaction} from "./doctorService.type";
+import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots} from "./doctorService.type";
 
 export interface IDoctorService {
   doctorSignup(doctorData:DoctorSignupInput): Promise<DoctorSignupOutput>;
@@ -22,4 +22,7 @@ export interface IDoctorService {
   forgotPassword(otpDataa:any):Promise<SuccessResponse>
   createSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
   getWalletHisotry(doctorId:string):Promise<Transaction>
+  getSlots(doctorId:string):Promise<Slots>
+  asignLeaveDays(doctorId:string,leaveDays:any):Promise<SuccessResponse>
+   updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
 }

@@ -715,7 +715,110 @@ export class DoctorController implements IDoctorConroller {
       };
     }
   }
+  getSlots=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+    try {
     
+      const doctorId = httpRequest?.user?.id;
+  
+      
+      if (!doctorId || typeof doctorId !== 'string') {
+        console.error('Invalid room ID');
+        throw new Error('Room ID is required and must be a string.');
+      }
+  
+      
+      const slots = await this.doctorService.getSlots(doctorId);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 200, 
+        body: slots, 
+      };
+    } catch (error: any) {
+      console.error('Error in walletHistorys:', error.message);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, // Internal Server Error
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+  }
+  asignLeaveDays=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+    try {
+    
+      const doctorId = httpRequest?.user?.id;
+      const leaveDays=httpRequest?.body
+      
+      if (!doctorId || typeof doctorId !== 'string') {
+        console.error('Invalid room ID');
+        throw new Error('Room ID is required and must be a string.');
+      }
+  
+      
+      const response = await this.doctorService.asignLeaveDays(doctorId,leaveDays);
+    
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 200, 
+        body: response, 
+      };
+    } catch (error: any) {
+      console.error('Error in walletHistorys:', error.message);
+  
+      return {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        statusCode: 500, // Internal Server Error
+        body: { error: error.message || 'An unknown error occurred.' },
+      };
+    }
+
+  }
+  updateSlots=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
+    try {
+      const slotData = httpRequest.body;
+      const doctorId = httpRequest.user?.id;
+
+      if (!doctorId) {
+          throw new Error('Doctor ID is missing or not authorized.');
+      }
+
+      // Assuming createSlots method in doctorService takes doctorId and slotData
+      const response = await this.doctorService.updateSlots(doctorId, slotData);
+
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode: 201, // Created
+          body: response,
+      };
+  } catch (e: any) {
+      console.error("Error in createSlots:", e);
+
+      // Handling known error or unexpected error
+      const statusCode = e.statusCode || 500;
+      const errorMessage = e.message || "An unexpected error occurred";
+
+      return {
+          headers: {
+              "Content-Type": "application/json",
+          },
+          statusCode,
+          body: {
+              error: errorMessage,
+          },
+      };
+  }
+  }
   } 
  
   

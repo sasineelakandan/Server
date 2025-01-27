@@ -16,7 +16,8 @@ import {
   ResheduleData,
   ChatMembers,
   Messages,
-  Transaction
+  Transaction,
+  Slots
 } from "../Interface/Service/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encryption";
 import { AppError } from "../utils/errors";
@@ -400,6 +401,100 @@ export class DoctorService implements IDoctorService {
     throw new Error(error.message);
   }
  }
+ getSlots=async(doctorId: string): Promise<Slots>=> {
+  try {
+   
+    const slots = await this.doctorRepository.getSlots(
+      doctorId
+      
+    );
+    console.log(slots)
+    return slots
+  } catch (error: any) {
+    console.log("Error in slots", error.message);
+    throw new Error(error.message);
+  }
+ }
 
+ asignLeaveDays=async(doctorId: string, leaveDays:any): Promise<SuccessResponse> =>{
+   
+ 
+  try {
+     const leaveDate1 = leaveDays.leaveDays.map((date: any) => {
+      const currentDate = new Date(date);
+      currentDate.setDate(currentDate.getDate() + 1); // Add 1 day
+      return currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+    });
+    const leaveDate = leaveDate1.map((date: any) => new Date(date));
+   
+    const slots = await this.doctorRepository.asignLeaveDays(
+      doctorId,
+      leaveDate
+    );
+    
+    
+    return { status: 'success', message: 'Slots created successfully' };
+  } catch (error: any) {
+    console.log("Error in slots", error.message);
+    throw new Error(error.message);
+  }
+ }
+
+updateSlots=async(doctorId: string, slotData: any): Promise<SuccessResponse> =>{
+  try {
+    const { fromTime, toTime, workingDays } = slotData;
+
+    const startHour = parseInt(fromTime.split(":")[0]);
+    const endHour = parseInt(toTime.split(":")[0]);
+    const currentDate = new Date();
+    const nextMonthDate = new Date(currentDate);
+    nextMonthDate.setMonth(currentDate.getMonth() + 1);
+
+    const getRRuleWeekday = (dayName: string): Weekday => {
+      const daysMap: { [key: string]: Weekday } = {
+        Sunday: RRule.SU,
+        Monday: RRule.MO,
+        Tuesday: RRule.TU,
+        Wednesday: RRule.WE,
+        Thursday: RRule.TH,
+        Friday: RRule.FR,
+        Saturday: RRule.SA,
+      };
+      return daysMap[dayName];
+    };
+
+    const rule = new RRule({
+      freq: RRule.DAILY,
+      dtstart: currentDate,
+      until: nextMonthDate,
+      byweekday: workingDays.map(getRRuleWeekday),
+    });
+
+    const recurrenceDates = rule.all();
+    const slots: any[] = [];
+
+    recurrenceDates.forEach((date: Date) => {
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+      if (workingDays.includes(dayName)) {
+        for (let hour = startHour; hour < endHour; hour++) {
+          const fromSlot = `${hour.toString().padStart(2, "0")}:00`;
+          const toSlot = `${(hour + 1).toString().padStart(2, "0")}:00`;
+          slots.push({
+            doctorId,
+            day: dayName,
+            date: date.toISOString().split("T")[0],
+            slot: `${fromSlot} - ${toSlot}`,
+            isBooked: false,
+          });
+        }
+      }
+    });
+
+    await this.doctorRepository.updateSlots(doctorId, slots);
+    return { status: 'success', message: 'Slots created successfully' };
+  } catch (error: any) {
+    throw new Error(error.message || 'An error occurred while creating slots');
+  }
+}
    
 }

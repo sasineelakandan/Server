@@ -479,7 +479,7 @@ export class UserRepository implements IuserRepository {
         if (!doctorId) {
           throw new Error(`User with ID ${doctorId} not found.`);
         }
-        const SlotDatas = await Slots.find({ doctorId:doctorId})
+        const SlotDatas = await Slots.find({ doctorId:doctorId,isUnavail:false})
         
         
 

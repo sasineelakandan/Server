@@ -1,4 +1,4 @@
-import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData,ChatMembers,Messages, Transaction } from '../Repostry/doctorRepositery.types'
+import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots } from '../Repostry/doctorRepositery.types'
 import { ProfileFormData } from '../Service/doctorService.type';
 
 export interface IDoctorRepository{
@@ -23,5 +23,8 @@ export interface IDoctorRepository{
     forgotPassword(otpDataa:any):Promise<SuccessResponse>
     updateDoctorPassword(userId:string,password:string):Promise<SuccessResponse>
     createSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
-     getWalletHisotry(doctorId:string):Promise<Transaction>
+    getWalletHisotry(doctorId:string):Promise<Transaction>
+    getSlots(doctorId:string):Promise<Slots>
+    asignLeaveDays(doctorId:string,leaveDays:any):Promise<SuccessResponse>
+    updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
 }

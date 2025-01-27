@@ -127,3 +127,4 @@ export type DoctorSignupInput = {
   export type Messages= Array<{ [key: string]: any }>
 export type ChatMembers= Array<{ [key: string]: any }>
 export type Transaction= Array<{ [key: string]: any }>
+export type Slots= Array<{ [key: string]: any }>

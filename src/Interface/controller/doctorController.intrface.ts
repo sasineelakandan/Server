@@ -25,4 +25,7 @@ export interface IDoctorConroller{
     forgotPassword(httpRequest:Request):Promise<ControllerResponse>
     createSlots(httpRequest:Request):Promise<ControllerResponse>
     getWalletHisotry(httpRequest:Request):Promise<ControllerResponse>
+    getSlots(httpRequest:Request):Promise<ControllerResponse>
+    asignLeaveDays(httpRequest:Request):Promise<ControllerResponse>
+    updateSlots(httpRequest:Request):Promise<ControllerResponse>
 }

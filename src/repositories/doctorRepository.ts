@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../Interface/Repostry/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction } from "../Interface/Repostry/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction, Slots } from "../Interface/Repostry/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/Slots";
@@ -594,33 +594,48 @@ createSlots = async (doctorId: string, slotData: any[]): Promise<SuccessResponse
     if (!doctorId || !slotData.length) {
       throw new Error("Doctor ID and slot data are required.");
     }
-    console.log(slotData)
-    // Prepare slots with the doctorId
+  
+    // Find existing slots for the doctor
+    const alreadyCreated = await Slot.find({ doctorId });
+  
+    // Check if any of the slotData already exists (same day and date)
+    const duplicateSlots = slotData.filter(slot => 
+      alreadyCreated.some(existingSlot => 
+        existingSlot.day === slot.day && existingSlot.date === slot.date
+      )
+    );
+   
+    if (duplicateSlots.length > 0) {
+      throw new Error(`Duplicate slots found for the same day and date: ${duplicateSlots.map(slot => `${slot.day} ${slot.date}`).join(', ')}`);
+    }
+  
+    // Prepare new slots to be inserted
     const slots = slotData.map(slot => ({
       ...slot,
       doctorId, // Associate each slot with the provided doctorId
     }));
-
+  
     // Insert multiple slot records into the database
     await Slot.insertMany(slots);
-    
+  
     return {
       status: "success",
       message: "Slots created successfully.",
     };
   } catch (error: any) {
     console.error("Error creating slots:", error);
-
+  
     // Handle duplicate key error (code 11000 for MongoDB)
     if (error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       const value = error.keyValue[field];
       error.message = `${field} '${value}' already exists.`;
     }
-
+  
     // Rethrow error with custom message
     throw new Error(error.message || "Failed to create slots.");
   }
+  
 };
 
 getWalletHisotry=async(doctorId: string): Promise<Transaction>=> {
@@ -639,4 +654,92 @@ getWalletHisotry=async(doctorId: string): Promise<Transaction>=> {
     throw new Error(error.message);
   }
 }
+getSlots=async(doctorId: string): Promise<Slots>=> {
+  try {
+    
+    if (!doctorId) {
+      throw new Error(`User with ID ${doctorId} not found.`);
+    }
+
+     const slots = await Slot.find({doctorId:doctorId})
+     
+
+    return slots
+  } catch (error: any) {
+    console.error("Error in chatroom:", error);
+    throw new Error(error.message);
+  }
+}
+asignLeaveDays = async (doctorId: string, leaveDays:any): Promise<SuccessResponse> => {
+  try {
+    console.log(doctorId,leaveDays)
+    if (!doctorId || !Array.isArray(leaveDays) || leaveDays.length === 0) {
+      throw new Error("Invalid input: doctorId and leaveDays are required.");
+    }
+
+    
+    const result = await Slot.updateMany(
+      {
+        doctorId: doctorId,
+        date: { $in:leaveDays }, // Match leaveDays
+      },
+      {
+        $set: { isUnavail: true }, // Set isUnavailable to true
+      }
+    );
+
+    return {
+      status: "success",
+      message: `slots marked as unavailable.`,
+    };
+  } catch (error: any) {
+    console.error("Error updating leave days:", error);
+
+    // Handle duplicate key error or any other specific error codes if needed
+    if (error.code === 11000) {
+      throw new Error("Duplicate key error while updating slots.");
+    }
+    
+    // Rethrow error with custom message
+    throw new Error(error.message || "Failed to update slots for leave days.");
+  }
+};
+updateSlots=async(doctorId: string, slotData: any[]): Promise<SuccessResponse>=> {
+  try {
+    // Validate input
+    if (!doctorId || !slotData.length) {
+      throw new Error("Doctor ID and slot data are required.");
+    }
+  
+    // Find existing slots for the doctor
+   
+  
+    // Prepare new slots to be inserted
+    const slots = slotData.map(slot => ({
+      ...slot,
+      doctorId, // Associate each slot with the provided doctorId
+    }));
+  
+    // Insert multiple slot records into the database
+    await Slot.insertMany(slots);
+  
+    return {
+      status: "success",
+      message: "Slots created successfully.",
+    };
+  } catch (error: any) {
+    console.error("Error creating slots:", error);
+  
+    // Handle duplicate key error (code 11000 for MongoDB)
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      const value = error.keyValue[field];
+      error.message = `${field} '${value}' already exists.`;
+    }
+  
+    // Rethrow error with custom message
+    throw new Error(error.message || "Failed to create slots.");
+  }
+}
+
 }
