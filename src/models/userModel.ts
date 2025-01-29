@@ -59,6 +59,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    eWallet: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

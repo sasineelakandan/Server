@@ -25,4 +25,5 @@ export interface IDoctorService {
   getSlots(doctorId:string):Promise<Slots>
   asignLeaveDays(doctorId:string,leaveDays:any):Promise<SuccessResponse>
    updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
+   blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
 }

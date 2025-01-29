@@ -5,7 +5,7 @@ import Otp from "../models/otpModel";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
-
+import Transactions from "../models/Wallet";
 import Slots from "../models/Slots";
 import Reviews from "../models/reviewModel";
 import {io} from "../../src/index";
@@ -204,7 +204,25 @@ export class UserRepository implements IuserRepository {
     cancelAppointments=async(userId: string, appointmentId: string): Promise<SuccessResponse> =>{
       try {
       
-        const appointment=await Appointment.findOne({_id:appointmentId})
+        
+        const appointment: any = await Appointment.findOne({ _id: appointmentId }).populate('userId');
+    if (!appointment) {
+      throw new Error("Appointment not found.");
+    }
+
+    
+    await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'canceled' } });
+
+    
+   
+      await User.updateOne(
+        { _id: appointment.userId._id },
+        { $inc: { eWallet: appointment.paymentId.amount } }
+      );
+
+      
+      await Transactions.updateOne({id:appointment?.paymentId?.id,userId},{$set:{type:'Refund'}})
+    
         const slot=await Slots.updateOne({_id:appointment?.slotId},{isbooked:false})
         const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
         if (!userId) {

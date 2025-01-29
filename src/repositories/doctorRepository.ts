@@ -10,6 +10,10 @@ import Message from "../models/messageModel";
 import {io} from "../../src/index";
 import Transactions from "../models/Wallet";
 
+
+import User from "../models/userModel";
+
+
 export class DoctorRepository implements IDoctorRepository {
    addDoctor=async(doctorData: AddDoctorInput): Promise<AddDoctorOutput>=> {
        
@@ -362,24 +366,43 @@ completeAppointment=async(doctorId: string, appointmentId: string): Promise<Succ
     throw new Error(error.message);
   }
 }
-cancelAppointment=async(doctorId: string, appointmentId: string): Promise<SuccessResponse>=> {
+cancelAppointment = async (doctorId: string, appointmentId: string): Promise<SuccessResponse> => {
   try {
-      
-    
-    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
     if (!doctorId) {
-      throw new Error(`Doctor with ID ${doctorId} not found.`);
+      throw new Error("Doctor ID is required.");
     }
-  
+
+    // Fetch appointment details and populate user reference
+    const appointment: any = await Appointment.findOne({ _id: appointmentId }).populate('paymentId');
+    console.log(appointment)
+    if (!appointment) {
+      throw new Error("Appointment not found.");
+    }
+
+    // Update appointment status to 'canceled'
+    await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'canceled' } });
+
+    // Refund amount to user's wallet
+   
+    await Doctor.updateOne(
+      { _id: appointment.doctorId },
+      { $inc: { eWallet: -appointment.paymentId.amount } } 
+    );
+
+      
+      await Transactions.updateOne({id:appointment?.paymentId?.transactionId,doctorId},{$set:{type:'Refund',amount:-appointment.paymentId.amount}})
+    
+
     return {
       status: 'success',
-      message: 'Slot assigned successfully',
+      message: 'Appointment canceled successfully, and refund processed.',
     };
   } catch (error: any) {
-    console.error("Error in slot creation:", error);
+    console.error("Error in appointment cancellation:", error);
     throw new Error(error.message);
   }
-}
+};
+
 updateProfilepic=async(doctorId: string, profilePic: string): Promise<SuccessResponse> =>{
   try {
       
@@ -599,22 +622,19 @@ createSlots = async (doctorId: string, slotData: any[]): Promise<SuccessResponse
     const alreadyCreated = await Slot.find({ doctorId });
   
     // Check if any of the slotData already exists (same day and date)
-    const duplicateSlots = slotData.filter(slot => 
-      alreadyCreated.some(existingSlot => 
-        existingSlot.day === slot.day && existingSlot.date === slot.date
-      )
-    );
+    
    
-    if (duplicateSlots.length > 0) {
-      throw new Error(`Duplicate slots found for the same day and date: ${duplicateSlots.map(slot => `${slot.day} ${slot.date}`).join(', ')}`);
+    if (alreadyCreated.length > 0) {
+      
+      throw new Error(`Duplicate slots found for the same day and date: ${alreadyCreated.map(slot => `${slot.day} ${slot.date}`).join(', ')}`);
     }
   
-    // Prepare new slots to be inserted
+    
     const slots = slotData.map(slot => ({
       ...slot,
       doctorId, // Associate each slot with the provided doctorId
     }));
-  
+   
     // Insert multiple slot records into the database
     await Slot.insertMany(slots);
   
@@ -661,8 +681,8 @@ getSlots=async(doctorId: string): Promise<Slots>=> {
       throw new Error(`User with ID ${doctorId} not found.`);
     }
 
-     const slots = await Slot.find({doctorId:doctorId})
-     
+     const slot = await Slot.find({doctorId:doctorId})
+     const slots=[...new Set(slot)]
 
     return slots
   } catch (error: any) {
@@ -740,6 +760,27 @@ updateSlots=async(doctorId: string, slotData: any[]): Promise<SuccessResponse>=>
     // Rethrow error with custom message
     throw new Error(error.message || "Failed to create slots.");
   }
+}
+blockSlots=async(doctorId: string, slotId: string): Promise<SuccessResponse>=> {
+
+   try{ 
+
+    console.log(doctorId,slotId)
+  if (!doctorId) {
+    throw new Error(`User with ID ${doctorId} not found.`);
+  }
+
+   const slot = await Slot.updateOne({_id:slotId,doctorId},{$set:{isUnavail:true}})
+
+
+   return {
+    status: "success",
+    message: "Message sent successfully.",
+  };
+} catch (error: any) {
+  console.error("Error in block slots:", error);
+  throw new Error(error.message);
+}
 }
 
 }

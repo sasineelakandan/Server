@@ -408,7 +408,7 @@ export class DoctorService implements IDoctorService {
       doctorId
       
     );
-    console.log(slots)
+    
     return slots
   } catch (error: any) {
     console.log("Error in slots", error.message);
@@ -494,6 +494,21 @@ updateSlots=async(doctorId: string, slotData: any): Promise<SuccessResponse> =>{
     return { status: 'success', message: 'Slots created successfully' };
   } catch (error: any) {
     throw new Error(error.message || 'An error occurred while creating slots');
+  }
+}
+blockSlots=async(doctorId: string, slotId: string): Promise<SuccessResponse>=> {
+  try {
+     console.log(slotId,doctorId)
+    const slots = await this.doctorRepository.blockSlots(
+      doctorId,
+      slotId
+      
+    );
+    
+    return slots
+  } catch (error: any) {
+    console.log("Error in slots", error.message);
+    throw new Error(error.message);
   }
 }
    

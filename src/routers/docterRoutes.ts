@@ -59,6 +59,10 @@ router
   .route('/createslots')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.createSlots))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.updateSlots))
+  .patch(authMiddleware,checkIfBlocked,expressCallback(controller.blockSlots))
+  
+
+
   router
   .route('/forgotpassword')
   .post(expressCallback(controller.forgotPasswordOtp))
@@ -72,5 +76,6 @@ router
   .route('/available-slots')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getSlots))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.asignLeaveDays))
+ 
  
 export default router;
