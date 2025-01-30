@@ -29,4 +29,5 @@ export interface IDoctorConroller{
     asignLeaveDays(httpRequest:Request):Promise<ControllerResponse>
     updateSlots(httpRequest:Request):Promise<ControllerResponse>
     blockSlots(httpRequest:Request):Promise<ControllerResponse>
+    Appointments(httpRequest:Request):Promise<ControllerResponse>
 }

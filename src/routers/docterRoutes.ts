@@ -76,6 +76,10 @@ router
   .route('/available-slots')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getSlots))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.asignLeaveDays))
+
+  router
+  .route('/dashbord')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.Appointments))
  
  
 export default router;

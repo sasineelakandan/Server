@@ -334,7 +334,7 @@ resheduleAppointment=async(doctorId: string, payloadData: ResheduleData): Promis
     const appointments = await Appointment.findOne({ doctorId: doctorId,_id:appointmentId })
     
     const slotUpdate=await Slot.updateOne({_id:appointments?.slotId},{$set:{date:date,startTime:startTime,endTime:endTime}})
-    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'rescheduled'}})
+    const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'c'}})
     if (!appointments) {
       throw new Error(`Doctor with ID ${doctorId} not found.`);
     }
@@ -390,7 +390,7 @@ cancelAppointment = async (doctorId: string, appointmentId: string): Promise<Suc
     );
 
       
-      await Transactions.updateOne({id:appointment?.paymentId?.transactionId,doctorId},{$set:{type:'Refund',amount:-appointment.paymentId.amount}})
+      await Transactions.updateOne({id:appointment?.paymentId?.transactionId,doctorId},{$set:{type:'Refund',amount:-appointment.paymentId.amount,date:new Date()}})
     
 
     return {
@@ -481,7 +481,7 @@ sendMessage = async (roomId: string, message:any): Promise<SuccessResponse> => {
     }
 
     // Find the chat room
-    const chatter = await ChatRoom.findOne({ _id: roomId });
+    const chatter = await ChatRoom.findOne({ _id: roomId })
     if (!chatter) {
       throw new Error(`Chat room with ID ${roomId} not found.`);
     }
@@ -782,5 +782,28 @@ blockSlots=async(doctorId: string, slotId: string): Promise<SuccessResponse>=> {
   throw new Error(error.message);
 }
 }
+Appointments=async(doctorId: string): Promise<Appointments>=> {
+  try {
+      
+   console.log('hai')
+    const appointments = await Appointment.find({ doctorId: doctorId ,status:'completed'}).sort({_id:-1})
+    .populate('slotId')       
+    .populate('doctorId')     
+    .populate('patientId') 
+    .populate('paymentId')   
+    .populate('userId');
+    
+    
+    if (!appointments) {
+      throw new Error(`Doctor with ID ${doctorId} not found.`);
+    }
+  
+    return appointments
+  } catch (error: any) {
+    console.error("Error in slot creation:", error);
+    throw new Error(error.message);
+  }
+}
+
 
 }

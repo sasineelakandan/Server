@@ -511,5 +511,16 @@ blockSlots=async(doctorId: string, slotId: string): Promise<SuccessResponse>=> {
     throw new Error(error.message);
   }
 }
+Appointments=async(doctorId: string): Promise<Appointments>=> {
+  try {
+    const appointments = await this.doctorRepository.Appointments(
+      doctorId
+    );
+    return appointments;
+  } catch (error: any) {
+    console.log("Error in doctorProfile", error.message);
+    throw new Error(error.message);
+  }
+}
    
 }
