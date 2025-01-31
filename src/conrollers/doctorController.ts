@@ -483,6 +483,7 @@ export class DoctorController implements IDoctorConroller {
         
         const doctorId = httpRequest?.user?.id;
         const {activeUser,message}= httpRequest?.body;
+        console.log(activeUser,message)
         
         if (!activeUser) {
           throw new Error('Profile picture URL is required.');

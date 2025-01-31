@@ -39,7 +39,10 @@ let onlineUsers:any = {};
           console.log("Invalid message data", { sender, receiver, content });
           return;
         }
-
+        const isLink = /^https?:\/\/[^\s$.?#].[^\s]*$/i.test( message?.content);
+    const messageContent = isLink
+      ? "Video call "  // If it's a link, label it as "Video call invitation"
+      :  message?.content ;
         const incrementField = sender === "patient" ? "isReadDc" : "isReadUc";
         await ChatRoom.updateOne(
           { _id: roomId },
@@ -64,7 +67,7 @@ let onlineUsers:any = {};
           receiver,
           receiverId,
           senderId,
-          content,
+          content:message.content,
           isRead: false, 
           timestamp: new Date(),
         });
@@ -90,6 +93,23 @@ let onlineUsers:any = {};
 
         // Emit the message to the room
         io.to(roomId).emit("receiveMessage", savedMessage);
+         
+             if (isLink) {
+              console.log("Emitting linkNotification event:", {
+                message: "A video call invitation has been shared",
+                link: message.content,
+                senderId,
+                timestamp: message.timestamp,
+              });
+        
+              // Emit a separate event for link notifications
+              io.to(roomId).emit("linkNotification", {
+                message: "A video call invitation has been shared",
+                link:message.content,
+                senderId,
+                timestamp: message.timestamp,
+              });
+            }
       } catch (error) {
         console.error("Error creating message:", error);
       }

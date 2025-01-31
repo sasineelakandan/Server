@@ -16,7 +16,7 @@ const messageSchema = new mongoose.Schema({
   },
   receiverId: {
     type: String,
-     required: true,
+     required:false,
   },
   roomId: {
     type: mongoose.Schema.Types.ObjectId,

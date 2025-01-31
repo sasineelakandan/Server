@@ -485,21 +485,39 @@ sendMessage = async (roomId: string, message:any): Promise<SuccessResponse> => {
     if (!chatter) {
       throw new Error(`Chat room with ID ${roomId} not found.`);
     }
-
+    console.log("Emitting linkNotification to room:", roomId);
     
     await ChatRoom.updateOne({ _id: roomId }, { $set: { lastMessage: message?.content} });
-
+    const isLink = /^https?:\/\/[^\s$.?#].[^\s]*$/i.test( message?.content);
+    const messageContent = isLink
+      ? "Video call "  // If it's a link, label it as "Video call invitation"
+      :  message?.content ;
     const updatedRoom = await ChatRoom.findOne({ _id: roomId });
     console.log('Updated Chat Room:', updatedRoom);
     const createMsg = await Message.create({
-      sender: chatter.patient,
-      receiver: chatter.doctor,
+      sender: chatter.doctor,
+      receiver: chatter.patient,
       roomId,
-      content: message?.content,
+      content:message?.content,
     });
-
+     
      io.to(roomId).emit("message", {createMsg})
-   
+     if (isLink) {
+      console.log("Emitting linkNotification event:", {
+        message: "A video call invitation has been shared",
+        link: message.content,
+        senderId:chatter.doctor,
+        timestamp: message.timestamp,
+      });
+
+      // Emit a separate event for link notifications
+      io.to(roomId).emit("linkNotification", {
+        message: "A video call invitation has been shared",
+        link:message.content,
+        senderId:chatter.doctor,
+        timestamp: message.timestamp,
+      });
+    }
 
     return {
       status: "success",
