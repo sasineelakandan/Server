@@ -713,6 +713,39 @@ export class UserController implements IUserConroller {
       };
     }
   }
+  getWalletHisotry=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const userId = httpRequest?.user?.id;
+    
+        
+        if (!userId || typeof userId !== 'string') {
+          console.error('Invalid room ID');
+          throw new Error('Room ID is required and must be a string.');
+        }
+    
+        
+        const walletHistorys = await this.userService.getWalletHisotry(userId);
+      
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 200, 
+          body: walletHistorys, 
+        };
+      } catch (error: any) {
+        console.error('Error in walletHistorys:', error.message);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, // Internal Server Error
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
   
   }
   

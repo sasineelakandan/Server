@@ -8,6 +8,7 @@ import Message from "../models/messageModel";
 import Transactions from "../models/Wallet";
 import Slots from "../models/Slots";
 import Reviews from "../models/reviewModel";
+import Doctor from '../../src/models/doctorModel'
 import {io} from "../../src/index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -121,6 +122,7 @@ export class UserRepository implements IuserRepository {
           phone: user.phone||'',
           profilePic:user.profilePic||'',
           password:user.password||'',
+          eWallet:user?.eWallet,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -145,6 +147,7 @@ export class UserRepository implements IuserRepository {
           phone: user.phone||'',
           profilePic:user.profilePic||'',
           password:user.password||'',
+          eWallet:user.eWallet,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -170,6 +173,7 @@ export class UserRepository implements IuserRepository {
           phone: user.phone||'',
           profilePic:user.profilePic||'',
           password:user?.password||'',
+          eWallet:user?.eWallet,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
@@ -205,7 +209,7 @@ export class UserRepository implements IuserRepository {
       try {
       
         
-        const appointment: any = await Appointment.findOne({ _id: appointmentId }).populate('userId');
+        const appointment: any = await Appointment.findOne({ _id: appointmentId }).populate('userId').populate('paymentId');
     if (!appointment) {
       throw new Error("Appointment not found.");
     }
@@ -214,14 +218,16 @@ export class UserRepository implements IuserRepository {
     await Appointment.updateOne({ _id: appointmentId }, { $set: { status: 'canceled' } });
 
     
+    await Doctor.updateOne(
+      { _id: appointment.doctorId },
+      { $inc: { eWallet: -appointment.paymentId.amount } } 
+    );
+    await User.updateOne({_id:appointment.userId},{$inc:{eWallet:appointment?.paymentId?.amount}})
+   const transaction:any= await Transactions.findOne({id:appointment?.paymentId?.transactionId,doctorId:appointment.doctorId})
    
-      await User.updateOne(
-        { _id: appointment.userId._id },
-        { $inc: { eWallet: appointment.paymentId.amount } }
-      );
-
+    
       
-      await Transactions.updateOne({id:appointment?.paymentId?.id,userId},{$set:{type:'Refund'}})
+      await Transactions.updateOne({_id:transaction._id},{$set:{type:'Refund',amount:-appointment?.paymentId?.amount,date:new Date()}})
     
         const slot=await Slots.updateOne({_id:appointment?.slotId},{isbooked:false})
         const updateAppointment=await Appointment.updateOne({_id:appointmentId},{$set:{status:'canceled'}})
@@ -507,6 +513,22 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     }
+   
+getWalletHisotry=async(userId: string): Promise<any>=> {
+  try {
+    
+    if (!userId) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
 
+    const historys = await Transactions.find({userId:userId}).sort({_id:-1}).populate('doctorId');
+     
+
+    return historys
+  } catch (error: any) {
+    console.error("Error in chatroom:", error);
+    throw new Error(error.message);
+  }
+}
    } 
     

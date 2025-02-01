@@ -89,13 +89,14 @@ export class UserService implements IUserService{
      
        try{
                 const user=await this.userRepository.userProfile(userId)
-                console.log(user)
+                
                 return {
                   _id: user._id,
                   username: user.username,
                   email: user.email,
                   phone: user.phone,
                   profilePic:user?.profilePic,
+                  eWallet:user?.eWallet,
                   createdAt: user.createdAt,
                   updatedAt: user.updatedAt,
                   
@@ -115,6 +116,7 @@ export class UserService implements IUserService{
           email: user.email,
           phone: user.phone,
           profilePic:user.profilePic||'',
+          eWallet:user?.eWallet,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           
@@ -143,6 +145,7 @@ console.log("Error in userLogin", error.message);
           email: user.email,
           phone: user.phone,
           profilePic:user?.profilePic,
+          eWallet:user?.eWallet,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           
@@ -315,5 +318,17 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
     }
+    getWalletHisotry=async(doctorId: string): Promise<any>=> {
+      try {
+        const historys = await this.userRepository.getWalletHisotry(
+          doctorId
+          
+        );
+        return historys;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
      
     }

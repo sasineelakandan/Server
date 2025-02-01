@@ -4,7 +4,7 @@ const transactionSchema = new mongoose.Schema({
   id: {
     type: String, // Corrected from lowercase 'string'
     required: true,
-    unique: true, // Ensures the transaction ID is unique
+   // Ensures the transaction ID is unique
   },
   date: {
     type: Date, // Changed to Date type for better date handling

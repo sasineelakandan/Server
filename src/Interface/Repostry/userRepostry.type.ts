@@ -68,6 +68,7 @@ export type GetuserProfileOutput = {
  phone: string;
  password: string;
  profilePic: string
+ eWallet:number,
  createdAt: Date;
  updatedAt: Date;
 };
@@ -143,3 +144,4 @@ readonly refreshToken?: string;
 
 export type ReviewDatas= Array<{ [key: string]: any }>
 export type SlotDatas= Array<{ [key: string]: any }>
+export type Transaction= Array<{ [key: string]: any }>

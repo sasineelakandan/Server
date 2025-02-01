@@ -1,4 +1,4 @@
-import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas } from "./userService.type";
+import { UserSignupInput, UserSignupOutput,OtpOutput, findOtp,UserProfileOutput, Appointments, SuccessResponse, Messages, ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas, Transaction } from "./userService.type";
 
 export interface IUserService {
   userSignup(userData: UserSignupInput): Promise<UserSignupOutput>;
@@ -20,4 +20,5 @@ export interface IUserService {
   googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
   getReview(doctorId:string):Promise<ReviewDatas>
   getSlots(doctorId:string):Promise<SlotDatas>
+  getWalletHisotry(doctorId:string):Promise<Transaction>
 }

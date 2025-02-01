@@ -70,7 +70,9 @@ router
   .route('/reviews')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getReview))
 
-  
+  router
+  .route('/transactions')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getWalletHisotry))
 
 
 export default router;

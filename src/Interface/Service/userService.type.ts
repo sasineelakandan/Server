@@ -23,6 +23,7 @@ export type UserProfileOutput = {
   readonly email: string;
   readonly phone: string;
   readonly profilePic?:string
+ readonly   eWallet:number,
   readonly createdAt: Date;
   readonly updatedAt: Date;
  
@@ -122,3 +123,4 @@ readonly refreshToken?: string;
 
 export type ReviewDatas= Array<{ [key: string]: any }>
 export type SlotDatas= Array<{ [key: string]: any }>
+export type Transaction= Array<{ [key: string]: any }>

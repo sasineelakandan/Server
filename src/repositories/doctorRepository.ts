@@ -388,9 +388,12 @@ cancelAppointment = async (doctorId: string, appointmentId: string): Promise<Suc
       { _id: appointment.doctorId },
       { $inc: { eWallet: -appointment.paymentId.amount } } 
     );
-
+    await User.updateOne({_id:appointment.userId},{$inc:{eWallet:appointment?.paymentId?.amount}})
+   const transaction:any= await Transactions.findOne({id:appointment?.paymentId?.transactionId,doctorId})
+   
+    
       
-      await Transactions.updateOne({id:appointment?.paymentId?.transactionId,doctorId},{$set:{type:'Refund',amount:-appointment.paymentId.amount,date:new Date()}})
+      await Transactions.updateOne({_id:transaction._id},{$set:{type:'Refund',amount:-appointment?.paymentId?.amount,date:new Date()}})
     
 
     return {
@@ -710,10 +713,7 @@ getSlots=async(doctorId: string): Promise<Slots>=> {
 }
 asignLeaveDays = async (doctorId: string, leaveDays:any): Promise<SuccessResponse> => {
   try {
-    console.log(doctorId,leaveDays)
-    if (!doctorId || !Array.isArray(leaveDays) || leaveDays.length === 0) {
-      throw new Error("Invalid input: doctorId and leaveDays are required.");
-    }
+   
 
     
     const result = await Slot.updateMany(

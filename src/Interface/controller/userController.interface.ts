@@ -23,5 +23,6 @@ export interface IUserConroller{
     googleLogin(httpRequest:Request):Promise<ControllerResponse>
     getReview(httpRequest:Request):Promise<ControllerResponse>
     getSlots(httpRequest:Request):Promise<ControllerResponse>
+    getWalletHisotry(httpRequest:Request):Promise<ControllerResponse>
     
 }

@@ -1,5 +1,5 @@
 
-import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas} from './userRepostry.type'
+import { AddUserInput, AddUserOuput,GetUserOutput,AddOtpOutput, findOtp, updateUser,GetuserProfileOutput, Appointments ,SuccessResponse, Messages,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas, Transaction} from './userRepostry.type'
 
 export interface IuserRepository{
     addUser(userData:AddUserInput):Promise<AddUserOuput>
@@ -22,4 +22,5 @@ export interface IuserRepository{
     googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
     getReview(doctorId:string):Promise<ReviewDatas>
     getSlots(doctorId:string):Promise<SlotDatas>
+    getWalletHisotry(doctorId:string):Promise<Transaction>
 }
