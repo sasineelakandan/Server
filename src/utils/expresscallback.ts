@@ -30,20 +30,17 @@ export function expressCallback(controller: any) {
     
       if (httpResponse.body.accessToken) {
         res.cookie("accessToken", httpResponse.body.accessToken, {
-          httpOnly: false,
-          secure: true,
-        sameSite: "strict",
-        domain: ".docreserva.site",
-      
+          httpOnly: true,
+          secure: true, 
+          sameSite: "none", 
         });
       }
 
       if (httpResponse.body.refreshToken) {
         res.cookie("refreshToken", httpResponse.body.refreshToken, {
-          httpOnly:true,
-          secure: true,
-          sameSite: "strict",
-          domain: ".docreserva.site",
+          httpOnly: true,
+          secure: true, 
+          sameSite: "none",
           
         });
       }
