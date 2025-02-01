@@ -373,6 +373,9 @@ export class DoctorService implements IDoctorService {
             const fromSlot = `${hour.toString().padStart(2, "0")}:00`;
             const toSlot = `${(hour + 1).toString().padStart(2, "0")}:00`;
             slots.push({
+              fromTime,
+            toTime,
+            workingDays,
               doctorId,
               day: dayName,
               date: date.toISOString().split("T")[0],
@@ -480,6 +483,9 @@ updateSlots=async(doctorId: string, slotData: any): Promise<SuccessResponse> =>{
           const fromSlot = `${hour.toString().padStart(2, "0")}:00`;
           const toSlot = `${(hour + 1).toString().padStart(2, "0")}:00`;
           slots.push({
+            fromTime,
+            toTime,
+            workingDays,
             doctorId,
             day: dayName,
             date: date.toISOString().split("T")[0],

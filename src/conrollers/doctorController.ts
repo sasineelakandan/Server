@@ -787,6 +787,7 @@ export class DoctorController implements IDoctorConroller {
     try {
       const slotData = httpRequest.body;
       const doctorId = httpRequest.user?.id;
+      console.log(slotData,doctorId)
 
       if (!doctorId) {
           throw new Error('Doctor ID is missing or not authorized.');

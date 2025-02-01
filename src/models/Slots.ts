@@ -15,9 +15,21 @@ const slotSchema = new mongoose.Schema({
     type: Date, // Specific date for the slot, e.g., "2024-12-15"
     required: true,
   },
-  slot: {
-    type: String, // Time slot, e.g., "10:00 AM - 11:00 AM"
+  fromTime: {
+    type: String, // Start time of the slot, e.g., "10:00 AM"
     required: true,
+  },
+  toTime: {
+    type: String, // End time of the slot, e.g., "11:00 AM"
+    required: true,
+  },
+  slot: {
+    type: String, // Time slot as a formatted string, e.g., "10:00 AM - 11:00 AM"
+    required: true,
+  },
+  workingDays: {
+    type: [String], // Array of working days, e.g., ["Monday", "Tuesday", "Wednesday"]
+    default: [],
   },
   isBooked: {
     type: Boolean, // Indicates if the slot is booked
