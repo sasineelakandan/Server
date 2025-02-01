@@ -8,8 +8,8 @@ import Message from "../models/messageModel";
 import Transactions from "../models/Wallet";
 import Slots from "../models/Slots";
 import Reviews from "../models/reviewModel";
-import Doctor from '../../src/models/doctorModel'
-import {io} from "../../src/index";
+import Doctor from '../models/doctorModel'
+import {io} from "../index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
       try {

@@ -7,7 +7,7 @@ import { ProfileFormData } from "../Interface/Service/doctorService.type";
 import Appointment from "../models/appointmentModel";
 import ChatRoom from "../models/chatRoomModel";
 import Message from "../models/messageModel";
-import {io} from "../../src/index";
+import {io} from "../index";
 import Transactions from "../models/Wallet";
 
 
