@@ -579,7 +579,7 @@ export class UserController implements IUserConroller {
       }
   
       
-      const appointments = await this.userService.userReview( userId,review);
+      const appointments = await this.userService.userReview( userId,review,review.doctorId);
   
       return {
         headers: {

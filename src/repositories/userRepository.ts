@@ -411,7 +411,7 @@ export class UserRepository implements IuserRepository {
         throw new Error(error.message);
       }
     }
-    userReview=async(userId: string, Review: ReviewData): Promise<ReviewOutput> =>{
+    userReview=async(userId: string, Review: ReviewData,doctorId:string): Promise<ReviewOutput> =>{
       try {
         
         if (!userId) {
@@ -425,7 +425,9 @@ export class UserRepository implements IuserRepository {
 
         const data = await Reviews.create({
           userId,
-          ...Review, 
+          reviewText:Review.comment ,
+          doctorId,
+          rating:Review.rating
         });
         
        

@@ -106,9 +106,9 @@ isBooked: boolean;
 export type ReviewData ={
  
 doctorId: string;
-appointmentId:string; 
+
 rating: number; 
-reviewText: string;
+comment: string;
 
 }
 

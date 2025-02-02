@@ -261,9 +261,9 @@ console.log("Error in changepassword", error.message);
         throw new Error(error.message);
       }
     }
-    userReview=async(userId: string, Review: ReviewData): Promise<ReviewOutput>=> {
+    userReview=async(userId: string, Review: ReviewData,doctorId:string): Promise<ReviewOutput>=> {
       try {
-        const data = await this.userRepository.userReview(userId,Review);
+        const data = await this.userRepository.userReview(userId,Review,doctorId);
         
         return {
           reviewText:data?.reviewText,

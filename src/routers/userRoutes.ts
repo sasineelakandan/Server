@@ -69,6 +69,7 @@ router
   router
   .route('/reviews')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getReview))
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.userReview))
 
   router
   .route('/transactions')

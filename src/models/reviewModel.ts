@@ -12,11 +12,7 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Doctor',
     required: true,
   },
-  appointmentId: {
-    type: mongoose.Schema.Types.ObjectId, // Reference to the Appointment collection
-    ref: 'Appointment',
-    required: true,
-  },
+ 
   rating: {
     type: Number,
     required: true,

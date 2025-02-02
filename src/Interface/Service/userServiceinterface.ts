@@ -16,7 +16,7 @@ export interface IUserService {
   getChatMembers(userId:string):Promise<ChatMembers>
   slotAsign(userId:string,slotData:AppointmentSlot):Promise<SuccessResponse>
   getcompleteAppointment(userId:string):Promise<Appointments>
-  userReview(userId:string,Review:ReviewData):Promise<ReviewOutput>
+  userReview(userId:string,Review:ReviewData,doctorId:string):Promise<ReviewOutput>
   googleLogin(GoogleUser:GoogleUser):Promise<GoogleUserOutput>
   getReview(doctorId:string):Promise<ReviewDatas>
   getSlots(doctorId:string):Promise<SlotDatas>
