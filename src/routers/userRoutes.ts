@@ -7,7 +7,7 @@ import { signupValidator } from "../middlewere/validator/signupValidators";
 import { loginValidator } from "../middlewere/validator/loginValidators";
 import authMiddleware from "../middlewere/jwt/authentiCateToken";
 import checkIfBlocked from "../middlewere/isBlocked/isBlockeduser";
-
+import upload  from "../utils/multer";
 const router = Router();
 
 const repository = new UserRepository();
@@ -34,7 +34,7 @@ router
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.userProfile))
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
-  .post(authMiddleware,checkIfBlocked,expressCallback(controller.updateProfilepic))
+  .post(authMiddleware,checkIfBlocked,upload.single('file'),expressCallback(controller.updateProfilepic))
 
   router
   .route('/appointments')

@@ -401,45 +401,50 @@ export class DoctorController implements IDoctorConroller {
         };
       }
     }
-    updateProfilepic=async(httpRequest: CustomRequest): Promise<ControllerResponse>=> {
-      try {
-        console.log(httpRequest)
-        const doctorId = httpRequest?.user?.id;
-        const uploadedUrl = httpRequest?.body?.uploadedUrl;
-        console.log(uploadedUrl)
-        if (!uploadedUrl) {
-          throw new Error('Profile picture URL is required.');
-        }
-      
-        if (!doctorId) {
-          console.error('User ID not found in the request.');
-          throw new Error('Doctor ID is required to update the profile.');
-        }
-      
-        const updatedProfile = await this.doctorService.updateProfilepic(doctorId, uploadedUrl);
-      
-        return {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          statusCode: 201, // Created
-          body: { message: "Profile picture updated successfully.", data: updatedProfile },
-        };
-      } catch (error: any) {
-        console.error('Error in updateProfilePic:', error.message);
-      
-        const statusCode = error.message.includes('required') ? 400 : 500; // Client or server error
-      
-        return {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          statusCode,
-          body: { error: error.message || 'An unknown error occurred.' },
-        };
-      }
-      
-    }
+   updateProfilepic = async (httpRequest: CustomRequest): Promise<ControllerResponse> => {
+       try {
+         // Check if the file is provided
+         if (!httpRequest.file) {
+           return {
+             headers: { "Content-Type": "application/json" },
+             statusCode: 400, // Bad Request
+             body: { error: "Profile picture is required." },
+           };
+         }
+     
+         // Extract user ID
+         const userId = httpRequest?.user?.id;
+         if (!userId) {
+           throw new Error("User ID is missing.");
+         }
+         
+         // Construct the correct file path
+         const filePath:any = httpRequest.file.path // Use filename instead of originalname
+     
+         console.log(`Updating profile picture for user: ${userId}, File Path: ${filePath}`);
+     
+         // Call the service method to update the profile picture in the database
+         const updatedProfile = await this.doctorService.updateProfilepic(userId, filePath);
+     
+         return {
+           headers: { "Content-Type": "application/json" },
+           statusCode: 201, // Created
+           body: {
+             message: "Profile picture updated successfully.",
+             filePath, // Return file path for reference
+             updatedProfile, // Optional: Return updated user data
+           },
+         };
+       } catch (error: any) {
+         console.error("Error in updateProfilePic:", error.message);
+     
+         return {
+           headers: { "Content-Type": "application/json" },
+           statusCode: 500, // Internal Server Error
+           body: { error: error.message || "An unknown error occurred." },
+         };
+       }
+     };
     chatwithUser=async(httpRequest:CustomRequest): Promise<ControllerResponse>=> {
       try {
         

@@ -7,6 +7,7 @@ import {signupValidator } from "../middlewere/validator/doctorsignupValidator";
 import authMiddleware from "../middlewere/jwt/authentiCateToken";
 import {loginValidator } from "../middlewere/validator/loginValidators"
 import checkIfBlocked from "../middlewere/isBlocked/isblockedDoctor";
+import upload from "../utils/multer";
 const router = Router();
 
 const repository = new DoctorRepository();
@@ -33,7 +34,7 @@ router
   .get(authMiddleware,checkIfBlocked, expressCallback(controller.doctorProfile))
   .put(authMiddleware,checkIfBlocked,expressCallback(controller.changeProfile))
   .patch(authMiddleware,checkIfBlocked,expressCallback(controller.changePassword))
-  .post(authMiddleware,checkIfBlocked,expressCallback(controller.updateProfilepic))
+  .post(authMiddleware,checkIfBlocked,upload.single('file'),expressCallback(controller.updateProfilepic))
   router
   .route('/verifyprofile')
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.verifyProfile))
