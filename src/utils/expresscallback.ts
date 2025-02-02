@@ -33,7 +33,7 @@ export function expressCallback(controller: any) {
           httpOnly: false,
           secure: true,
           sameSite: "none",
-          domain: ".docreserva.site",
+          
       
         });
       }
@@ -43,7 +43,7 @@ export function expressCallback(controller: any) {
           httpOnly:true,
           secure: true,
           sameSite: "none",
-          domain: ".docreserva.site",
+          
           
         });
       }
