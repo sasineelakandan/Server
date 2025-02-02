@@ -33,6 +33,7 @@ export function expressCallback(controller: any) {
           httpOnly: false,
           secure: true,
           sameSite: "none",
+          maxAge: 60 * 60 * 24 * 1,
           
       
         });
@@ -43,6 +44,7 @@ export function expressCallback(controller: any) {
           httpOnly:true,
           secure: true,
           sameSite: "none",
+          maxAge: 60 * 60 * 24 * 7,
           
           
         });
