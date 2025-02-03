@@ -84,11 +84,7 @@ export type DoctorSignupInput = {
   export type FormData ={
     hospitalName: string;
     licenseNumber: string;
-    street: string;
-    city: string;
-    state: string;
-    licenseImage: string;
-    licenseImage1: string;
+  
     fees: number;
   }
 

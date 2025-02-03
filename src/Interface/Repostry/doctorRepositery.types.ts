@@ -102,8 +102,7 @@ export type AddDoctorInput = {
   export type HospitalData ={
     hospitalName: string;
     licenseNumber: string;
-    licenseImage: string;
-    licenseImage1: string;
+   
     fees: number;
   }
 

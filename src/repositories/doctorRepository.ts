@@ -169,11 +169,10 @@ export class DoctorRepository implements IDoctorRepository {
 
 
 
-      const {licenseImage,licenseImage1,hospitalName,fees,licenseNumber}=formData
+      const {hospitalName,fees,licenseNumber}=formData
       
       const updateDoctor=await Doctor.updateOne({_id:userId},{$set:{
-        licenseImage:licenseImage,
-        profilePic:licenseImage1,
+        
         hospitalName:hospitalName,
         
         fees:fees,
