@@ -2,6 +2,7 @@ import { Server as SocketIOServer, Socket } from "socket.io";
 import Message from "../models/messageModel"; 
 import mongoose from "mongoose";
 import ChatRoom from "../models/chatRoomModel";
+import Notification from "../models/Notification";
 
 export const socketHandler = (io: SocketIOServer) => {
 
@@ -72,14 +73,34 @@ let onlineUsers:any = {};
           timestamp: new Date(),
         });
 
+     
+
         const savedMessage = await newMessage.save();
         console.log("Message saved to MongoDB:", savedMessage);
-
-        // Calculate unread message counts for the receiver
+        const notiMessage = await Notification.updateOne(
+          { roomId },
+          {
+            $set: {
+              doctorId: room?.doctor,
+              message: message.content,
+              userId: room?.patient,
+              notitype: 'Alert',
+              timestamp: new Date()
+            }
+          },
+          { sort: { createdAt: -1 }, upsert:true, new: true } // Always update the latest document
+        );
+        const historys = await Notification.findOne({userId:room?.patient}).populate('doctorId');
+     
+        io.emit('Notifications',historys)
         const unreadMessageCount = await Message.countDocuments({
           receiverId,
           isRead: false,
         });
+
+        
+
+        
 
         console.log(`Unread messages for receiver ${receiverId}:`, unreadMessageCount);
 
@@ -91,7 +112,7 @@ let onlineUsers:any = {};
           io.emit("updateUnreadCount",  unreadMessageCount );
         }
 
-        // Emit the message to the room
+        
         io.to(roomId).emit("receiveMessage", savedMessage);
          
              if (isLink) {
@@ -124,6 +145,7 @@ let onlineUsers:any = {};
         }
     }
     io.emit("updateUserStatus", onlineUsers); 
+    
       console.log("User disconnected:", socket.id);
     });
   });

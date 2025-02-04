@@ -72,6 +72,10 @@ router
   router
   .route('/transactions')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getWalletHisotry))
+
+  router
+  .route('/Notification')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getNotification))
   
   router
   .route('/available-slots')

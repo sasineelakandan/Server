@@ -1,6 +1,6 @@
 import { IUserService } from "../Interface/Service/userServiceinterface";
 import { IuserRepository } from "../Interface/Repostry/userrepoInterface";
-import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas} from "../Interface/Service/userService.type";
+import { Appointments, findOtp, Messages, OtpOutput, SuccessResponse, UserProfileOutput, UserSignupInput,UserSignupOutput,ChatMembers, AppointmentSlot, AppointmentSlotOutput, ReviewData, ReviewOutput, GoogleUser, GoogleUserOutput, ReviewDatas, SlotDatas, Notification} from "../Interface/Service/userService.type";
 import { encryptPassword,comparePassword } from "../utils/encryption";
 import { AppError } from "../utils/errors";
 
@@ -322,6 +322,19 @@ console.log("Error in changepassword", error.message);
       try {
         const historys = await this.userRepository.getWalletHisotry(
           doctorId
+          
+        );
+        return historys;
+      } catch (error: any) {
+        console.log("Error in chat", error.message);
+        throw new Error(error.message);
+      }
+     }
+
+     getNotification=async(userId: string): Promise<any>=> {
+      try {
+        const historys = await this.userRepository.getNotification(
+          userId
           
         );
         return historys;

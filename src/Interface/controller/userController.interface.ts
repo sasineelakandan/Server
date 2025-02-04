@@ -24,5 +24,6 @@ export interface IUserConroller{
     getReview(httpRequest:Request):Promise<ControllerResponse>
     getSlots(httpRequest:Request):Promise<ControllerResponse>
     getWalletHisotry(httpRequest:Request):Promise<ControllerResponse>
+    getNotification(httpRequest:Request):Promise<ControllerResponse>
     
 }

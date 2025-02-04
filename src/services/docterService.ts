@@ -528,5 +528,17 @@ Appointments=async(doctorId: string): Promise<Appointments>=> {
     throw new Error(error.message);
   }
 }
+
+getNotification=async(doctorId: string): Promise<Notification> =>{
+  try {
+    const appointments = await this.doctorRepository.getNotification(
+      doctorId
+    );
+    return appointments;
+  } catch (error: any) {
+    console.log("Error in doctorProfile", error.message);
+    throw new Error(error.message);
+  }
+}
    
 }

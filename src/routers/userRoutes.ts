@@ -59,7 +59,7 @@ router
 
   router
   .route('/Notification')
-  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getcompleteAppointment))
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getNotification))
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.userReview))
 
   router

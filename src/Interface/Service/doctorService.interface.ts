@@ -27,4 +27,5 @@ export interface IDoctorService {
    updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
    blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
   Appointments(doctorId:string):Promise<Appointments>
+   getNotification(userId:string):Promise<Notification>
 }

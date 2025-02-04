@@ -9,6 +9,7 @@ import Transactions from "../models/Wallet";
 import Slots from "../models/Slots";
 import Reviews from "../models/reviewModel";
 import Doctor from '../models/doctorModel'
+import Notification from "../models/Notification";
 import {io} from "../index";
 export class UserRepository implements IuserRepository {
     addUser = async (userData: AddUserInput): Promise<AddUserOuput> => {
@@ -526,6 +527,23 @@ getWalletHisotry=async(userId: string): Promise<any>=> {
     const historys = await Transactions.find({userId:userId}).sort({_id:-1}).populate('doctorId');
      
 
+    return historys
+  } catch (error: any) {
+    console.error("Error in chatroom:", error);
+    throw new Error(error.message);
+  }
+}
+getNotification=async(userId: string): Promise<any> =>{
+  try {
+    
+    if (!userId) {
+      throw new Error(`User with ID ${userId} not found.`);
+    }
+
+    const historys = await Notification.find({userId:userId}).sort({_id:-1}).populate('doctorId');
+     
+    io.emit('Notifications',historys)
+    
     return historys
   } catch (error: any) {
     console.error("Error in chatroom:", error);

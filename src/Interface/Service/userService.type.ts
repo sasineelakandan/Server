@@ -124,3 +124,4 @@ readonly refreshToken?: string;
 export type ReviewDatas= Array<{ [key: string]: any }>
 export type SlotDatas= Array<{ [key: string]: any }>
 export type Transaction= Array<{ [key: string]: any }>
+export type Notification= Array<{ [key: string]: any }>

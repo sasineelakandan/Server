@@ -23,4 +23,5 @@ export interface IuserRepository{
     getReview(doctorId:string):Promise<ReviewDatas>
     getSlots(doctorId:string):Promise<SlotDatas>
     getWalletHisotry(doctorId:string):Promise<Transaction>
+    getNotification(userId:string):Promise<Notification>
 }

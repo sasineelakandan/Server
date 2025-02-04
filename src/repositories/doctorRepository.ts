@@ -13,6 +13,7 @@ import Transactions from "../models/Wallet";
 
 import User from "../models/userModel";
 import { error } from "console";
+import Notification from "../models/Notification";
 
 
 export class DoctorRepository implements IDoctorRepository {
@@ -843,6 +844,26 @@ Appointments=async(doctorId: string): Promise<Appointments>=> {
     console.error("Error in slot creation:", error);
     throw new Error(error.message);
   }
+}
+
+getNotification=async(doctorId: string): Promise<any> =>{
+  try {
+      
+    console.log('hai')
+     const notifications = await Notification.find({ doctorId: doctorId}).sort({_id:-1})
+     
+     .populate('userId');
+     
+     
+     if (!notifications) {
+       throw new Error(`Doctor with ID ${doctorId} not found.`);
+     }
+   
+     return notifications
+   } catch (error: any) {
+     console.error("Error in slot creation:", error);
+     throw new Error(error.message);
+   }
 }
 
 

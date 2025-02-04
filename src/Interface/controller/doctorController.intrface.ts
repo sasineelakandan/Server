@@ -30,4 +30,5 @@ export interface IDoctorConroller{
     updateSlots(httpRequest:Request):Promise<ControllerResponse>
     blockSlots(httpRequest:Request):Promise<ControllerResponse>
     Appointments(httpRequest:Request):Promise<ControllerResponse>
+     getNotification(httpRequest:Request):Promise<ControllerResponse>
 }

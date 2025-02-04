@@ -754,6 +754,39 @@ export class UserController implements IUserConroller {
         };
       }
     }
+    getNotification=async(httpRequest:CustomRequest): Promise<ControllerResponse> =>{
+      try {
+      
+        const userId = httpRequest?.user?.id;
+    
+        
+        if (!userId || typeof userId !== 'string') {
+          console.error('Invalid room ID');
+          throw new Error('Room ID is required and must be a string.');
+        }
+    
+        
+        const Notification = await this.userService.getNotification(userId);
+        console.log(Notification)
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 200, 
+          body: Notification, 
+        };
+      } catch (error: any) {
+        console.error('Error in walletHistorys:', error.message);
+    
+        return {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          statusCode: 500, // Internal Server Error
+          body: { error: error.message || 'An unknown error occurred.' },
+        };
+      }
+    }
   
   }
   
