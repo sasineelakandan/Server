@@ -78,9 +78,18 @@ router
   
 
   router.route("/logout").post((req:Request, res:Response) => {
-    console.log('hai')
-    res.clearCookie("accessToken", { path: "/" })
-    res.clearCookie("refreshToken", { path: "/" })
+    
+    res.clearCookie("accessToken", {
+      domain: ".docreserva.site",
+      path: "/",
+      sameSite: "strict",
+    });
+    
+    res.clearCookie("refreshToken", {
+      domain: ".docreserva.site",
+      path: "/",
+      sameSite: "strict",
+    });
     res.status(200).json({ message: "Logged out successfully" });
   });
    
