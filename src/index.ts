@@ -46,4 +46,6 @@ app.use('/v1/api/doctor',doctorrouter)
 app.use('/v1/api/admin',adminRoutes)
 app.use('/v1/api/booking',bookingRoutes)
 
+
+
 httpServer.listen(PORT, () => console.log(`Server started running on port ${PORT}`));

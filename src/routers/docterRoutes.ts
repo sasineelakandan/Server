@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router,Request,Response } from "express";
 import { expressCallback } from "../utils/expresscallback";
 import { DoctorController } from "../conrollers/doctorController";
 import { DoctorRepository } from "../repositories/doctorRepository";
@@ -86,5 +86,13 @@ router
   .route('/dashbord')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.Appointments))
  
- 
+  router.route("/logout").post((req:Request, res:Response) => {
+    console.log('hai')
+    res.clearCookie("accessToken", { path: "/" })
+    res.clearCookie("refreshToken", { path: "/" })
+    res.status(200).json({ message: "Logged out successfully" });
+  });
+
+
+
 export default router;

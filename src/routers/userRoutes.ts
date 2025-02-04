@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router,Request,Response } from "express";
 import { expressCallback } from "../utils/expresscallback";
 import { UserController } from "../conrollers/userController";
 import { UserRepository } from "../repositories/userRepository";
@@ -74,6 +74,16 @@ router
   router
   .route('/transactions')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.getWalletHisotry))
+  
+  
+
+  router.route("/logout").post((req:Request, res:Response) => {
+    console.log('hai')
+    res.clearCookie("accessToken", { path: "/" })
+    res.clearCookie("refreshToken", { path: "/" })
+    res.status(200).json({ message: "Logged out successfully" });
+  });
+   
 
 
 export default router;

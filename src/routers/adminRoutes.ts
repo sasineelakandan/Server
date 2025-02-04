@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router ,Request,Response} from "express";
 import { expressCallback } from "../utils/expresscallback";
 import {AdminController } from "../conrollers/AdminController";
 import { AdminRepository} from "../repositories/adminRepository";
@@ -41,5 +41,12 @@ router
 .route('/reviews')
 .get(authMiddleware,expressCallback(controller.getReviews))
 .delete(authMiddleware,expressCallback(controller.deleteReview))
+
+router.route("/logout").post((req:Request, res:Response) => {
+    
+    res.clearCookie("accessToken", { path: "/" })
+    res.clearCookie("refreshToken", { path: "/" })
+    res.status(200).json({ message: "Logged out successfully" });
+  });
 
 export default router;
