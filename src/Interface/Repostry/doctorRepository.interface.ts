@@ -30,4 +30,5 @@ export interface IDoctorRepository{
     blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
     Appointments(doctorId:string):Promise<Appointments>
     getNotification(doctorId:string):Promise<Notification>
+     
 }

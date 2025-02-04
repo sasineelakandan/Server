@@ -28,4 +28,6 @@ export interface IDoctorService {
    blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
   Appointments(doctorId:string):Promise<Appointments>
    getNotification(userId:string):Promise<Notification>
+
+  
 }

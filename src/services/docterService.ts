@@ -540,5 +540,7 @@ getNotification=async(doctorId: string): Promise<Notification> =>{
     throw new Error(error.message);
   }
 }
+
+
    
 }

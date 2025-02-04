@@ -14,6 +14,7 @@ import Transactions from "../models/Wallet";
 import User from "../models/userModel";
 import { error } from "console";
 import Notification from "../models/Notification";
+import Payment from "@/models/paymentModel";
 
 
 export class DoctorRepository implements IDoctorRepository {
@@ -865,6 +866,7 @@ getNotification=async(doctorId: string): Promise<any> =>{
      throw new Error(error.message);
    }
 }
+
 
 
 }
