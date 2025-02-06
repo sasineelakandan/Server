@@ -15,4 +15,5 @@ export interface IAdminController{
   getAppointments(httpRequest:CustomRequest):Promise<ControllerResponse>
   getReviews(httpRequest:CustomRequest):Promise<ControllerResponse>
   deleteReview(httpRequest:CustomRequest):Promise<ControllerResponse>
+
 }

@@ -138,6 +138,14 @@ export type AddDoctorInput = {
     endTime:string
   }
 
+  export type PrescriptionFormData= {
+    appointmentId:string
+    patientName: string;
+    medication: string;
+    dosage: string;
+    instructions: string;
+  }
+
   export type Messages= Array<{ [key: string]: any }>
   export type ChatMembers= Array<{ [key: string]: any }>
   export type Transaction= Array<{ [key: string]: any }>

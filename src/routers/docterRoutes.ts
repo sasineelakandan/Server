@@ -85,6 +85,10 @@ router
   router
   .route('/dashbord')
   .get(authMiddleware,checkIfBlocked,expressCallback(controller.Appointments))
+
+  router
+  .route('/prescriptions')
+  .post(authMiddleware,checkIfBlocked,expressCallback(controller.addPriscription))
  
   router.route("/logout").post((req:Request, res:Response) => {
     console.log('hai')

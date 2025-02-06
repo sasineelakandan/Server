@@ -1,5 +1,5 @@
 
-import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots} from "./doctorService.type";
+import {DoctorSignupInput,DoctorSignupOutput,FindDoctorOtp,DoctorOtpOutput,DoctorProfileOutput,FormData, ProfileFormData,SuccessResponse,DoctorSlotRequest, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots, PrescriptionFormData} from "./doctorService.type";
 
 export interface IDoctorService {
   doctorSignup(doctorData:DoctorSignupInput): Promise<DoctorSignupOutput>;
@@ -24,10 +24,11 @@ export interface IDoctorService {
   getWalletHisotry(doctorId:string):Promise<Transaction>
   getSlots(doctorId:string):Promise<Slots>
   asignLeaveDays(doctorId:string,leaveDays:any):Promise<SuccessResponse>
-   updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
-   blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
+  updateSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
+  blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
   Appointments(doctorId:string):Promise<Appointments>
-   getNotification(userId:string):Promise<Notification>
-
+  getNotification(userId:string):Promise<Notification>
+  addPriscription(doctorId:string,data:PrescriptionFormData):Promise<SuccessResponse>
+  
   
 }

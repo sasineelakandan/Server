@@ -17,7 +17,8 @@ import {
   ChatMembers,
   Messages,
   Transaction,
-  Slots
+  Slots,
+  PrescriptionFormData
 } from "../Interface/Service/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encryption";
 import { AppError } from "../utils/errors";
@@ -535,6 +536,19 @@ getNotification=async(doctorId: string): Promise<Notification> =>{
       doctorId
     );
     return appointments;
+  } catch (error: any) {
+    console.log("Error in doctorProfile", error.message);
+    throw new Error(error.message);
+  }
+}
+
+addPriscription=async(doctorId: string, data: PrescriptionFormData): Promise<SuccessResponse>=> {
+  try {
+    const priscriptionData = await this.doctorRepository.addPriscription(
+      doctorId,
+      data
+    );
+    return priscriptionData;
   } catch (error: any) {
     console.log("Error in doctorProfile", error.message);
     throw new Error(error.message);

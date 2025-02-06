@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../Interface/Repostry/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction, Slots } from "../Interface/Repostry/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction, Slots, PrescriptionFormData } from "../Interface/Repostry/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/Slots";
@@ -14,7 +14,8 @@ import Transactions from "../models/Wallet";
 import User from "../models/userModel";
 import { error } from "console";
 import Notification from "../models/Notification";
-import Payment from "@/models/paymentModel";
+import Payment from "../models/paymentModel";
+import Prescription from "../models/priscription";
 
 
 export class DoctorRepository implements IDoctorRepository {
@@ -867,6 +868,32 @@ getNotification=async(doctorId: string): Promise<any> =>{
    }
 }
 
+addPriscription = async (doctorId: string, data: PrescriptionFormData): Promise<SuccessResponse> => {
+  try {
+    if (!doctorId) {
+      throw new Error(`Doctor ID is required.`);
+    }
+
+    const prescription = await Prescription.create({
+      doctorId,
+      appointmentId: data.appointmentId,
+      patientName: data.patientName,
+      dosage: data.dosage,
+      medication: data.medication,
+      instructions: data.instructions
+    });
+
+    await prescription.save();
+
+    return {
+      status: 'success',
+      message: 'Prescription added successfully',
+    };
+  } catch (error: any) {
+    console.error("Error in prescription creation:", error);
+    throw new Error(error.message);
+  }
+};
 
 
 }

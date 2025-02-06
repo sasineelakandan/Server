@@ -1,4 +1,4 @@
-import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots } from '../Repostry/doctorRepositery.types'
+import {AddDoctorInput,AddDoctorOtpOutput,AddDoctorOutput,FindDoctorOtp,UpdateDoctor,AddFormData, GetDoctorProfile, HospitalData,DoctorSlotRequest,SuccessResponse, Appointments, ResheduleData,ChatMembers,Messages, Transaction, Slots, PrescriptionFormData } from '../Repostry/doctorRepositery.types'
 import { ProfileFormData } from '../Service/doctorService.type';
 
 export interface IDoctorRepository{
@@ -30,5 +30,6 @@ export interface IDoctorRepository{
     blockSlots(doctorId:string,slotId:string):Promise<SuccessResponse>
     Appointments(doctorId:string):Promise<Appointments>
     getNotification(doctorId:string):Promise<Notification>
+    addPriscription(doctorId:string,data:PrescriptionFormData):Promise<SuccessResponse>
      
 }
