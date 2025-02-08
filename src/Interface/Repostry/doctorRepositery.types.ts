@@ -151,3 +151,4 @@ export type AddDoctorInput = {
   export type Transaction= Array<{ [key: string]: any }>
   export type Slots= Array<{ [key: string]: any }>
   export type Notification= Array<{ [key: string]: any }>
+  export type PrescriptionData= Array<{ [key: string]: any }>

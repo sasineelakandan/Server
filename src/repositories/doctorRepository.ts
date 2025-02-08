@@ -1,5 +1,5 @@
 import {IDoctorRepository} from "../Interface/Repostry/doctorRepository.interface"
-import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction, Slots, PrescriptionFormData } from "../Interface/Repostry/doctorRepositery.types"
+import {AddDoctorInput,AddDoctorOtpInput,AddDoctorOtpOutput,AddDoctorOutput,AddFormData,Appointments,DoctorSlotRequest,FindDoctorOtp, GetDoctorProfile, HospitalData, ResheduleData, SuccessResponse, UpdateDoctor ,Messages, ChatMembers, Transaction, Slots, PrescriptionFormData, PrescriptionData } from "../Interface/Repostry/doctorRepositery.types"
 import Doctor from "../models/doctorModel";
 import Otp from "../models/otpModel";
 import Slot from "../models/Slots";
@@ -873,7 +873,7 @@ addPriscription = async (doctorId: string, data: PrescriptionFormData): Promise<
     if (!doctorId) {
       throw new Error(`Doctor ID is required.`);
     }
-
+    await Appointment.updateOne({_id: data.appointmentId},{$set:{prescriptionAdded:true}})
     const prescription = await Prescription.create({
       doctorId,
       appointmentId: data.appointmentId,
@@ -894,6 +894,24 @@ addPriscription = async (doctorId: string, data: PrescriptionFormData): Promise<
     throw new Error(error.message);
   }
 };
-
+getPriscription=async(doctorId: string): Promise<PrescriptionData>=> {
+  try {
+      
+    
+     const prescription = await Prescription.find({ doctorId: doctorId}).sort({_id:-1})
+     
+     
+     
+     
+     if (!prescription) {
+       throw new Error(`Doctor with ID ${doctorId} not found.`);
+     }
+   
+     return prescription
+   } catch (error: any) {
+     console.error("Error in slot creation:", error);
+     throw new Error(error.message);
+   }
+}
 
 }

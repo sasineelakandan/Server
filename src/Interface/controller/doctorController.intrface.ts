@@ -32,5 +32,5 @@ export interface IDoctorConroller{
     Appointments(httpRequest:Request):Promise<ControllerResponse>
     getNotification(httpRequest:Request):Promise<ControllerResponse>
     addPriscription(httpRequest:Request):Promise<ControllerResponse>
-    
+    getPriscription(httpRequest:Request):Promise<ControllerResponse>
 }

@@ -88,6 +88,7 @@ router
 
   router
   .route('/prescriptions')
+  .get(authMiddleware,checkIfBlocked,expressCallback(controller.getPriscription))
   .post(authMiddleware,checkIfBlocked,expressCallback(controller.addPriscription))
  
   router.route("/logout").post((req:Request, res:Response) => {

@@ -18,7 +18,8 @@ import {
   Messages,
   Transaction,
   Slots,
-  PrescriptionFormData
+  PrescriptionFormData,
+  PrescriptionData
 } from "../Interface/Service/doctorService.type";
 import { encryptPassword, comparePassword } from "../utils/encryption";
 import { AppError } from "../utils/errors";
@@ -555,6 +556,18 @@ addPriscription=async(doctorId: string, data: PrescriptionFormData): Promise<Suc
   }
 }
 
-
+getPriscription=async(doctorId: string): Promise<PrescriptionData>=> {
+  try {
+    const priscriptionData = await this.doctorRepository.getPriscription(
+      doctorId,
+    
+    );
+    return priscriptionData;
+  } catch (error: any) {
+    console.log("Error in doctorProfile", error.message);
+    throw new Error(error.message);
+  }
+}
    
 }
+
