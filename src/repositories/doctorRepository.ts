@@ -654,11 +654,11 @@ createSlots = async (doctorId: string, slotData: any[]): Promise<{ status: strin
       )
     );
 
-    // If no new slots remain, return a message
+    
     if (newSlots.length === 0) {
       throw error('slot alredy created')
     }
-    console.log(newSlots.length)
+    
     // Insert only new slots
     await Slot.insertMany(newSlots.map(slot => ({ ...slot, doctorId })));
 
