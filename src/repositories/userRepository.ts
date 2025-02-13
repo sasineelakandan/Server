@@ -344,6 +344,8 @@ export class UserRepository implements IuserRepository {
         if (!roomId) {
           throw new Error(`User with ID ${roomId} not found.`);
         }
+
+        const delNotification=await Notification.deleteMany({roomId:roomId})
         const chatRoomUp=await ChatRoom.updateOne({_id:roomId},{$set:{isReadUc:0}})
         const readmessage = await Message.updateMany({roomId:roomId},{$set:{isRead:true}});
          const message = await Message.find({roomId:roomId});
@@ -490,7 +492,7 @@ export class UserRepository implements IuserRepository {
           throw new Error(`User with ID ${doctorId} not found.`);
         }
         const reviewDatas = await Reviews.find({ doctorId: doctorId}).sort({_id:-1})
-        .populate('userId');
+        .populate('userId')
          
 
         return reviewDatas

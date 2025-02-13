@@ -22,7 +22,7 @@ export interface IDoctorRepository{
     getChatMembers(userId:string):Promise<ChatMembers>
     forgotPassword(otpDataa:any):Promise<SuccessResponse>
     updateDoctorPassword(userId:string,password:string):Promise<SuccessResponse>
-    createSlots(doctorId:string,slotData:any):Promise<SuccessResponse>
+    createSlots(doctorId:string,slotData:any,slotDatas:any):Promise<SuccessResponse>
     getWalletHisotry(doctorId:string):Promise<Transaction>
     getSlots(doctorId:string):Promise<Slots>
     asignLeaveDays(doctorId:string,leaveDays:any):Promise<SuccessResponse>

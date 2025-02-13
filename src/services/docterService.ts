@@ -338,7 +338,7 @@ export class DoctorService implements IDoctorService {
   ): Promise<SuccessResponse> => {
     try {
       const { fromTime, toTime, workingDays } = slotData;
-  
+     
       const startHour = parseInt(fromTime.split(":")[0]);
       const endHour = parseInt(toTime.split(":")[0]);
       const currentDate = new Date();
@@ -388,7 +388,7 @@ export class DoctorService implements IDoctorService {
         }
       });
   
-      await this.doctorRepository.createSlots(doctorId, slots);
+      await this.doctorRepository.createSlots(doctorId, slots,slotData);
       return { status: 'success', message: 'Slots created successfully' };
     } catch (error: any) {
       throw new Error(error.message || 'An error occurred while creating slots');

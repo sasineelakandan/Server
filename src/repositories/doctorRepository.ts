@@ -541,7 +541,7 @@ getMessage=async(roomId: string): Promise<Messages>=> {
     if (!roomId) {
       throw new Error(`User with ID ${roomId} not found.`);
     }
-
+    const delNotification=await Notification.deleteMany({roomId:roomId})
     const chatRoomUp=await Message.updateMany({roomId:roomId},{$set:{isRead:true}})
      const message = await Message.find({roomId:roomId});
 
@@ -635,17 +635,24 @@ try{
   throw new Error(error.message);
 }
 }
-createSlots = async (doctorId: string, slotData: any[]): Promise<{ status: string; message: string }> => {
+createSlots = async (doctorId: string, slotData: any[],slotDatas:any): Promise<{ status: string; message: string }> => {
   try {
-    // Validate input
+    
+    
     if (!doctorId || !slotData.length) {
       throw new Error("Doctor ID and slot data are required.");
     }
+    const doctor = await Doctor.findOne({_id:doctorId});
+    if (!doctor) throw new Error("Doctor not found");
+    console.log("slotDatas:", slotDatas); 
 
-    // Fetch existing slots for the same doctor
+    
+    
+    
+   
     const existingSlots = await Slot.find({ doctorId });
 
-    // Filter slotData to keep only new slots (not already in the database)
+    
     const newSlots = slotData.filter((newSlot) =>
       !existingSlots.some(
         (existingSlot) =>
@@ -653,14 +660,14 @@ createSlots = async (doctorId: string, slotData: any[]): Promise<{ status: strin
           new Date(existingSlot.date).toISOString() === new Date(newSlot.date).toISOString()
       )
     );
-
     
     if (newSlots.length === 0) {
-      throw error('slot alredy created')
+        throw new Error("Slots already created");
     }
     
-    // Insert only new slots
-    await Slot.insertMany(newSlots.map(slot => ({ ...slot, doctorId })));
+    
+    await Slot.insertMany(newSlots);
+    console.log("New Slots Created:", newSlots);
 
     return {
       status: "success",
