@@ -453,7 +453,7 @@ export class UserRepository implements IuserRepository {
           {
             $set: {
               username: GoogleUser.displayName,
-              phone:GoogleUser.phone
+              phone:''
              
             },
           },
