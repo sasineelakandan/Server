@@ -281,7 +281,11 @@ console.log("Error in changepassword", error.message);
         
         
        
-        const phone='Not provider'
+        const generateUniquePhone = () => {
+          return `${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+      };
+      
+      const phone = generateUniquePhone();
   
         const user = await this.userRepository.googleLogin({
           ...GoogleUser,
