@@ -285,7 +285,7 @@ console.log("Error in changepassword", error.message);
   
         const user = await this.userRepository.googleLogin({
           ...GoogleUser,
-  phone: phone
+            phone
           
       });
   
