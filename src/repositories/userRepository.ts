@@ -447,13 +447,13 @@ export class UserRepository implements IuserRepository {
     googleLogin=async(GoogleUser: GoogleUser): Promise<GoogleUserOutput>=> {
       try {
 
-        console.log(GoogleUser)
+        
         const users = await User.updateOne(
           { email: GoogleUser.email }, 
           {
             $set: {
               username: GoogleUser.displayName,
-              phone:GoogleUser.phone
+              
              
             },
           },
