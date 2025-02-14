@@ -28,11 +28,7 @@ const UserSchema = new Schema(
       type: String,
       required:false,
       
-      trim: true,
-      validate: {
-        validator: userValidators.phone.validator,
-        message: userValidators.phone.message,
-      },
+      
     },
     password: {
       type: String,
