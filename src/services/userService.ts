@@ -286,7 +286,7 @@ console.log("Error in changepassword", error.message);
       };
       
       const phone = generateUniquePhone();
-  
+       console.log(phone)
         const user = await this.userRepository.googleLogin({
           ...GoogleUser,
             phone
