@@ -18,7 +18,7 @@ connectDb();
 
 const httpServer = createServer(app);
 
-// Initialize Socket.IO
+
 export const io = new Server(httpServer, {
   cors: {
     origin: FRONTEND_URL() || '*', 
@@ -30,10 +30,9 @@ socketHandler(io);
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
-    // Allow all origins, including Postman, but only if they send credentials
-    callback(null, true);  // Allow all origins
+    callback(null, true);  
   },
-  credentials: true,  // Allow credentials like cookies
+  credentials: true, 
 };
 
 app.use(cors(corsOptions));
