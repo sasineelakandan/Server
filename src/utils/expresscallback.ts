@@ -33,7 +33,7 @@ export function expressCallback(controller: any) {
         res.cookie("accessToken", httpResponse.body.accessToken, {
           httpOnly: false,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
           domain: ".docreserva.site",
           
       
@@ -44,8 +44,10 @@ export function expressCallback(controller: any) {
         res.cookie("refreshToken", httpResponse.body.refreshToken, {
           httpOnly:true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
           domain: ".docreserva.site",
+          
+          
           
           
         });
