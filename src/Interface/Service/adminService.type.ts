@@ -19,3 +19,8 @@ export type SuccessResponse = {
   };
 
   export type ReviewDatas= Array<{ [key: string]: any }>
+
+  interface LoginRequestBody {
+    email: string;
+    password: string;
+  }

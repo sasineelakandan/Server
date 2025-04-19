@@ -3,7 +3,10 @@ import { ControllerResponse } from "../Interface/controller/adminController.type
 import { IAdminService } from "../Interface/Service/adminService.interface";
 import { ReviewDatas } from "../Interface/Service/adminService.type";
 import { CustomRequest } from "../middlewere/jwt/authentiCateToken";
-
+interface LoginRequestBody {
+    email: string;
+    password: string;
+  }
 
 export class AdminController implements IAdminController {
     private adminService: IAdminService;
@@ -15,7 +18,8 @@ export class AdminController implements IAdminController {
     adminLogin = async (httpRequest: Request): Promise<ControllerResponse> => {
         try {
 
-            const {email,password}:any=httpRequest.body
+            const body = await httpRequest.json(); 
+            const { email, password } = body;
             const admin = await this.adminService.adminLogin(email, password);
             console.log(admin)
             if (admin.admin==false) {
