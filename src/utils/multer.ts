@@ -9,11 +9,11 @@ interface CloudinaryParams {
   transformation: { width: number; height: number; crop: string }[]; // Transformations to apply (e.g., resizing)
 }
 
-// Configure Cloudinary
+// Configure Cloudinary.
 cloudinary.config({
-  cloud_name:'dzlxjwwfm',
-  api_key:'367464676432915',
-  api_secret:'HGbSOc1NhSiXuySTQUPATOvnerY'
+  cloud_name:process.env.CLOUD_NAME,
+  api_key:process.env. API_KEY,
+  api_secret:process.env.API_SECRET
 });
 
 // Configure Multer with Cloudinary Storage
