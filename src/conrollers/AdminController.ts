@@ -18,8 +18,8 @@ export class AdminController implements IAdminController {
     adminLogin = async (httpRequest: Request): Promise<ControllerResponse> => {
         try {
 
-            const body = await httpRequest.json(); 
-            const { email, password } = body;
+            
+            const { email, password }:any = httpRequest.body 
             const admin = await this.adminService.adminLogin(email, password);
             console.log(admin)
             if (admin.admin==false) {
